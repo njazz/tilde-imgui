@@ -1,0 +1,21 @@
+environment:
+   matrix:
+      - CONFIGURATION: Debug
+        PLATFORM: Win32
+        ZIP: zpd_win_32
+      - CONFIGURATION: Debug
+        PLATFORM: x64
+        ZIP: zpd_win_64
+
+os: Visual Studio 2015
+
+install:
+    - git submodule update --init --recursive
+
+build_script:
+    - mkdir build
+    - cd build
+    - cmake -G "Visual Studio 14 2015" -DWITH_PORTAUDIO=OFF ..
+    - cmake --build .
+
+

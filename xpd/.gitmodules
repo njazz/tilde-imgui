@@ -1,0 +1,18 @@
+[submodule "pd/pure-data"]
+	path = pd/pure-data
+	url = https://github.com/pure-data/pure-data
+[submodule "tests/Catch"]
+	path = tests/Catch
+	url = https://github.com/philsquared/Catch
+[submodule "distrib/spdlog"]
+	path = distrib/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "distrib/variant"]
+	path = distrib/variant
+	url = https://github.com/mapbox/variant
+[submodule "distrib/thread"]
+	path = distrib/thread
+	url = https://github.com/pierreguillot/thread.git
+[submodule "distrib/rtaudio/rtaudio"]
+	path = distrib/rtaudio/rtaudio
+	url = https://github.com/thestk/rtaudio

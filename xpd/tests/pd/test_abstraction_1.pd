@@ -1,0 +1,2 @@
+#N canvas 155 203 700 500 12;
+#X obj 164 95 simple_abstraction_1;

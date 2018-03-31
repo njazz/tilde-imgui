@@ -1,0 +1,490 @@
+# Mason
+
+Mason can compile C/C++ code, publish packages to S3, and install those packages via binaries.
+
+Mason does all its work locally inside `./mason_packages` and therefore does not require privileges for, or conflict with, system-wide packages.
+
+Mason works on both OS X and Linux.
+
+[![Build Status](https://travis-ci.org/mapbox/mason.svg?branch=master)](https://travis-ci.org/mapbox/mason)
+
+### Goals
+
+Mason is a package manager designed for developers who package standalone applications and who need complete control over dependency versions.
+
+Because Mason is developed by Mapbox the default S3 bucket and set of available packages are driven by Mapbox developers. For other developers: 1) fork Mason and ideally rename it to something like `mason-{yourorg}`, 2) configure it against your own s3 bucket, and 3) go ahead an publish your own packages to an S3 bucket of your creation.
+
+### Comparisons
+
+Mason is like [npm](https://github.com/npm/npm) because it installs packages in the current working directory (`./mason_packages`) rather than globally.
+
+Mason is like [homebrew](http://brew.sh/) because it requires no use of `sudo` to install packages.
+
+Mason is like linux package managers like `apt-get` or `yum` because it works on linux.
+
+Mason is unlike all of the above package managers because:
+
+  - Mason runs on both Linux and OS X and creates a single set of binaries that work on >= OS X 10.8 and >= Ubuntu Precise (rather than building binaries per version).
+  - Mason strongly prefers static libraries over shared libraries
+  - Mason has zero understanding of dependency trees: it leaves complete control to the developer for how packages relate.
+  - Mason does not depend on any specific runtime language (like python, node.js or ruby). It is a just a few bash scripts.
+  - Mason depends on [travis.ci](https://travis-ci.org) for creating and publishing binaries.
+
+## Installation
+
+There are three recommended ways to install mason: via curl, via a submodule, or via bundling `mason.cmake`
+
+#### Curl install
+
+To install mason locally:
+
+```sh
+mkdir ./mason
+curl -sSfL https://github.com/mapbox/mason/archive/v0.17.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=./mason
+```
+
+Then you can use the `mason` command like: `./mason/mason install <package> <version>`
+
+To install mason globally (to /tmp):
+
+```sh
+curl -sSfL https://github.com/mapbox/mason/archive/v0.17.0.tar.gz | tar --gunzip --extract --strip-components=1 --exclude="*md" --exclude="test*" --directory=/tmp
+```
+
+Then you can use the `mason` command like: `/tmp/mason install <package> <version>`
+
+#### Submodule
+
+Mason can also be added a submodule to your repository. This is helpful for other contributors to get set up quickly.
+
+Optionally a convention when using submodules, is to place the submodule at a path starting with `.` to make the directory hidden to most file browsers. If you want your mason folder hidden then make sure to include the final part of the following command `.mason/` so your submodule path has the leading `.` instead of just being `mason/`.
+
+```bash
+git submodule add git@github.com:mapbox/mason.git .mason/
+```
+
+This will append a few lines to your `.gitmodules` file. Make sure to change the `url` parameter to `https` instead of `git@github` ssh protocol.
+
+```
+[submodule ".mason"]
+    path = .mason
+    url = https://github.com/mapbox/mason.git
+```
+
+Update your `Makefile` to point to the mason scripts and provide an installation script for the necessary dependencies. The following installs two Mason packages with the `make mason_packages` command.
+
+```Make
+MASON ?= .mason/mason
+
+$(MASON):
+    git submodule update --init
+
+mason_packages: $(MASON)
+    $(MASON) install geometry 0.7.0
+    $(MASON) install variant 1.1.0
+```
+
+#### mason.cmake
+
+Copy the https://raw.githubusercontent.com/mapbox/mason/master/mason.cmake into your cmake project. A common convention is to place it at `<your project>/cmake/mason`
+
+```
+mkdir cmake
+wget -O cmake/mason.cmake https://raw.githubusercontent.com/mapbox/mason/master/mason.cmake
+````
+
+Then in your `CmakeLists.txt` install packages like:
+
+```cmake
+mason_use(<package name> VERSION <package version> HEADER_ONLY)
+```
+
+Note: Leave out `HEADER_ONLY` if the package is a [pre-compiled library](https://github.com/mapbox/cpp/blob/master/glossary.md#precompiled-library). You can see if a package is `HEADER_ONLY` by looking inside the `script.sh` for `MASON_HEADER_ONLY=true` like https://github.com/mapbox/mason/blob/68871660b74023234fa96d482898c820a55bd4bf/scripts/geometry/0.9.0/script.sh#L5
+
+
+## Usage
+
+Most commands are structured like this:
+
+```bash
+mason <command> <library> <version>
+```
+
+The `command` can be one of the following
+
+* `install`: Installs the specified library/version
+* `remove`: Removes the specified library/version
+* `build`: Forces a build from source (= skip pre-built binary detection)
+* `publish`: Uploads the built binaries to the S3 bucket
+* `prefix`: Prints the absolute path to the library installation directory
+* `version`: Prints the actual version of the library (only useful when version is `system`)
+* `cflags`: Prints C/C++ compiler flags
+* `ldflags`: Prints linker flags
+* `link`: Creates symlinks for packages in `mason_packages/.link`
+* `trigger`: Trigger a build and publish operation on Travis CI
+
+### `install`
+
+```bash
+$ mason install libuv 0.11.29
+* Downloading binary package osx-10.10/libuv/0.11.29.tar.gz...
+######################################################################## 100.0%
+* Installed binary package at /Users/user/mason_packages/osx-10.10/libuv/0.11.29
+```
+
+Installs [libuv](https://github.com/joyent/libuv) into the current folder in the `mason_packages` directory. Libraries are versioned by platform and version number, so you can install several different versions of the same library along each other. Similarly, you can also install libraries for different platforms alongside each other, for example library binaries for OS X and iOS.
+
+The `install` command first checks if the specified library/version is already present for this platform, and if so, exits. This means you can run it multiple times (e.g. as part of a configuration script) without doing unnecessary work.
+
+Next, Mason checks whether there are pre-built binaries available in the S3 bucket for the current platform. If that is the case, they are downloaded and unzipped and the installation is complete.
+
+If no pre-built binaries are available, Mason is going to build the library according to the script in the `mason_packages/.build` folder, and install into the platform- and library-specific directory.
+
+
+### `remove`
+
+```bash
+$ mason remove libuv 0.11.29
+* Removing existing package...
+/Users/user/mason_packages/osx-10.10/libuv/0.11.29/include/uv-darwin.h
+[...]
+/Users/user/mason_packages/osx-10.10/libuv/0.11.29
+```
+
+Removes the specified library/version from the package directory.
+
+### `build`
+
+This command works like the `install` command, except that it *doesn't* check for existing library installations, and that it *doesn't* check for pre-built binaries. I.e. it first removes the current installation and *always* builds the library from source. This is useful when you are working on a build script and want to fresh builds.
+
+### `publish`
+
+Creates a gzipped tarball of the specified platform/library/version and uploads it to the `mason-binaries` S3 bucket. If you want to use this feature, you need write access to the bucket and need to specify the environment variables `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`.
+
+### `prefix`
+
+```bash
+~ $ mason prefix libuv 0.11.29
+/Users/user/mason_packages/osx-10.10/libuv/0.11.29
+```
+
+This prints the absolute path to the installation directory of the the library/version. Likely, this folder has the typical `include` and `lib` folders.
+
+### `cflags`
+
+```bash
+~ $ mason cflags libuv 0.11.29
+-I/Users/user/mason_packages/osx-10.10/libuv/0.11.29/include
+```
+
+Prints the C/C++ compiler flags that are required to compile source code with this library. Likely, this is just the include path, but may also contain other flags.
+
+### `ldflags`
+
+```bash
+~ $ mason ldflags libuv 0.11.29
+-L/Users/user/mason_packages/osx-10.10/libuv/0.11.29/lib -luv -lpthread -ldl
+```
+
+Prints the linker flags that are required to link against this library.
+
+### `link`
+
+```bash
+~ $ mason link libuv 0.11.29
+```
+
+This command only works if the package has already been installed. When run it symlinks the versioned `lib`, `include`, `share`, and `bin` folders of the package into a shared structure that is unversioned. For example if `mason prefix libuv 0.11.29` was `./mason_packages/osx-10.10/libuv/0.11.29` then the library would become available at `./mason_packages/.link/lib/libuv.a`
+
+### `trigger`
+
+In order to ensure that all prebuilt binaries are consistent and reproducible, we perform the final build and publish operation on Travis CI.
+
+First set the `MASON_TRAVIS_TOKEN` environment variable. You can do this either by installing the `travis` gem and running `travis token` or by using `curl` to hit the Travis api directly. See details on this below. **WARNING: be careful to keep this token safe. Cycling it requires emailing support@travis-ci.com. Giving someone an access token is like giving them full access to your Travis account.**
+
+Once you are set up with your `MASON_TRAVIS_TOKEN` then use the `trigger` command to kick off a build:
+
+```bash
+./mason trigger <package name> <package version>
+```
+
+Run this command from the root of a local mason repository checkout. It makes a request to the Travis API to build and publish the specified version of the package, using the Travis configuration in `./scripts/${MASON_NAME}/${MASON_VERSION}/.travis.yml`.
+
+1) Using curl and travis api to generate MASON_TRAVIS_TOKEN
+
+First generate a github personal access token that has `repo` scope by going to https://github.com/settings/tokens. More details at https://help.github.com/articles/creating-an-access-token-for-command-line-use/.
+
+Then set that in your environment and run:
+
+```sh
+GITHUB_TOKEN=<github token>
+
+curl -s -i https://api.travis-ci.org/auth/github \
+    -H "User-Agent: Travis/1.0" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/vnd.travis-ci.2+json" \
+    -H "Host: api.travis-ci.org" \
+    -d "{\"github_token\": \"${GITHUB_TOKEN}\"}"
+```
+
+2) Use the travis command
+
+For details see https://docs.travis-ci.com/user/triggering-builds and https://github.com/travis-ci/travis.rb#readme
+
+## Writing build scripts
+
+Each version of each package has its own directory in `scripts/${package}/${version}`, e.g. [`scripts/libpng/1.6.28`](https://github.com/mapbox/mason/tree/master/scripts/libpng/1.6.28).
+
+Below are details on ways to create packages for:
+
+ - new packages (not previously unpackaged software)
+ - new versions of existing packages
+ - header-only libraries and pre-compiled libraries
+
+### Creating new packages
+
+If you are creating a package for previously unpackaged software start by creating a new directory for your `${package}/${version}` from within your mason checkout.
+
+For example if you want to name your package `yourlib` and it is version `1.0.0` you would do:
+
+```bash
+mkdir -p scripts/yourlib/1.0.0
+```
+
+The directory must contain two files:
+
+    - `script.sh`
+    - `.travis.yml`
+
+What you put in those files depend on what type of package you are creating. See:
+
+ - [Header-only package](#header-only-package)
+ - [Pre-compiled library package](#pre-compiled-library-package)
+
+### Creating new versions of packages
+
+When creating a new package it is recommended to start by copying an existing package.
+
+Each package must contain two files:
+
+    - `script.sh`
+    - `.travis.yml`
+
+What you put in those files depend on what type of package you are creating. See:
+
+ - [Header-only package](#header-only-package)
+ - [Pre-compiled library package](#pre-compiled-library-package)
+
+#### Header-only package
+
+For a header-only library, a good example to copy from is the `geometry` package. You can copying the `geometry` package:
+
+```bash
+cp -r scripts/geometry/0.9.1 scripts/yourlib/1.0.0
+```
+
+You will not need to edit the `.travis.yml`, but you will need to edit the `script.sh`.
+
+See the [Script structure](#script-structure) section below for details on the `script.sh` format. A `script.sh` is simplier for header-only libraries, so here is a shortlist of things you need to change:
+
+- `MASON_NAME`: change it from `geometry` to `yourlib`
+- `MASON_VERSION`: change it from `0.9.1` to your version
+
+Then you will also need to update:
+
+ - The github url on line `11` to match your download url
+ - The hash on line `12`. To do this, it is easiest to run `./mason build yourlib version` and it will fail, but the error message will contain the correct hash. Copy the hash and put it on line `12`.
+
+Now update the `MASON_BUILD_PATH`. You will need to change the text of `geometry.hpp-` to your package name. This will likely work for your entire line:
+
+```
+export MASON_BUILD_PATH=${MASON_ROOT}/.build/${MASON_NAME}-${MASON_VERSION}
+```
+
+Now make any adjustments needed to the `mason_compile` section, modifying the copying of headers.
+
+#### Pre-compiled library package
+
+For a compiled library package, start by copying the `libpng` package:
+
+```bash
+cp -r scripts/libpng/1.6.28 scripts/yourlib/1.0.0
+```
+
+See the [Script structure](#script-structure) section below for details on the `script.sh` format.
+
+#### Script structure
+
+This `script.sh` is structured like:
+
+```bash
+#!/usr/bin/env bash
+
+MASON_NAME=libuv
+MASON_VERSION=0.11.29
+MASON_LIB_FILE=lib/libuv.a
+MASON_PKGCONFIG_FILE=lib/pkgconfig/libuv.pc
+```
+
+Declare these variables first. `MASON_NAME` and `MASON_VERSION` are mandatory. If the install script build a static library, specify the relative path in the installation directory in `MASON_LIB_FILE`. This is used to check whether an installation actually exists before proceeding to download/build the library anew. You can optionally specify `MASON_PKGCONFIG_FILE` as the relative path to the pig-config file if the library has one. If the library doesn't have one, you need to override the functions `mason_cflags` and `mason_ldflags` (see below).
+
+Then, we're loading the build system with
+
+```bash
+. ${MASON_DIR}/mason.sh
+```
+
+Next, we're defining a function that obtains the source code and unzips it:
+
+```bash
+function mason_load_source {
+    mason_download \
+        https://github.com/joyent/libuv/archive/v0.11.29.tar.gz \
+        5bf49a8652f680557cbaf335a160187b2da3bf7f
+
+    mason_extract_tar_gz
+
+    export MASON_BUILD_PATH=${MASON_ROOT}/.build/libuv-${MASON_VERSION}
+}
+```
+
+In that function, you should use `mason_download` as a shortcut to download the tarball. The second argument to is a hash generated with `git hash-object` and used to verify that the source code downloaded matches the expected file. The function also caches downloaded tarballs in the `mason_packages/.cache` folder. You can get the hash object by running `./mason build <package> <version>` locally and this should fail with a message of the expected hash.
+
+`mason_extract_tar_gz` unpacks the archive into the `mason_packages/.build` folder. If the tarball is BZip2 compressed, you can also use `mason_extract_tar_bz2` instead.
+
+Lastly, the `MASON_BUILD_PATH` variable contains the path to the unpacked folder inside the `.build` directory.
+
+Then, you can optionally specify a function that is run before compiling, e.g. a script that generates configuration files:
+
+```bash
+function mason_prepare_compile {
+    ./autogen.sh
+}
+```
+
+The heart of the script is the `mason_compile` function because it performs the actual build of the source code. There are a few variables available that you need to use to make sure that the package will work correctly.
+
+```bash
+function mason_compile {
+    ./configure \
+        --prefix=${MASON_PREFIX} \
+        ${MASON_HOST_ARG} \
+        --enable-static \
+        --disable-shared \
+        --disable-dependency-tracking
+
+    make install -j${MASON_CONCURRENCY}
+}
+```
+
+In particular, you have to set the build system's installation prefix to `MASON_PREFIX`. For cross-platform builds, you have to specify the `MASON_HOST_ARG`, which is empty for regular builds and is set to the correct host platform for cross-compiles (e.g. iOS builds use `--host=arm-apple-darwin`).
+
+If the build system supports building concurrently, you can tell it do do so by providing the number of parallel tasks from `MASON_CONCURRENCY`.
+
+
+Next, the `mason_clean` function tells Mason how to clean up the build folder. This is required for multi-architecture builds. E.g. iOS builds perform a Simulator (Intel architecture) build first, then an iOS (ARM architecture) build. The results are `lipo`ed into one universal archive file.
+
+```bash
+function mason_clean {
+    make clean
+}
+```
+
+Finally, we're going to run the everything:
+
+```bash
+mason_run "$@"
+```
+
+### Variables
+
+Name | Description
+---|---
+`MASON_DIR` | The directory where Mason itself is installed. Defaults to the current directory.
+`MASON_ROOT` | Absolute path the `mason_packages` directory. Example: `/Users/user/mason_packages`.
+`MASON_PLATFORM` | Platform of the current invocation. Currently one of `osx`, `ios` or `linux`.
+`MASON_PLATFORM_VERSION` | Version of the platform. It must include the architecture if the produced binaries are architecture-specific (e.g. on Linux). Example: `10.10`
+`MASON_NAME` | Name specified in the `script.sh` file. Example: `libuv`
+`MASON_VERSION` | Version specified in the `script.sh` file. Example: `0.11.29`
+`MASON_SLUG` | Combination of the name and version. Example: `libuv-0.11.29`
+`MASON_PREFIX` | Absolute installation path. Example: `/Users/user/mason_packages/osx-10.10/libuv/0.11.29`
+`MASON_BUILD_PATH` | Absolute path to the build root. Example: `/Users/user/mason_packages/.build/libuv-0.11.29`
+`MASON_BUCKET` | S3 bucket that is used for storing pre-built binary packages. Example: `mason-binaries`
+`MASON_BINARIES` | Relative path to the gzipped tarball in the `.binaries` directory. Example: `osx-10.10/libuv/0.11.29.tar.gz`
+`MASON_BINARIES_PATH` | Absolute path to the gzipped tarball. Example: `/Users/user/mason_packages/.binaries/osx-10.10/libuv/0.11.29.tar.gz`
+`MASON_CONCURRENCY` | Number of CPU cores. Example: `8`
+`MASON_HOST_ARG` | Cross-compilation arguments. Example: `--host=x86_64-apple-darwin`
+`MASON_LIB_FILE` | Relative path to the library file in the install directory. Example: `lib/libuv.a`
+`MASON_PKGCONFIG_FILE` | Relative path to the pkg-config file in the install directory.  Example: `lib/pkgconfig/libuv.pc`
+`MASON_XCODE_ROOT` | OS X specific; Path to the Xcode Developer directory. Example: `/Applications/Xcode.app/Contents/Developer`
+`MASON_HEADER_ONLY` | Set to `true` to specify this library as header-only, which bypasses building binaries (default `false`)
+
+### Customization
+
+In addition to the override functions described above, you can also override the `mason_cflags` and `mason_ldflags` functions. By default, they're using `pkg-config` to determine these flags and print them to standard output. If a library doesn't include a `.pc` file, or has some other mechanism for determining the build flags, you can run them instead:
+
+
+```bash
+function mason_ldflags {
+    ${MASON_PREFIX}/bin/curl-config --static-libs`
+}
+```
+
+### System packages
+
+Some packages ship with operating systems, or can be easily installed with operating-specific package managers. For example, `libpng` is available on most systems and the version you're using doesn't really matter since it is mature and hasn't added any significant new APIs in recent years. To create a system package for it, use this `script.sh` file:
+
+
+```bash
+#!/usr/bin/env bash
+
+MASON_NAME=libpng
+MASON_VERSION=system
+MASON_SYSTEM_PACKAGE=true
+
+. ${MASON_DIR}/mason.sh
+
+if [ ! $(pkg-config libpng --exists; echo $?) = 0 ]; then
+    mason_error "Cannot find libpng with pkg-config"
+    exit 1
+fi
+
+function mason_system_version {
+    mkdir -p "${MASON_PREFIX}"
+    cd "${MASON_PREFIX}"
+    if [ ! -f version ]; then
+        echo "#include <png.h>
+#include <stdio.h>
+#include <assert.h>
+int main() {
+    assert(PNG_LIBPNG_VER == png_access_version_number());
+    printf(\"%s\", PNG_LIBPNG_VER_STRING);
+    return 0;
+}
+" > version.c && ${CC:-cc} version.c $(mason_cflags) $(mason_ldflags) -o version
+    fi
+    ./version
+}
+
+function mason_compile {
+    :
+}
+
+function mason_cflags {
+    pkg-config libpng --cflags
+}
+
+function mason_ldflags {
+    pkg-config libpng --libs
+}
+
+mason_run "$@"
+```
+
+System packages are marked with `MASON_SYSTEM_PACKAGE=true`. We're also first using `pkg-config` to check whether the library is present at all. The `mason_system_version` function creates a small executable which outputs the actual version. It is the only thing that is cached in the installation directory.
+
+We have to override the `mason_cflags` and `mason_ldflags` commands since the regular commands return flags for static libraries, but in the case of system packages, we want to dynamically link against the package.
+
+## Troubleshooting
+
+Downloaded source tarballs are cached in `mason_packages/.cache`. If for some reason the initial download failed, but it still left a file in that directory, make sure you delete the partial download there.

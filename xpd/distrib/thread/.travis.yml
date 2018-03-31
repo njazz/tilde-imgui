@@ -1,0 +1,73 @@
+language: c
+dist: trusty
+sudo: required
+
+notifications:
+  email: false
+
+git:
+  submodules: true
+  depth: 3
+
+matrix:
+  include:
+
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          packages: ['python-pip', 'python-yaml']
+      before_script:
+        - pip install --user git+git://github.com/eddyxu/cpp-coveralls.git
+      script:
+          - mkdir build && cd build
+          - cmake -DCOVERALLS=1 -DCMAKE_BUILD_TYPE=Debug ..
+          - cmake --build .
+          - cd ../
+          - ./build/test
+          - ./build/ptest
+
+      after_success:
+        - coveralls -e build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.cpp -e build/CMakeFiles/CompilerIdCXX/CMakeCXXCompilerId.c -e build/CMakeFiles/3.2.2/CompilerIdCXX/CMakeCXXCompilerId.cpp -e build/CMakeFiles/3.2.2/CompilerIdC/CMakeCCompilerId.c -e test -e build/CMakeFiles/feature_tests.c -e build/CMakeFiles/feature_tests.cxx --gcov-options '\-lp'
+      env:
+        - Coveralls
+
+    - os: linux
+      compiler: gcc
+      script:
+        - mkdir build && cd build
+        - cmake ..
+        - cmake --build .
+        - cd ../
+        - ./build/test
+        - ./build/ptest
+
+    - os: linux
+      compiler: clang
+      script:
+        - mkdir build && cd build
+        - cmake ..
+        - cmake --build .
+        - cd ../
+        - ./build/test
+        - ./build/ptest
+
+    - os: osx
+      compiler: gcc
+      script:
+        - mkdir build && cd build
+        - cmake ..
+        - cmake --build .
+        - cd ../
+        - ./build/test
+        - ./build/ptest
+
+    - os: osx
+      compiler: clang
+      script:
+        - mkdir build && cd build
+        - cmake ..
+        - cmake --build .
+        - cd ../
+        - ./build/test
+        - ./build/ptest

@@ -1,0 +1,12 @@
+#N canvas 178 131 700 500 12;
+#X obj 143 88 +;
+#X msg 143 63 4 5;
+#X obj 143 113 sqrt;
+#X symbolatom 228 173 10 0 0 0 - - -, f 10;
+#X msg 228 138 symbol TEST;
+#X text 381 58 Simple comment;
+#X floatatom 143 138 5 0 0 0 - - -, f 5;
+#X connect 0 0 2 0;
+#X connect 1 0 0 0;
+#X connect 2 0 6 0;
+#X connect 4 0 3 0;

@@ -1,0 +1,52 @@
+language: cpp
+dist: trusty
+sudo: required
+
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "NjYG/GsT2Ws3aDXUo6S8hsCHR/pMVy12zCMkMVY9g38c8Czi2f8lFfrX5HxEIA4mRBPVPNDLMiYJVgcZlI8Z7us0twCDKzxEioYsujvk8Dd43nBVYeCqCcV4ekgTW3yAoyXhUuK67FzGQBC+UzEjCe1hWwsMFFt9lcqqqefhHY+P0XgB/dHr8KRTTD/OWku+G/XemKbBAfa/c6T+d4WqXsCrpMRVo+oMkXQc4c1ANzUFZWDtLoMw7ZhPBYqkPA70GhT3OG3dHDm65cDxnMtdas7yJINgwcfdtbnc8fK39s5PMq231x6HuGylO07AxkHbFDQTW/qGs+uI3PMlknjqKoFmXMBw8VIuu5COT20JRivySMQRS+FM+w7rMBECTgGUQGLW9YC/XXwFyAFpi2alQqokbclErdKgdFi3+hyzgWOSaEgT0r24e8a7iwnm5ZSNjSXTQfCkoRhUHDMJ5B7N1VCfApLvQ9mbhxpq6fC3kQYs/je/IUxDe5b6hwotMZN3hxefEsO4qzSy/Ejz9XEBH3NyOgDQuWcKPIkbvZ5I7rSpxLHHur87Dpbu96APQv043FpYF0howgULgHGMJBFHKPk08m4Lu7Pnaw0+OCX4rPoligKGMyQVppwv0CBYQ9FN/AXEkayYDqPZpSE9S3bGOBRzYpfpo+6rAMVczhiG7ZI="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+
+notifications:
+  email: false
+
+git:
+  submodules: true
+  depth: 3
+
+addons:
+  apt:
+    packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev']
+  coverity_scan:
+    project:
+      name: "uliss/xpd"
+      description: "Build submitted via Travis CI"
+    notification_email: serge.poltavski@gmail.com
+    build_command_prepend: "mkdir build && cd build && cmake .."
+    build_command:   "make -j 4"
+    branch_pattern: devel
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      env:
+        - COVERAGE=1
+        - DOXYGEN
+    - os: linux
+      compiler: clang
+    #- os: osx
+    #  compiler: gcc
+    #- os: osx
+    #  compiler: clang
+
+script:
+  - ./config/script.sh
+
+
+

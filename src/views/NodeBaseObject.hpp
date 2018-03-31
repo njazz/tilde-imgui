@@ -1,0 +1,57 @@
+//
+//  NodeObject.hpp
+//  nseq
+//
+//  Created by Alex on 23/03/2018.
+//  Copyright © 2018 Alex Nadzharov. All rights reserved.
+//
+
+#ifndef NodeBaseObject_hpp
+#define NodeBaseObject_hpp
+
+#include <stdio.h>
+
+#include "IUView.hpp"
+#include "imgui.h"
+
+#include <string>
+
+#include "pd_object.h"
+
+static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
+static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
+
+class ObjectBase : public IUView {
+protected:
+    void _drawInlet(int idx);
+    void _drawOutlet(int idx);
+
+public:
+    xpd::ObjectId pdObjectID = 0;
+    xpd::PdObject* pdObject = 0;
+
+    virtual void draw() override{};
+
+    int inletCount = 0;
+    int outletCount = 0;
+
+    ImVec2 inletPos(int idx);
+    ImVec2 outletPos(int idx);
+
+    int inletType(int idx);
+    int outletType(int idx);
+
+    std::string objectText = "object";
+
+    bool errorBox = false;
+    bool emptyBox = false;
+
+    int outletClicked = -1;
+    int inletClicked = -1;
+
+    static const int oOutletClicked = 100;
+    static const int oInletClicked = 101;
+    static const int oInletHovered = 102;
+};
+
+#endif /* NodeObject_hpp */

@@ -1,0 +1,3 @@
+/Users/njazz/Documents/puredata-ceam/tilde/tilde~_ui_library/build/CMakeFiles/edit_cache.dir
+/Users/njazz/Documents/puredata-ceam/tilde/tilde~_ui_library/build/CMakeFiles/rebuild_cache.dir
+/Users/njazz/Documents/puredata-ceam/tilde/tilde~_ui_library/build/CMakeFiles/tilde~_ui.dir
