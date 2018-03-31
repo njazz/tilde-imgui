@@ -30,12 +30,12 @@ class PdConsoleViewController : public IUViewController {
     void _drawMenu();
 
 public:
-    PdConsoleViewController()
+    PdConsoleViewController(PdCommonMenus*m) : _menu(m)
     {
-        _menu.menuWindow.setAction(PdCommonWindowMenu::aClearConsole, &clearConsole);
-        _menu.menuMedia.setAction(PdCommonMediaMenu::aDSPOn, &dspOn);
-        _menu.menuMedia.setAction(PdCommonMediaMenu::aDSPOff, &dspOff);
-        _menu.menuMedia.dspOn = &_dspOn;
+        _menu.common->menuWindow.setAction(PdCommonWindowMenu::aClearConsole, &clearConsole);
+        _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOn, &dspOn);
+        _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOff, &dspOff);
+        _menu.common->menuMedia.dspOn = &_dspOn;
     }
 
     xpd::PdLocalServer* pdServer = 0;

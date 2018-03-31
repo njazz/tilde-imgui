@@ -45,6 +45,8 @@ class PdPatchViewController : public IUViewController {
     void _drawMenu();
     PdPatchMenu _menu;
 public:
+    PdPatchViewController(PdCommonMenus*m) : _menu(m){}
+
     xpd::PdLocalServer* pdServer = 0;
     void setPdProcess(xpd::ProcessPtr p);
 

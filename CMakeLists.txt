@@ -59,6 +59,8 @@ INCLUDE_DIRECTORIES(xpd/distrib/variant/include)
 INCLUDE_DIRECTORIES(xpd/pd)
 
 #######
+add_subdirectory(ui-lib)
+#######
 add_subdirectory(xpd)
 #######
 add_executable(pd_imgui ${SRC_IMGUI} ${SRC_PD_IMGUI} ${R_FONTS}

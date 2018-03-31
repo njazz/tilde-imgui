@@ -20,6 +20,8 @@
 
 #include "IUWindowController.hpp"
 
+#include "menus/PdCommonMenus.hpp"
+
 class AppConsoleObserver : public xpd::ConsoleObserver {
 public:
     PdConsoleViewController* _logWindow = 0;
@@ -35,6 +37,8 @@ class AppController : public AppControllerBase {
     xpd::ProcessPtr _serverProcess;
 
     AppConsoleObserver _consoleObserver;
+
+    PdCommonMenus _commonMenus;
 
 public:
     AppController();

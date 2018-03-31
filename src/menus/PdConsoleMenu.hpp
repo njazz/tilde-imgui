@@ -4,17 +4,19 @@
 
 #include "PdCommonMenus.hpp"
 
-
 class PdConsoleMenu : public IUMainMenuBase {
 public:
-    PdCommonFileMenu menuFile;
-    PdCommonWindowMenu menuWindow;
-    PdCommonMediaMenu menuMedia;
+    PdCommonMenus* common = 0;
+    //    PdCommonFileMenu menuFile;
+    //    PdCommonWindowMenu menuWindow;
+    //    PdCommonMediaMenu menuMedia;
 
-    PdConsoleMenu()
+    PdConsoleMenu(PdCommonMenus* m)
     {
-        addMenu(&menuFile, "File");
-        addMenu(&menuWindow, "Window");
-        addMenu(&menuMedia, "Media");
+        common = m;
+        addMenu(&m->menuFile, "File");
+        addMenu(&m->menuWindow, "Window");
+        addMenu(&m->menuMedia, "Media");
+        addMenu(&m->menuHelp, "Help");
     }
 };

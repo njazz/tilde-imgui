@@ -58,26 +58,33 @@ public:
 
 
 class PdPatchMenu : public IUMainMenuBase {
+
 public:
-    PdCommonFileMenu menuFile;
+    PdCommonMenus* common = 0;
+//    PdCommonFileMenu menuFile;
 
     PdPatchEditMenu menuEdit;
     PdPatchPutMenu menuPut;
     PdPatchArrangeMenu menuArrange;
 
-    PdCommonWindowMenu menuWindow;
-    PdCommonMediaMenu menuMedia;
+//    PdCommonWindowMenu menuWindow;
+//    PdCommonMediaMenu menuMedia;
+//    PdCommonHelpMenu menuHelp;
 
-    PdPatchMenu()
+    PdPatchMenu(PdCommonMenus* m)
     {
-        addMenu(&menuFile, "File");
-        menuFile.inPatch = true;
+        common = new PdCommonMenus;// m;
+        m=common;
+
+        addMenu(&m->menuFile, "File");
+        m->menuFile.inPatch = true;
 
         addMenu(&menuEdit, "Edit");
         addMenu(&menuPut, "Put");
         addMenu(&menuArrange, "Arrange");
 
-        addMenu(&menuWindow, "Window");
-        addMenu(&menuMedia, "Media");
+        addMenu(&m->menuWindow, "Window");
+        addMenu(&m->menuMedia, "Media");
+        addMenu(&m->menuHelp, "Help");
     }
 };

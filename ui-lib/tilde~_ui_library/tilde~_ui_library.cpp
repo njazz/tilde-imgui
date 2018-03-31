@@ -2,7 +2,9 @@
 
 #include "tilde~_ui_library.h"
 
-#include "../../tilde~/controller/buildNumber.h"
+//#include "../../tilde~/controller/buildNumber.h"
+
+#define TILDE_BUILD_NUMBER 1
 
 extern "C" {
 
@@ -26,13 +28,16 @@ extern "C" void setup() //0x2e //TILDE_UI_
 {
     char* buildNr = (char*)malloc(8);
 
-    sprintf(buildNr, "loading tilde~ UI library build %i ...", TILDE_BUILD_NUMBER);
+    sprintf(buildNr, "loading tilde~ IMGUI library build %i ...", TILDE_BUILD_NUMBER);
     post("%s", buildNr);
 
     // cammot free here?
     // free(buildNr);
 
+
     setup_ui0x2ebang();
+
+/*
     setup_ui0x2efloat();
 
     setup_ui0x2ematrix();
@@ -46,6 +51,7 @@ extern "C" void setup() //0x2e //TILDE_UI_
     setup_ui0x2etext();
 
     setup_ui0x2edsp();
+    */
 
     post("...done");
 }

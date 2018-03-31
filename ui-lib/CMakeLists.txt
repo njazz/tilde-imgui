@@ -78,13 +78,13 @@ include_directories( ${CMAKE_BINARY_DIR} )
 include_directories(.)
 include_directories(./src/)
 include_directories(./ceammc_lib/)
-include_directories(../../pd-server/pure-data-src/src/)
+include_directories(../xpd/pd/pure-data/src/)
 
-add_library(tilde~_ui SHARED ${CEAMMC_LIB_SOURCES} ${SOURCES} )
-target_link_libraries(tilde~_ui "-undefined dynamic_lookup")
-SET_TARGET_PROPERTIES(tilde~_ui PROPERTIES PREFIX "")
-set_target_properties(tilde~_ui PROPERTIES SUFFIX ".pd_darwin")
+add_library(tilde~_imgui SHARED ${CEAMMC_LIB_SOURCES} ${SOURCES} )
+target_link_libraries(tilde~_imgui "-undefined dynamic_lookup")
+SET_TARGET_PROPERTIES(tilde~_imgui PROPERTIES PREFIX "")
+set_target_properties(tilde~_imgui PROPERTIES SUFFIX ".pd_darwin")
 
-#install(TARGETS tilde~_ui LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../bin)
+install(TARGETS tilde~_imgui LIBRARY DESTINATION $~/Documents/tilde~/Libraries/)
 
 

@@ -23,22 +23,28 @@ AppController::AppController()
     _serverProcess = _server->createProcess();
     _serverProcess->registerConsoleObserver(xpd::ConsoleObserverPtr(&_consoleObserver));
 
-    PdConsoleViewController* vc = new PdConsoleViewController();
+    PdConsoleViewController* vc = new PdConsoleViewController(&_commonMenus);
     vc->pdServer = _server;
     vc->pdProcess = _serverProcess;
     _consoleObserver._logWindow = vc;
 
-    vc->_menu.menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
-    vc->_menu.menuFile.setAction(PdCommonFileMenu::aFileExit, &menuExit);
+    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
+    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileExit, &menuExit);
 
     addWindow(new IUWindowController(vc, "Pd Console", 0, 100, 400, 600));
 
     _serverProcess->post("tilde~/imgui 0.01");
+
+    _serverProcess->addSearchPath("/Users/njazz/Documents/tilde~/Libraries/");
+
+
+        _serverProcess->loadLibrary("tilde~_imgui");
+
 }
 
 void AppController::createNewPatchWindow()
 {
-    PdPatchViewController* p = new PdPatchViewController();
+    PdPatchViewController* p = new PdPatchViewController(&_commonMenus);
     p->pdServer = _server;
     p->setPdProcess(_serverProcess);
 
