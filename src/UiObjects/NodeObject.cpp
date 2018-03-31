@@ -87,6 +87,10 @@ int nameChanged(ImGuiTextEditCallbackData* o)
 
 void NodeObject::draw()
 {
+    int mc = (inletCount > outletCount) ? inletCount : outletCount;
+    width = 45 * mc;
+    if (width<60) width = 60;
+
     if (emptyBox) {
         _objectReplaceMode = true;
         windowController()->isEditingText = true;
@@ -95,30 +99,25 @@ void NodeObject::draw()
     ImGui::PushID(ImGui::GetID(id().c_str()));
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
-    draw_list->ChannelsSplit(2);
+
 
     //
+    draw_list->ChannelsSplit(2);
     draw_list->ChannelsSetCurrent(1);
 
     ImGui::BeginGroup(); // Lock horizontal position
 
-    ImU32 borderColor = (this->selected) ? IM_COL32(0, 160, 192, 255) : IM_COL32(192, 192, 192, 255);
+    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
 
     if (errorBox)
         borderColor = IM_COL32(255, 0, 0, 255);
     if (emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
 
-    bool isArray = false;
-
     width = 90;
     height = 30;
 
-    //borderColor = IM_COL32(192, 192, 192, 255);
 
-    int mc = (inletCount > outletCount) ? inletCount : outletCount;
-    width = 45 * mc; //(int)dataObject->inletCount();
-    if (width<60) width = 60;
 
     ImGui::PushItemWidth(114.0f);
 
@@ -193,19 +192,6 @@ void NodeObject::draw()
         _drawOutlet(slot_idx);
     }
 
-    // drag temporary
-    //    if (ImGui::IsMouseDragging() && selected) {
-    //        x += ImGui::GetIO().MouseDelta.x;
-    //        y += ImGui::GetIO().MouseDelta.y;
-    //    }
-
-    //    if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25)))
-    //    if (ImGui::IsMouseClicked(0))
-    //    {
-    ////        ImGui::GetIO().MouseClicked[0] = false;
-    ////        ImGui::GetIO().MouseDown[0] = false;
-    //        updated(oSelected);
-    //    }
 
     ImGui::PopID();
 

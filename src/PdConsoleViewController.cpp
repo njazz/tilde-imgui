@@ -51,6 +51,8 @@ void PdConsoleViewController::_drawMenu()
 
 void PdConsoleViewController::draw()
 {
+//    windowController()->restoreContext();
+
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0, 20));
 

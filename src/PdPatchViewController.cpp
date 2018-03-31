@@ -218,7 +218,7 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
     if (!_pdProcess)
         return 0;
 
-    ObjectBase* n = UIObjectFactory::createUiObject("*");//new NodeObject;
+    ObjectBase* n = UIObjectFactory::createUiObject(text);//new NodeObject;
     n->objectText = text;
     n->x = x;
     n->y = y;

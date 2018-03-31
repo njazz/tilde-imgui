@@ -7,7 +7,7 @@
 //
 
 #include "NewConnection.hpp"
-#include "NodeObject.hpp"
+#include "UiObjects/NodeObject.hpp"
 
 void NewConnection::draw()
 {

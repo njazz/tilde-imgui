@@ -26,11 +26,15 @@ protected:
     void _drawInlet(int idx);
     void _drawOutlet(int idx);
 
+    std::string id() { return std::to_string((long)this); };
+
+
 public:
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
 
-    virtual void draw() override{};
+    virtual void draw() override;
+    virtual void drawObjectContents(){};
 
     int inletCount = 0;
     int outletCount = 0;
@@ -45,6 +49,8 @@ public:
 
     bool errorBox = false;
     bool emptyBox = false;
+    bool selected = false;
+
 
     int outletClicked = -1;
     int inletClicked = -1;

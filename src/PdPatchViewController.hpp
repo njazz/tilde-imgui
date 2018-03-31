@@ -16,7 +16,7 @@
 #include "pd_localserver.h"
 
 #include "views/NodeConnection.hpp"
-#include "views/NodeObject.hpp"
+#include "UiObjects/NodeObject.hpp"
 
 #include "views/NewConnection.hpp"
 
@@ -70,7 +70,15 @@ public:
     });
 
     IUObserver objectUpdated = IUObserver([this] {
+
+
+
         NodeObject* o = (NodeObject*)objectUpdated.sender;
+
+        // test
+        if (o)
+            addObject(o->objectText, o->x,o->y);
+
 
         if (!o->pdObject) {
             o->pdObjectID = _canvas->createObject(o->objectText.c_str(), o->x, o->y);

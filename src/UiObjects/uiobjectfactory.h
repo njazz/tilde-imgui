@@ -1,7 +1,9 @@
 #ifndef UIOBJECTFACTORY_H
 #define UIOBJECTFACTORY_H
 
-#include "views/NodeObject.hpp"
+#include "UiObjects/NodeObject.hpp"
+
+#include "UiObjects/uibang.h"
 
 typedef ObjectBase* (*objectBaseConstructor)();
 
@@ -20,9 +22,12 @@ class UIObjectFactory {
     static std::map<std::string, _typeConstructorBase*> _c;
 
 public:
-    UIObjectFactory()
+    static void registerAll()
     {
         registerClass<NodeObject>("*");
+
+        registerClass<UIBang>("ui.bang");
+
     }
 
     template <typename T>
@@ -33,8 +38,11 @@ public:
 
     static ObjectBase* createUiObject(std::string className)
     {
+        printf("factory <%s>\n", className.c_str());
+
         if (_c[className])
         {
+            printf("created %s\n", className.c_str());
             return (*_c[className])();
         }
 

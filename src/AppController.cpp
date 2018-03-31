@@ -18,6 +18,8 @@ void AppConsoleObserver::update()
 AppController::AppController()
     : AppControllerBase()
 {
+    UIObjectFactory::registerAll();
+
     _settings = new xpd::ServerSettings("pd");
     _server = new xpd::PdLocalServer(*_settings);
     _serverProcess = _server->createProcess();
@@ -36,9 +38,8 @@ AppController::AppController()
     _serverProcess->post("tilde~/imgui 0.01");
 
     _serverProcess->addSearchPath("/Users/njazz/Documents/tilde~/Libraries/");
+    _serverProcess->loadLibrary("tilde~_imgui");
 
-
-        _serverProcess->loadLibrary("tilde~_imgui");
 
 }
 
