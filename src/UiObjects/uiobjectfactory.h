@@ -1,7 +1,7 @@
 #ifndef UIOBJECTFACTORY_H
 #define UIOBJECTFACTORY_H
 
-#include "UiObjects/NodeObject.hpp"
+#include "UiObjects/UIObject.hpp"
 
 #include "UiObjects/uibang.h"
 
@@ -24,7 +24,7 @@ class UIObjectFactory {
 public:
     static void registerAll()
     {
-        registerClass<NodeObject>("*");
+        registerClass<UIObject>("*");
 
         registerClass<UIBang>("ui.bang");
 
@@ -46,7 +46,7 @@ public:
             return (*_c[className])();
         }
 
-        return new NodeObject;//(*_c["*"])();
+        return new UIObject;//(*_c["*"])();
     }
 };
 

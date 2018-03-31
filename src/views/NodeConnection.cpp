@@ -8,7 +8,7 @@
 
 #include "NodeConnection.hpp"
 
-#include "UiObjects/NodeObject.hpp"
+#include "UiObjects/UIObject.hpp"
 
 void NodeConnection::draw()
 {

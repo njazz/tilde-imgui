@@ -18,9 +18,9 @@
 
 #include "pd_object.h"
 
-#include "NodeBaseObject.hpp"
+#include "ObjectBase.hpp"
 
-class NodeObject : public ObjectBase {
+class UIObject : public ObjectBase {
 
     char* _editText = new char[128];
 
@@ -29,7 +29,6 @@ public:
 
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
-
 
     virtual void draw() override;
 

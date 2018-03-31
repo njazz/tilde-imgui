@@ -1,7 +1,7 @@
 #ifndef UIBANG_H
 #define UIBANG_H
 
-#include "NodeBaseObject.hpp"
+#include "ObjectBase.hpp"
 
 class UIBang : public ObjectBase {
 public:

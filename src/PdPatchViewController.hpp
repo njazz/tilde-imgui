@@ -15,8 +15,8 @@
 #include "pd_localprocess.h"
 #include "pd_localserver.h"
 
+#include "UiObjects/UIObject.hpp"
 #include "views/NodeConnection.hpp"
-#include "UiObjects/NodeObject.hpp"
 
 #include "views/NewConnection.hpp"
 
@@ -44,15 +44,24 @@ class PdPatchViewController : public IUViewController {
 
     void _drawMenu();
     PdPatchMenu _menu;
+
+    UIObject _emptyObject;
+
 public:
-    PdPatchViewController(PdCommonMenus*m) : _menu(m){}
+    PdPatchViewController(PdCommonMenus* m)
+        : _menu(m)
+    {
+
+        _emptyObject.addObserverFor(UIObject::oObjectChanged, &objectCreated);
+        _emptyObject.hidden = true;
+    }
 
     xpd::PdLocalServer* pdServer = 0;
     void setPdProcess(xpd::ProcessPtr p);
 
     virtual void draw() override;
 
-    ObjectBase *addObject(std::string text, int x, int y);
+    ObjectBase* addObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
 
     //
@@ -71,14 +80,11 @@ public:
 
     IUObserver objectUpdated = IUObserver([this] {
 
-
-
-        NodeObject* o = (NodeObject*)objectUpdated.sender;
+        UIObject* o = (UIObject*)objectUpdated.sender;
 
         // test
-        if (o)
-            addObject(o->objectText, o->x,o->y);
-
+        //        if (o)
+        //            addObject(o->objectText, o->x,o->y);
 
         if (!o->pdObject) {
             o->pdObjectID = _canvas->createObject(o->objectText.c_str(), o->x, o->y);
@@ -99,6 +105,20 @@ public:
         //            n->pdObjectID = _canvas->createObject(text, x, y);
         //        else
         //            n->emptyBox = true;
+
+    });
+
+    IUObserver objectCreated = IUObserver([this] {
+
+        UIObject* o = (UIObject*)objectCreated.sender;
+
+        _pdProcess->post(("created: " + o->objectText).c_str());
+
+        // test
+        if (o)
+            addObject(o->objectText, o->x, o->y);
+
+        _emptyObject.hidden = true;
 
     });
 

@@ -7,7 +7,7 @@
 //  Copyright © 2018 Alex Nadzharov. All rights reserved.
 //
 
-#include "NodeBaseObject.hpp"
+#include "ObjectBase.hpp"
 
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
@@ -111,6 +111,8 @@ void ObjectBase::_drawOutlet(int idx)
 
 void ObjectBase::draw()
 {
+    if (hidden) return;
+
     ImGui::PushID(ImGui::GetID(id().c_str()));
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 

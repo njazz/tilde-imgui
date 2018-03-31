@@ -202,6 +202,16 @@ void PdPatchViewController::draw()
     if (ImGui::IsMouseDoubleClicked(0)) {
         if (!hitObject(ImGui::GetIO().MousePos)) {
             addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+            addSubview(&_emptyObject);
+            _emptyObject.x = ImGui::GetIO().MousePos.x;
+            _emptyObject.y = ImGui::GetIO().MousePos.y;
+            _emptyObject.emptyBox = true;
+            _emptyObject.errorBox = true;
+            _emptyObject.pdObject = 0;
+            _emptyObject.pdObjectID = 0;
+            _emptyObject.objectText = "";
+            _emptyObject.hidden = false;
+
         }
     }
 
@@ -225,8 +235,9 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
 
     if (text.size())
         n->pdObjectID = _canvas->createObject(text, x, y);
-    else
-        n->emptyBox = true;
+
+//    else
+//        n->emptyBox = true;
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(n->pdObjectID));
     n->errorBox = (n->pdObject == 0);
@@ -243,8 +254,8 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
     addSubview(n);
     _objects.push_back(n);
 
-    n->addObserverFor(NodeObject::oAutocomplete, &autocomplete);
-    n->addObserverFor(NodeObject::oObjectChanged, &objectUpdated);
+    n->addObserverFor(UIObject::oAutocomplete, &autocomplete);
+    n->addObserverFor(UIObject::oObjectChanged, &objectUpdated);
     n->addObserverFor(ObjectBase::oInletClicked, &inletClicked);
     n->addObserverFor(ObjectBase::oInletHovered, &inletHovered);
     n->addObserverFor(ObjectBase::oOutletClicked, &outletClicked);
@@ -270,7 +281,7 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
     if (_selectionFrame)
         return;
     for (auto o : _objects) {
-        NodeObject* obj = (NodeObject*)o;
+        UIObject* obj = (UIObject*)o;
         if (obj->selected) {
             o->x += delta.x;
             o->y += delta.y;
@@ -281,7 +292,7 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
 void PdPatchViewController::deselectAll()
 {
     for (auto o : _objects) {
-        NodeObject* obj = (NodeObject*)o;
+        UIObject* obj = (UIObject*)o;
 
         obj->selected = false;
     }
@@ -294,7 +305,7 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
 {
     bool ret = false;
     for (auto o : _objects) {
-        NodeObject* obj = (NodeObject*)o;
+        UIObject* obj = (UIObject*)o;
 
         obj->selected = (obj->x <= pos.x);
         obj->selected &= (obj->y <= pos.y);
@@ -311,7 +322,7 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
 {
     bool ret = false;
     for (auto o : _objects) {
-        NodeObject* obj = (NodeObject*)o;
+        UIObject* obj = (UIObject*)o;
 
         bool hit;
         hit = (obj->x <= pos.x);
@@ -328,7 +339,7 @@ bool PdPatchViewController::selectObjects()
 {
     bool ret = false;
     for (auto o : _objects) {
-        NodeObject* obj = (NodeObject*)o;
+        UIObject* obj = (UIObject*)o;
 
         obj->selected = (obj->x >= _selectionStart.x);
         obj->selected &= (obj->y >= _selectionStart.y);

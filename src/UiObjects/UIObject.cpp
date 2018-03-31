@@ -7,16 +7,16 @@
 //  Copyright © 2018 Alex Nadzharov. All rights reserved.
 //
 
-#include "NodeObject.hpp"
+#include "UIObject.hpp"
 
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
 
 int nameChanged(ImGuiTextEditCallbackData* o)
 {
-    NodeObject* obj = (NodeObject*)o->UserData;
+    UIObject* obj = (UIObject*)o->UserData;
 
-    obj->updated(NodeObject::oAutocomplete);
+    obj->updated(UIObject::oAutocomplete);
 
     return 0;
 }
@@ -85,11 +85,18 @@ int nameChanged(ImGuiTextEditCallbackData* o)
 
 #pragma mark -
 
-void NodeObject::draw()
+void UIObject::draw()
 {
+    if (hidden)
+        return;
+
+    width = 90;
+    height = 30;
+
     int mc = (inletCount > outletCount) ? inletCount : outletCount;
     width = 45 * mc;
-    if (width<60) width = 60;
+    if (width < 60)
+        width = 60;
 
     if (emptyBox) {
         _objectReplaceMode = true;
@@ -99,7 +106,6 @@ void NodeObject::draw()
     ImGui::PushID(ImGui::GetID(id().c_str()));
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
 
     //
     draw_list->ChannelsSplit(2);
@@ -113,11 +119,6 @@ void NodeObject::draw()
         borderColor = IM_COL32(255, 0, 0, 255);
     if (emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
-
-    width = 90;
-    height = 30;
-
-
 
     ImGui::PushItemWidth(114.0f);
 
@@ -150,7 +151,7 @@ void NodeObject::draw()
         if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
             ImGui::SetKeyboardFocusHere(0);
 
-        ImGui::PushItemWidth(width-8);
+        ImGui::PushItemWidth(width - 8);
         if (ImGui::InputText("##in", _editText, 64, ImGuiInputTextFlags_CallbackAlways | ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll, &nameChanged, (void*)this)) {
             printf("edited\n");
 
@@ -191,7 +192,6 @@ void NodeObject::draw()
     for (int slot_idx = 0; slot_idx < outletCount; slot_idx++) {
         _drawOutlet(slot_idx);
     }
-
 
     ImGui::PopID();
 
