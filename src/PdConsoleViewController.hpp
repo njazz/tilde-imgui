@@ -22,7 +22,7 @@
 class PdConsoleViewController : public IUViewController {
 
     std::string _consoleText = "";
-    bool _dspOn;
+    bool _dspOn = false;
 
     // temporary
     bool _demoWindow = false;

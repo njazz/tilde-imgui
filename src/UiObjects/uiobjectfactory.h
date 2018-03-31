@@ -4,6 +4,7 @@
 #include "UiObjects/UIObject.hpp"
 
 #include "UiObjects/uibang.h"
+#include "UiObjects/UIToggle.h"
 
 typedef ObjectBase* (*objectBaseConstructor)();
 
@@ -27,6 +28,7 @@ public:
         registerClass<UIObject>("*");
 
         registerClass<UIBang>("ui.bang");
+        registerClass<UIToggle>("ui.toggle");
 
     }
 

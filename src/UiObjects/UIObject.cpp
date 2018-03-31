@@ -16,6 +16,8 @@ int nameChanged(ImGuiTextEditCallbackData* o)
 {
     UIObject* obj = (UIObject*)o->UserData;
 
+    //obj->enteredText = std::string(o->BufTextLen, *o->Buf);
+    obj->enteredText = obj->_editText;
     obj->updated(UIObject::oAutocomplete);
 
     return 0;
@@ -127,7 +129,7 @@ void UIObject::draw()
         ImGui::Text("%s", (char*)objectText.c_str());
         if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25))) {
             if (ImGui::IsMouseDoubleClicked(0)) {
-                assert(windowController());
+//                assert(windowController());
                 windowController()->isEditingText = true;
 
                 windowController()->restoreContext();
@@ -153,23 +155,7 @@ void UIObject::draw()
 
         ImGui::PushItemWidth(width - 8);
         if (ImGui::InputText("##in", _editText, 64, ImGuiInputTextFlags_CallbackAlways | ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll, &nameChanged, (void*)this)) {
-            printf("edited\n");
-
-            // fix
-            windowController()->restoreContext();
-            ImGuiIO& io = ImGui::GetIO();
-            io.ClearInputCharacters();
-            io.MouseDoubleClicked[0] = false;
-            for (int i = 0; i < 512; i++)
-                io.KeysDown[i] = false;
-
-            _objectReplaceMode = false;
-            emptyBox = false;
-            windowController()->isEditingText = false;
-            objectText = _editText;
-
-            // separate
-            updated(oObjectChanged);
+            finishedEditingText();
         }
     }
 
@@ -198,4 +184,25 @@ void UIObject::draw()
     draw_list->ChannelsMerge();
 };
 
+
+void UIObject::finishedEditingText()
+{
+    printf("edited\n");
+
+    // fix
+    windowController()->restoreContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ClearInputCharacters();
+    io.MouseDoubleClicked[0] = false;
+    for (int i = 0; i < 512; i++)
+        io.KeysDown[i] = false;
+
+    _objectReplaceMode = false;
+    emptyBox = false;
+    windowController()->isEditingText = false;
+    objectText = _editText;
+
+    // separate
+    updated(oObjectChanged);
+}
 ;

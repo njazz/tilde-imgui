@@ -55,7 +55,7 @@ ImVec2 ObjectBase::outletPos(int idx)
 
 void ObjectBase::_drawInlet(int idx)
 {
-    const int NODE_SLOT_RADIUS = 5;
+//    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 pos = inletPos(idx);
 
@@ -81,7 +81,7 @@ void ObjectBase::_drawInlet(int idx)
 
 void ObjectBase::_drawOutlet(int idx)
 {
-    const int NODE_SLOT_RADIUS = 5;
+//    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 pos = outletPos(idx);
 

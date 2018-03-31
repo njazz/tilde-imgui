@@ -53,26 +53,44 @@ public:
     {
 
         _emptyObject.addObserverFor(UIObject::oObjectChanged, &objectCreated);
+        _emptyObject.addObserverFor(UIObject::oAutocomplete, &autocomplete);
         _emptyObject.hidden = true;
+        addSubview(&_emptyObject);
+
+        _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
+        _menu.menuEdit.editModeFlag = &editMode;
     }
 
     xpd::PdLocalServer* pdServer = 0;
     void setPdProcess(xpd::ProcessPtr p);
+
+    bool editMode = true;
 
     virtual void draw() override;
 
     ObjectBase* addObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
 
-    //
+    // ===============
+
     IUObserver autocomplete = IUObserver([this] {
 
-        ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 30));
+        ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
 
         ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100));
 
+        UIObject* b = (UIObject*)autocomplete.sender;
+
         for (auto s : _canvas->availableObjects()) {
-            ImGui::MenuItem(s.c_str());
+            if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
+                if (ImGui::MenuItem(s.c_str()))
+                {
+                    //printf(">>>\n");
+                    b->objectText = s;
+                    b->finishedEditingText();
+                    ImGui::EndChildFrame();
+                    return;
+                }
         }
         ImGui::EndChildFrame();
 
@@ -152,6 +170,9 @@ public:
         _newPatchcord.outputObj = 0;
     });
 
+    IUObserver editModeAction = IUObserver([this](){
+        editMode = !editMode;
+    });
     //
 
     bool hitObject(ImVec2 pos);

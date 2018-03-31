@@ -118,7 +118,7 @@ void PdPatchViewController::draw()
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 scrolling;
     ImGui::BeginChild(ImGui::GetID("grid"));
-    if (1) {
+    if (editMode) {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
         float GRID_SZ = 30.0f;
 
@@ -201,8 +201,7 @@ void PdPatchViewController::draw()
     // new empty object
     if (ImGui::IsMouseDoubleClicked(0)) {
         if (!hitObject(ImGui::GetIO().MousePos)) {
-            addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-            addSubview(&_emptyObject);
+            //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = ImGui::GetIO().MousePos.x;
             _emptyObject.y = ImGui::GetIO().MousePos.y;
             _emptyObject.emptyBox = true;
@@ -211,7 +210,7 @@ void PdPatchViewController::draw()
             _emptyObject.pdObjectID = 0;
             _emptyObject.objectText = "";
             _emptyObject.hidden = false;
-
+            _emptyObject.clearEditText();
         }
     }
 

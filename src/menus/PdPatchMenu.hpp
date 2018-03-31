@@ -18,8 +18,12 @@ public:
         ImGui::Separator();
         ImGui::MenuItem("Delete selected", "Del");
         ImGui::Separator();
-        item("Edit mode", aEditMode, IUKey::Action() + IUKey::C('E'));
+
+        bool e = (editModeFlag) ? *editModeFlag : false;
+        item("Edit mode", aEditMode, IUKey::Action() + IUKey::C('E'), e);
     }
+
+    bool* editModeFlag = 0;
 
     static const int aEditMode = 1;
 };

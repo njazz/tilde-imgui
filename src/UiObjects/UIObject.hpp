@@ -22,19 +22,26 @@
 
 class UIObject : public ObjectBase {
 
+public:
     char* _editText = new char[128];
 
-public:
+    std::string enteredText = "";
+
     bool _objectReplaceMode = false;
 
-    xpd::ObjectId pdObjectID = 0;
-    xpd::PdObject* pdObject = 0;
+    //    xpd::ObjectId pdObjectID = 0;
+    //    xpd::PdObject* pdObject = 0;
 
     virtual void draw() override;
 
     static const int oObjectChanged = 10;
     static const int oAutocomplete = 20;
 
+    void clearEditText(){
+        _editText[0] = '\0';
+    }
+
+    void finishedEditingText();
     //    static const int oSelected = 30;
 };
 

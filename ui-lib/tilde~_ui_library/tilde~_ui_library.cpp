@@ -26,7 +26,7 @@ extern void setup_ui0x2earray();
 
 extern "C" void setup() //0x2e //TILDE_UI_
 {
-    char* buildNr = (char*)malloc(8);
+    char* buildNr = (char*)malloc(64);
 
     sprintf(buildNr, "loading tilde~ IMGUI library build %i ...", TILDE_BUILD_NUMBER);
     post("%s", buildNr);
