@@ -2,6 +2,11 @@
 
 #include "PdPatchMenu.hpp"
 
+void PdPatchEditMenu::shortcuts()
+{
+    shortcut(aEditMode, IUKey::Action() + IUKey::KeyE());
+}
+
 void PdPatchEditMenu::draw()
 {
     ImGui::MenuItem("Undo", "Cmd + Z");
@@ -20,6 +25,9 @@ void PdPatchEditMenu::draw()
     item("Edit mode", aEditMode, IUKey::Action() + IUKey::KeyE(), e);
 }
 
+void PdPatchPutMenu::shortcuts()
+{}
+
 void PdPatchPutMenu::draw()
 {
     ImGui::MenuItem("Object", "Cmd + 1");
@@ -31,6 +39,8 @@ void PdPatchPutMenu::draw()
     ImGui::MenuItem("Number", "Cmd + 3");
 }
 
+void PdPatchArrangeMenu::shortcuts()
+{}
 void PdPatchArrangeMenu::draw()
 {
     ImGui::MenuItem("Show grid");

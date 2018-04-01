@@ -31,7 +31,7 @@ AppController::AppController()
     _consoleObserver._logWindow = vc;
 
     vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
-    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileExit, &menuExit);
+    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileQuit, &menuExit);
 
     addWindow(new IUWindowController(vc, "Pd Console", 0, 100, 400, 600));
 

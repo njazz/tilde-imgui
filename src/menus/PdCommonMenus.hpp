@@ -9,18 +9,21 @@ class PdCommonFileMenu : public IUMenuBase {
 public:
     bool inPatch;
 
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     static const int aFileNew = 1;
     static const int aFileOpen = 2;
     static const int aFileSave = 3;
     static const int aFileSaveAs = 4;
-    static const int aFileExit = 10;
+    static const int aFileClose = 5;
+    static const int aFileQuit = 10;
 };
 
 class PdCommonWindowMenu : public IUMenuBase {
 
 public:
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     static const int aSettings = 1;
@@ -32,6 +35,7 @@ class PdCommonMediaMenu : public IUMenuBase {
 public:
     bool* dspOn = 0;
 
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     static const int aDSPOn = 1;

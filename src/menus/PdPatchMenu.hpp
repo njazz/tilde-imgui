@@ -5,6 +5,7 @@
 
 class PdPatchEditMenu : public IUMenuBase {
 public:
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     bool* editModeFlag = 0;
@@ -14,6 +15,7 @@ public:
 
 class PdPatchPutMenu : public IUMenuBase {
 public:
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     static const int aFileNew = 1;
@@ -21,6 +23,8 @@ public:
 
 class PdPatchArrangeMenu : public IUMenuBase {
 public:
+    ;
+    virtual void shortcuts() override;
     virtual void draw() override;
 
     static const int aFileNew = 1;
