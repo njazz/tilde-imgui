@@ -55,7 +55,7 @@ ImVec2 ObjectBase::outletPos(int idx)
 
 void ObjectBase::_drawInlet(int idx)
 {
-//    const int NODE_SLOT_RADIUS = 5;
+    //    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 pos = inletPos(idx);
 
@@ -81,7 +81,7 @@ void ObjectBase::_drawInlet(int idx)
 
 void ObjectBase::_drawOutlet(int idx)
 {
-//    const int NODE_SLOT_RADIUS = 5;
+    //    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 pos = outletPos(idx);
 
@@ -105,19 +105,10 @@ void ObjectBase::_drawOutlet(int idx)
     draw_list->AddRect(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), outletBorderColor);
 }
 
-
-
-#pragma mark -
-
-void ObjectBase::draw()
+void ObjectBase::_drawBackground()
 {
-    if (hidden) return;
-
-    ImGui::PushID(ImGui::GetID(id().c_str()));
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    //background
-    draw_list->ChannelsSplit(2);
     draw_list->ChannelsSetCurrent(1);
 
     ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
@@ -133,8 +124,22 @@ void ObjectBase::draw()
     draw_list->ChannelsSetCurrent(0); // Background
     draw_list->AddRectFilled(node_rect_min, node_rect_max, IM_COL32(75, 75, 75, 255), 4.0f);
     draw_list->AddRect(node_rect_min, node_rect_max, borderColor, 0.0f);
+}
 
+#pragma mark -
 
+void ObjectBase::draw()
+{
+    if (hidden)
+        return;
+
+    ImGui::PushID(ImGui::GetID(id().c_str()));
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    //background
+    draw_list->ChannelsSplit(2);
+
+    _drawBackground();
 
     // inlets
     for (int slot_idx = 0; slot_idx < inletCount; slot_idx++) {

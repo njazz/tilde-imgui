@@ -10,77 +10,10 @@
 
 void PdPatchViewController::_drawMenu()
 {
+    _menu.setWindowController(windowController());
+    _menu.common->setWindowController(windowController());
     _menu.draw();
-//    return ;
-//    //
-//    ImGui::BeginMainMenuBar();
-//    if (ImGui::BeginMenu("File")) {
 
-//        if (ImGui::MenuItem("New patch window", "Cmd + N")) {
-//           //updated(oMenuNew);
-//            //windowController()->restoreContext();
-//        }
-
-//        ImGui::MenuItem("Open in new window...", "Cmd + O");
-//        ImGui::MenuItem("Save patch", "Cmd + S");
-//        ImGui::MenuItem("Save patch as ...", "Cmd + Shift + S");
-
-//        ImGui::Separator();
-//        if (ImGui::MenuItem("Exit", "Cmd + Q")) {
-//            //updated(oMenuExit);
-//            //windowController()->restoreContext();
-//        }
-//        ImGui::EndMenu();
-//    }
-
-//    if (ImGui::BeginMenu("Edit")) {
-//        ImGui::MenuItem("Undo","Cmd + Z");
-//        ImGui::MenuItem("Redo","Cmd + Shift + Z");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Cut","Cmd + X");
-//        ImGui::MenuItem("Copy","Cmd + C");
-//        ImGui::MenuItem("Paste","Cmd + V");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Select all","Cmd + A");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Delete selected","Del");
-
-//        ImGui::EndMenu();
-
-//    }
-
-//    if (ImGui::BeginMenu("Put")) {
-//        ImGui::MenuItem("Object","Cmd + 1");
-//        ImGui::MenuItem("Message","Cmd + 2");
-//        ImGui::MenuItem("Comment","Cmd + 5");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Bang","Cmd + Shift + B");
-//        ImGui::MenuItem("Toggle","Cmd + Shift + T");
-//        ImGui::MenuItem("Number","Cmd + 3");
-//        ImGui::EndMenu();
-
-//    }
-
-//    if (ImGui::BeginMenu("Arrange")) {
-//        ImGui::MenuItem("Show grid");
-//        ImGui::MenuItem("Snap to grid");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Align to grid");
-//        ImGui::MenuItem("Tidy up");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Zoom in");
-//        ImGui::MenuItem("Zoom out");
-//        ImGui::MenuItem("Zoom 100%");
-//        ImGui::EndMenu();
-//    }
-
-//    if (ImGui::BeginMenu("Media")) {
-//        ImGui::MenuItem("DSP On");
-//        ImGui::MenuItem("DSP Off");
-//        ImGui::EndMenu();
-//    }
-
-//    ImGui::EndMainMenuBar();
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -102,18 +35,16 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
     auto o2 = addObject("dac~ 1 2", 50, 300);
     connectObjects(o1, 0, o2, 0);
     connectObjects(o1, 0, o2, 1);
+
+    addObject("ui.toggle", 100,100);
+    addObject("ui.bang", 100,150);
+    addObject("ui.msg", 100,200);
+    addObject("ui.float", 100,250);
 }
 
-void PdPatchViewController::draw()
+
+void PdPatchViewController::_drawGrid()
 {
-    ImGui::SetNextWindowSize(ImVec2(width, height-20));
-    //ImGui::SetNextWindowContentSize(ImVec2(width, height-22));
-    ImGui::SetNextWindowPos(ImVec2(0, 20));
-
-    ImGui::Begin("patch");
-
-    _drawMenu();
-
     // grid
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 scrolling;
@@ -132,13 +63,13 @@ void PdPatchViewController::draw()
 
     }
     ImGui::EndChild();
+}
 
+void PdPatchViewController::_drawSelectionFrame()
+{
     // selection frame
 
-    //ImGui::SetTooltip("mult %i drag  %i clicked %i", _multipleObjectsSelected, _draggingObjects, _clickedObject);
-
-    if (ImGui::IsMouseClicked(0)) {
-//        printf("down\n");
+    if (ImGui::IsMouseClicked(0) && editMode) {
 
         _clickedObject = hitObject(ImGui::GetMousePos()); //&& !_selectionFrame;
 
@@ -161,6 +92,45 @@ void PdPatchViewController::draw()
         }
     }
 
+    if (_selectionFrame && !ImGui::IsMouseReleased(0)) {
+        bool b = selectObjects();
+        _multipleObjectsSelected = b;
+    }
+}
+
+void PdPatchViewController::_drawObjectMaker()
+{
+    // new empty object
+    if (ImGui::IsMouseDoubleClicked(0) && editMode) {
+        if (!hitObject(ImGui::GetIO().MousePos)) {
+            //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+            _emptyObject.x = ImGui::GetIO().MousePos.x;
+            _emptyObject.y = ImGui::GetIO().MousePos.y;
+            _emptyObject.emptyBox = true;
+            _emptyObject.errorBox = true;
+            _emptyObject.pdObject = 0;
+            _emptyObject.pdObjectID = 0;
+            _emptyObject.objectText = "";
+            _emptyObject.hidden = false;
+            _emptyObject.clearEditText();
+        }
+    }
+}
+
+void PdPatchViewController::draw()
+{
+    ImGui::SetNextWindowSize(ImVec2(width, height-20));
+    ImGui::SetNextWindowPos(ImVec2(0, 20));
+
+    ImGui::Begin("patch");
+    ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    _drawMenu();
+
+    _drawGrid();
+
+    _drawSelectionFrame();
+
     if (ImGui::IsMouseDragging()) {
         if (_draggingObjects) {
             dragSelectedObjects(ImGui::GetIO().MouseDelta);
@@ -170,10 +140,7 @@ void PdPatchViewController::draw()
         }
     }
 
-    if (_selectionFrame && !ImGui::IsMouseReleased(0)) {
-        bool b = selectObjects();
-        _multipleObjectsSelected = b;
-    }
+
 
     //
     IUViewController::draw();
@@ -198,21 +165,7 @@ void PdPatchViewController::draw()
 
     ImGui::End();
 
-    // new empty object
-    if (ImGui::IsMouseDoubleClicked(0)) {
-        if (!hitObject(ImGui::GetIO().MousePos)) {
-            //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-            _emptyObject.x = ImGui::GetIO().MousePos.x;
-            _emptyObject.y = ImGui::GetIO().MousePos.y;
-            _emptyObject.emptyBox = true;
-            _emptyObject.errorBox = true;
-            _emptyObject.pdObject = 0;
-            _emptyObject.pdObjectID = 0;
-            _emptyObject.objectText = "";
-            _emptyObject.hidden = false;
-            _emptyObject.clearEditText();
-        }
-    }
+    _drawObjectMaker();
 
     // deselect patchcord
     if (ImGui::IsMouseClicked(0)) {

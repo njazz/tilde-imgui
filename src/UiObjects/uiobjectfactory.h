@@ -3,8 +3,10 @@
 
 #include "UiObjects/UIObject.hpp"
 
-#include "UiObjects/uibang.h"
+#include "UiObjects/UIBang.h"
 #include "UiObjects/UIToggle.h"
+#include "UiObjects/UIMessage.h"
+#include "UiObjects/UIFloat.h"
 
 typedef ObjectBase* (*objectBaseConstructor)();
 
@@ -29,6 +31,8 @@ public:
 
         registerClass<UIBang>("ui.bang");
         registerClass<UIToggle>("ui.toggle");
+        registerClass<UIMessage>("ui.msg");
+        registerClass<UIFloat>("ui.float");
 
     }
 

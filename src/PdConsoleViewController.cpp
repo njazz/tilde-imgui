@@ -10,6 +10,8 @@
 
 void PdConsoleViewController::_drawMenu()
 {
+    _menu.setWindowController(windowController());
+    _menu.common->setWindowController(windowController());
     _menu.draw();
 
 //    return;
@@ -100,3 +102,9 @@ void PdConsoleViewController::post(std::string line)
 {
     _consoleText = line + "\n" + _consoleText;
 }
+
+void PdConsoleViewController::setWindowController(IUWindowController* w)
+{
+    IULayer::setWindowController(w);
+    _menu.setWindowController(w);
+};

@@ -22,7 +22,7 @@
 
 #include "math.h"
 
-#include "UiObjects/uiobjectfactory.h"
+#include "UiObjects/UIObjectFactory.h"
 #include "menus/PdPatchMenu.hpp"
 
 class PdPatchViewController : public IUViewController {
@@ -47,6 +47,11 @@ class PdPatchViewController : public IUViewController {
 
     UIObject _emptyObject;
 
+    //
+    inline void _drawGrid();
+    inline void _drawSelectionFrame();
+    inline void _drawObjectMaker();
+
 public:
     PdPatchViewController(PdCommonMenus* m)
         : _menu(m)
@@ -59,6 +64,7 @@ public:
 
         _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
         _menu.menuEdit.editModeFlag = &editMode;
+
     }
 
     xpd::PdLocalServer* pdServer = 0;

@@ -5,23 +5,7 @@
 
 class PdPatchEditMenu : public IUMenuBase {
 public:
-    virtual void draw() override
-    {
-        ImGui::MenuItem("Undo", "Cmd + Z");
-        ImGui::MenuItem("Redo", "Cmd + Shift + Z");
-        ImGui::Separator();
-        ImGui::MenuItem("Cut", "Cmd + X");
-        ImGui::MenuItem("Copy", "Cmd + C");
-        ImGui::MenuItem("Paste", "Cmd + V");
-        ImGui::Separator();
-        ImGui::MenuItem("Select all", "Cmd + A");
-        ImGui::Separator();
-        ImGui::MenuItem("Delete selected", "Del");
-        ImGui::Separator();
-
-        bool e = (editModeFlag) ? *editModeFlag : false;
-        item("Edit mode", aEditMode, IUKey::Action() + IUKey::C('E'), e);
-    }
+    virtual void draw() override;
 
     bool* editModeFlag = 0;
 
@@ -30,34 +14,14 @@ public:
 
 class PdPatchPutMenu : public IUMenuBase {
 public:
-    virtual void draw() override
-    {
-        ImGui::MenuItem("Object", "Cmd + 1");
-        ImGui::MenuItem("Message", "Cmd + 2");
-        ImGui::MenuItem("Comment", "Cmd + 5");
-        ImGui::Separator();
-        ImGui::MenuItem("Bang", "Cmd + Shift + B");
-        ImGui::MenuItem("Toggle", "Cmd + Shift + T");
-        ImGui::MenuItem("Number", "Cmd + 3");
-    }
+    virtual void draw() override;
 
     static const int aFileNew = 1;
 };
 
 class PdPatchArrangeMenu : public IUMenuBase {
 public:
-    virtual void draw() override
-    {
-        ImGui::MenuItem("Show grid");
-        ImGui::MenuItem("Snap to grid");
-        ImGui::Separator();
-        ImGui::MenuItem("Align to grid");
-        ImGui::MenuItem("Tidy up");
-        ImGui::Separator();
-        ImGui::MenuItem("Zoom in");
-        ImGui::MenuItem("Zoom out");
-        ImGui::MenuItem("Zoom 100%");
-    }
+    virtual void draw() override;
 
     static const int aFileNew = 1;
 };
@@ -76,20 +40,5 @@ public:
     //    PdCommonMediaMenu menuMedia;
     //    PdCommonHelpMenu menuHelp;
 
-    PdPatchMenu(PdCommonMenus* m)
-    {
-        common = new PdCommonMenus; // m;
-        m = common;
-
-        addMenu(&m->menuFile, "File");
-        m->menuFile.inPatch = true;
-
-        addMenu(&menuEdit, "Edit");
-        addMenu(&menuPut, "Put");
-        addMenu(&menuArrange, "Arrange");
-
-        addMenu(&m->menuWindow, "Window");
-        addMenu(&m->menuMedia, "Media");
-        addMenu(&m->menuHelp, "Help");
-    }
+    PdPatchMenu(PdCommonMenus* m);
 };

@@ -26,6 +26,8 @@ protected:
     void _drawInlet(int idx);
     void _drawOutlet(int idx);
 
+    virtual void _drawBackground();
+
     std::string id() { return std::to_string((long)this); };
 
 

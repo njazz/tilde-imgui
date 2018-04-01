@@ -47,11 +47,7 @@ public:
 
     void post(std::string line);
 
-    virtual void setWindowController(IUWindowController* w) override
-    {
-        IULayer::setWindowController(w);
-        _menu.setWindowController(w);
-    };
+    virtual void setWindowController(IUWindowController* w) override;
 
     // -------
 

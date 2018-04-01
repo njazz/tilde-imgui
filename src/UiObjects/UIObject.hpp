@@ -29,10 +29,8 @@ public:
 
     bool _objectReplaceMode = false;
 
-    //    xpd::ObjectId pdObjectID = 0;
-    //    xpd::PdObject* pdObject = 0;
-
     virtual void draw() override;
+    virtual void drawObjectContents() override;
 
     static const int oObjectChanged = 10;
     static const int oAutocomplete = 20;
@@ -42,6 +40,7 @@ public:
     }
 
     void finishedEditingText();
+
     //    static const int oSelected = 30;
 };
 
