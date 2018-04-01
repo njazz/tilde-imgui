@@ -53,19 +53,7 @@ class PdPatchViewController : public IUViewController {
     inline void _drawObjectMaker();
 
 public:
-    PdPatchViewController(PdCommonMenus* m)
-        : _menu(m)
-    {
-
-        _emptyObject.addObserverFor(UIObject::oObjectChanged, &objectCreated);
-        _emptyObject.addObserverFor(UIObject::oAutocomplete, &autocomplete);
-        _emptyObject.hidden = true;
-        addSubview(&_emptyObject);
-
-        _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
-        _menu.menuEdit.editModeFlag = &editMode;
-
-    }
+    PdPatchViewController(PdCommonMenus* m);
 
     xpd::PdLocalServer* pdServer = 0;
     void setPdProcess(xpd::ProcessPtr p);
@@ -89,8 +77,7 @@ public:
 
         for (auto s : _canvas->availableObjects()) {
             if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
-                if (ImGui::MenuItem(s.c_str()))
-                {
+                if (ImGui::MenuItem(s.c_str())) {
                     //printf(">>>\n");
                     b->objectText = s;
                     b->finishedEditingText();
@@ -176,9 +163,10 @@ public:
         _newPatchcord.outputObj = 0;
     });
 
-    IUObserver editModeAction = IUObserver([this](){
+    IUObserver editModeAction = IUObserver([this]() {
         editMode = !editMode;
     });
+
     //
 
     bool hitObject(ImVec2 pos);

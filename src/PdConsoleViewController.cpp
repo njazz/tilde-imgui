@@ -8,52 +8,24 @@
 
 #include "AppController.hpp"
 
+PdConsoleViewController::PdConsoleViewController(PdCommonMenus* m)
+    : _menu(m)
+{
+    _menu.common->menuWindow.setAction(PdCommonWindowMenu::aClearConsole, &clearConsole);
+    _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOn, &dspOn);
+    _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOff, &dspOff);
+    _menu.common->menuMedia.dspOn = &_dspOn;
+}
+
 void PdConsoleViewController::_drawMenu()
 {
     _menu.setWindowController(windowController());
     _menu.common->setWindowController(windowController());
     _menu.draw();
-
-//    return;
-//    //
-//    ImGui::BeginMainMenuBar();
-//    if (ImGui::BeginMenu("File")) {
-
-//        if (ImGui::MenuItem("New patch window", "Cmd + N")) {
-//            updated(oMenuNew);
-//            windowController()->restoreContext();
-//        }
-
-//        ImGui::MenuItem("Open in new window...", "Cmd + O");
-
-//        ImGui::Separator();
-//        if (ImGui::MenuItem("Exit", "Cmd + Q")) {
-//            updated(oMenuExit);
-//            windowController()->restoreContext();
-//        }
-//        ImGui::EndMenu();
-//    }
-
-//    if (ImGui::BeginMenu("Window")) {
-//        ImGui::MenuItem("Settings ...");
-//        ImGui::MenuItem("Audio / MIDI setup...");
-//        ImGui::Separator();
-//        ImGui::MenuItem("Clear console");
-//        ImGui::EndMenu();
-
-//    }
-
-//    if (ImGui::BeginMenu("Media")) {
-//        ImGui::MenuItem("DSP On");
-//        ImGui::MenuItem("DSP Off");
-//        ImGui::EndMenu();
-//    }
-//    ImGui::EndMainMenuBar();
 }
 
 void PdConsoleViewController::draw()
 {
-//    windowController()->restoreContext();
 
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0, 20));

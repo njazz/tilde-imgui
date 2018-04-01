@@ -8,12 +8,25 @@
 
 #include "PdPatchViewController.hpp"
 
+PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
+    : _menu(m)
+{
+
+    _emptyObject.addObserverFor(UIObject::oObjectChanged, &objectCreated);
+    _emptyObject.addObserverFor(UIObject::oAutocomplete, &autocomplete);
+    _emptyObject.hidden = true;
+    addSubview(&_emptyObject);
+
+    _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
+    _menu.menuEdit.editModeFlag = &editMode;
+
+}
+
 void PdPatchViewController::_drawMenu()
 {
     _menu.setWindowController(windowController());
     _menu.common->setWindowController(windowController());
     _menu.draw();
-
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -36,12 +49,11 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
     connectObjects(o1, 0, o2, 0);
     connectObjects(o1, 0, o2, 1);
 
-    addObject("ui.toggle", 100,100);
-    addObject("ui.bang", 100,150);
-    addObject("ui.msg", 100,200);
-    addObject("ui.float", 100,250);
+    addObject("ui.toggle", 100, 100);
+    addObject("ui.bang", 100, 150);
+    addObject("ui.msg", 100, 200);
+    addObject("ui.float", 100, 250);
 }
-
 
 void PdPatchViewController::_drawGrid()
 {
@@ -54,13 +66,12 @@ void PdPatchViewController::_drawGrid()
         float GRID_SZ = 30.0f;
 
         ImVec2 win_pos = ImGui::GetCursorScreenPos() - ImVec2(4, 4);
-        ImVec2 canvas_sz = ImVec2(width, height-20); //ImGui::GetWindowSize();
+        ImVec2 canvas_sz = ImVec2(width, height - 20); //ImGui::GetWindowSize();
 
         for (float x = fmodf(scrolling.x, GRID_SZ); x < this->width; x += GRID_SZ)
-            draw_list->AddLine(ImVec2(x, 0.0f) + win_pos, ImVec2(x, this->height-20) + win_pos, GRID_COLOR);
-        for (float y = fmodf(scrolling.y, GRID_SZ); y < this->height-20; y += GRID_SZ)
+            draw_list->AddLine(ImVec2(x, 0.0f) + win_pos, ImVec2(x, this->height - 20) + win_pos, GRID_COLOR);
+        for (float y = fmodf(scrolling.y, GRID_SZ); y < this->height - 20; y += GRID_SZ)
             draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(this->width, y) + win_pos, GRID_COLOR);
-
     }
     ImGui::EndChild();
 }
@@ -119,7 +130,7 @@ void PdPatchViewController::_drawObjectMaker()
 
 void PdPatchViewController::draw()
 {
-    ImGui::SetNextWindowSize(ImVec2(width, height-20));
+    ImGui::SetNextWindowSize(ImVec2(width, height - 20));
     ImGui::SetNextWindowPos(ImVec2(0, 20));
 
     ImGui::Begin("patch");
@@ -140,8 +151,6 @@ void PdPatchViewController::draw()
         }
     }
 
-
-
     //
     IUViewController::draw();
 
@@ -150,7 +159,7 @@ void PdPatchViewController::draw()
     }
 
     if (ImGui::IsMouseReleased(0)) {
-//        printf("up\n");
+        //        printf("up\n");
         _selectionFrame = false;
         _draggingObjects = false;
     }
@@ -172,7 +181,7 @@ void PdPatchViewController::draw()
         if (!hitObject(ImGui::GetIO().MousePos)) {
             _newPatchcord.outputObj = 0;
         }
-        }
+    }
 };
 
 ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
@@ -180,7 +189,7 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
     if (!_pdProcess)
         return 0;
 
-    ObjectBase* n = UIObjectFactory::createUiObject(text);//new NodeObject;
+    ObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
     n->objectText = text;
     n->x = x;
     n->y = y;
@@ -188,8 +197,8 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
     if (text.size())
         n->pdObjectID = _canvas->createObject(text, x, y);
 
-//    else
-//        n->emptyBox = true;
+    //    else
+    //        n->emptyBox = true;
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(n->pdObjectID));
     n->errorBox = (n->pdObject == 0);

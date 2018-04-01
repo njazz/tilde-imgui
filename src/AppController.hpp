@@ -23,8 +23,9 @@
 #include "menus/PdCommonMenus.hpp"
 
 class AppConsoleObserver : public xpd::ConsoleObserver {
+    PdConsoleViewController* _pdConsoleWindow = 0;
 public:
-    PdConsoleViewController* _logWindow = 0;
+    void setConsoleWindow(PdConsoleViewController*w){_pdConsoleWindow = w;};
 
     virtual void update();
 };
@@ -40,10 +41,13 @@ class AppController : public AppControllerBase {
 
     PdCommonMenus _commonMenus;
 
+    PdConsoleViewController* _pdConsoleViewController = 0;
 public:
     AppController();
 
     void createNewPatchWindow();
+
+    // ----------
 
     IUObserver menuNew = IUObserver([this] {
 
@@ -56,6 +60,8 @@ public:
             glfwSetWindowShouldClose(w->glWindow, 1);
         }
     });
+
+    IUObserver showConsoleWindow = IUObserver([this]{});
 };
 
 #endif /* AppController_hpp */

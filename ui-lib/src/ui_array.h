@@ -7,7 +7,7 @@ using namespace ceammc;
 
 class UIpdArray : public BaseUIObject {
 public:
-    UIpdArray(const PdArgs& a);
+    explicit UIpdArray(const PdArgs& a);
 };
 
 #endif // UI_BANG_H

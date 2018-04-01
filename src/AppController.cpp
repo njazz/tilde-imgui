@@ -10,8 +10,8 @@
 
 void AppConsoleObserver::update()
 {
-    if (_logWindow) {
-        _logWindow->post(text());
+    if (_pdConsoleWindow) {
+        _pdConsoleWindow->post(text());
     }
 }
 
@@ -25,15 +25,15 @@ AppController::AppController()
     _serverProcess = _server->createProcess();
     _serverProcess->registerConsoleObserver(xpd::ConsoleObserverPtr(&_consoleObserver));
 
-    PdConsoleViewController* vc = new PdConsoleViewController(&_commonMenus);
-    vc->pdServer = _server;
-    vc->pdProcess = _serverProcess;
-    _consoleObserver._logWindow = vc;
+    _pdConsoleViewController = new PdConsoleViewController(&_commonMenus);
+    _pdConsoleViewController->pdServer = _server;
+    _pdConsoleViewController->pdProcess = _serverProcess;
+    _consoleObserver.setConsoleWindow(_pdConsoleViewController);
 
-    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
-    vc->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileQuit, &menuExit);
+    _pdConsoleViewController->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
+    _pdConsoleViewController->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileQuit, &menuExit);
 
-    addWindow(new IUWindowController(vc, "Pd Console", 0, 100, 400, 600));
+    addWindow(new IUWindowController(_pdConsoleViewController, "Pd Console", 0, 100, 400, 600));
 
     _serverProcess->post("tilde~/imgui 0.01");
 

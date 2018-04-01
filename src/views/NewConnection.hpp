@@ -9,25 +9,23 @@
 #ifndef NewConnection_hpp
 #define NewConnection_hpp
 
-#include <stdio.h>
 #include "IUView.hpp"
+#include <stdio.h>
 
 class ObjectBase;
 
-class NewConnection:public IUView
-{
-    
+class NewConnection : public IUView {
+
 public:
     ObjectBase* outputObj = 0;
-    int outputIdx;
+    int outputIdx = 0;
 
     ObjectBase* inputObj = 0;
-    int inputIdx;
-    float inputX;
-    float inputY;
-    
+    int inputIdx = 0;
+    float inputX = 0;
+    float inputY = 0;
+
     virtual void draw();
-    
 };
 
 #endif /* NodeInlet_hpp */

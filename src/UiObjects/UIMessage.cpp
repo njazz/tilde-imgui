@@ -30,7 +30,7 @@ void UIMessage::_drawBackground()
     poly[3] = ImVec2(x + width - 5, y + height - 5);
     poly[4] = ImVec2(x + width, y + height);
     poly[5] = ImVec2(x, y + height);
-    poly[6] = ImVec2(x, y);
+    //poly[6] = ImVec2(x, y);
 
     draw_list->AddConvexPolyFilled(poly, 6, IM_COL32(75, 75, 75, 255));
     draw_list->AddPolyline(poly, 6, borderColor, true, 1 + _mouseDown);

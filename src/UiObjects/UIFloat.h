@@ -5,7 +5,6 @@
 #include <string>
 
 class UIFloat : public ObjectBase {
-    //bool _value = false;
 
     std::string _contents = "0.";
 
@@ -26,7 +25,7 @@ public:
 
     virtual void drawObjectContents() override
     {
-        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        //ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
         ImGui::BeginGroup();
         ImGui::SetCursorScreenPos(ImVec2(x+4,y+4));

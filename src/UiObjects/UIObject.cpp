@@ -134,12 +134,12 @@ void UIObject::drawObjectContents()
 
     ImGui::BeginGroup(); // Lock horizontal position
 
-    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
+//    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
 
-    if (errorBox)
-        borderColor = IM_COL32(255, 0, 0, 255);
-    if (emptyBox)
-        borderColor = IM_COL32(0, 192, 255, 255);
+//    if (errorBox)
+//        borderColor = IM_COL32(255, 0, 0, 255);
+//    if (emptyBox)
+//        borderColor = IM_COL32(0, 192, 255, 255);
 
     ImGui::PushItemWidth(114.0f);
 
