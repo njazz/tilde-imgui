@@ -26,7 +26,8 @@ void PdPatchEditMenu::draw()
 }
 
 void PdPatchPutMenu::shortcuts()
-{}
+{
+}
 
 void PdPatchPutMenu::draw()
 {
@@ -40,7 +41,8 @@ void PdPatchPutMenu::draw()
 }
 
 void PdPatchArrangeMenu::shortcuts()
-{}
+{
+}
 void PdPatchArrangeMenu::draw()
 {
     ImGui::MenuItem("Show grid");
@@ -52,6 +54,16 @@ void PdPatchArrangeMenu::draw()
     ImGui::MenuItem("Zoom in");
     ImGui::MenuItem("Zoom out");
     ImGui::MenuItem("Zoom 100%");
+    ImGui::Separator();
+    item("Align left", aAlignLeft);
+    item("Align center", aAlignCenter);
+    item("Align right", aAlignRight);
+    ImGui::Separator();
+    item("Align to top", aAlignTop);
+    item("Align to botton", aAlignTop);
+    ImGui::Separator();
+    item("Distribute horizontally", aDistributeH);
+    item("Distribute vertically", aDistributeV);
 }
 
 PdPatchMenu::PdPatchMenu(PdCommonMenus* m)

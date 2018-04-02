@@ -60,6 +60,30 @@ public:
     static const int oOutletClicked = 100;
     static const int oInletClicked = 101;
     static const int oInletHovered = 102;
+
+    //
+    void updateFromPdObject()
+    {
+        errorBox = (pdObject == 0);
+
+        if (pdObject) {
+            inletCount = pdObject->inletCount();
+            outletCount = pdObject->outletCount();
+            std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+        }
+    }
+
+    void pdObjUpdatePosition()
+    {
+        if (!pdObject) return;
+        pdObject->setX(x);
+        pdObject->setY(y);
+    }
+
+    std::string asPdFileString()
+    {
+        return "";
+    }
 };
 
 #endif /* NodeObject_hpp */

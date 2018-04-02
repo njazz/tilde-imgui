@@ -8,6 +8,8 @@
 
 #include "PdPatchViewController.hpp"
 
+#include "ArrangeObjects.h"
+
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _menu(m)
 {
@@ -17,8 +19,37 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _emptyObject.hidden = true;
     addSubview(&_emptyObject);
 
+    _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
+    _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
+
     _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
     _menu.menuEdit.editModeFlag = &editMode;
+
+    //
+
+    arrangeLeftAction = IUObserver([this](){
+        ArrangeObjects::alignLeft(&_data.objects);
+    });
+    arrangeCenterAction = IUObserver([this](){
+        ArrangeObjects::alignCenter(&_data.objects);
+    });
+    arrangeRightAction = IUObserver([this](){
+        ArrangeObjects::alignRight(&_data.objects);
+    });
+    arrangeTopAction = IUObserver([this](){
+        ArrangeObjects::alignTop(&_data.objects);
+    });
+    arrangeBottomAction = IUObserver([this](){
+        ArrangeObjects::alignBottom(&_data.objects);
+    });
+
+    //
+
+    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
+    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
+    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
+    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
+    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
 
 }
 
@@ -37,22 +68,22 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
         _canvas = _pdProcess->createCanvas();
 
     // test
-    addObject("print", 300, 300);
+    createObject("print", 300, 300);
 
-    addObject("pack 0 0 0", 300, 200);
-    addObject("unpack 0 0 0 0 0", 300, 250);
+    createObject("pack 0 0 0", 300, 200);
+    createObject("unpack 0 0 0 0 0", 300, 250);
 
-    addObject("+", 300, 150);
+    createObject("+", 300, 150);
 
-    auto o1 = addObject("osc~ 440", 50, 150);
-    auto o2 = addObject("dac~ 1 2", 50, 300);
+    auto o1 = createObject("osc~ 440", 50, 150);
+    auto o2 = createObject("dac~ 1 2", 50, 300);
     connectObjects(o1, 0, o2, 0);
     connectObjects(o1, 0, o2, 1);
 
-    addObject("ui.toggle", 100, 100);
-    addObject("ui.bang", 100, 150);
-    addObject("ui.msg", 100, 200);
-    addObject("ui.float", 100, 250);
+    createObject("ui.toggle", 100, 100);
+    createObject("ui.bang", 100, 150);
+    createObject("ui.msg", 100, 200);
+    createObject("ui.float", 100, 250);
 }
 
 void PdPatchViewController::_drawGrid()
@@ -184,7 +215,7 @@ void PdPatchViewController::draw()
     }
 };
 
-ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
+ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 {
     if (!_pdProcess)
         return 0;
@@ -201,19 +232,27 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
     //        n->emptyBox = true;
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(n->pdObjectID));
-    n->errorBox = (n->pdObject == 0);
 
-    if (n->pdObject) {
-        n->inletCount = n->pdObject->inletCount();
-        n->outletCount = n->pdObject->outletCount();
-        std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
-        _pdProcess->post(info);
-    }
+//    n->errorBox = (n->pdObject == 0);
+
+//    if (n->pdObject) {
+//        n->inletCount = n->pdObject->inletCount();
+//        n->outletCount = n->pdObject->outletCount();
+//
+//
+    n->updateFromPdObject();
+
+    std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
+    _pdProcess->post(info);
+
 
     n->width = 90;
 
     addSubview(n);
-    _objects.push_back(n);
+
+//    _data.objects.push_back(n);
+
+    _data.addObject(n);
 
     n->addObserverFor(UIObject::oAutocomplete, &autocomplete);
     n->addObserverFor(UIObject::oObjectChanged, &objectUpdated);
@@ -225,7 +264,7 @@ ObjectBase* PdPatchViewController::addObject(std::string text, int x, int y)
 
 void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx)
 {
-    NodeConnection* c = new NodeConnection;
+    UIPatchcord* c = new UIPatchcord;
     c->outputObj = outObj;
     c->outputIdx = outIdx;
     c->inputObj = inObj;
@@ -234,14 +273,14 @@ void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, Objec
     _canvas->connect(outObj->pdObjectID, outIdx, inObj->pdObjectID, inIdx);
 
     addSubview(c);
-    _patchcords.push_back(c);
+    _data.addPatchcord(c);
 }
 
 void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
 {
     if (_selectionFrame)
         return;
-    for (auto o : _objects) {
+    for (auto o : _data.objects) {
         UIObject* obj = (UIObject*)o;
         if (obj->selected) {
             o->x += delta.x;
@@ -252,7 +291,7 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
 
 void PdPatchViewController::deselectAll()
 {
-    for (auto o : _objects) {
+    for (auto o : _data.objects) {
         UIObject* obj = (UIObject*)o;
 
         obj->selected = false;
@@ -265,7 +304,7 @@ void PdPatchViewController::deselectAll()
 void PdPatchViewController::selectSingleObject(ImVec2 pos)
 {
     bool ret = false;
-    for (auto o : _objects) {
+    for (auto o : _data.objects) {
         UIObject* obj = (UIObject*)o;
 
         obj->selected = (obj->x <= pos.x);
@@ -282,7 +321,7 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
 bool PdPatchViewController::hitObject(ImVec2 pos)
 {
     bool ret = false;
-    for (auto o : _objects) {
+    for (auto o : _data.objects) {
         UIObject* obj = (UIObject*)o;
 
         bool hit;
@@ -299,7 +338,7 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
 bool PdPatchViewController::selectObjects()
 {
     bool ret = false;
-    for (auto o : _objects) {
+    for (auto o : _data.objects) {
         UIObject* obj = (UIObject*)o;
 
         obj->selected = (obj->x >= _selectionStart.x);
@@ -311,3 +350,5 @@ bool PdPatchViewController::selectObjects()
     }
     return ret;
 }
+
+

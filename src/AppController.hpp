@@ -22,10 +22,13 @@
 
 #include "menus/PdCommonMenus.hpp"
 
+#include "nfd.h"
+
 class AppConsoleObserver : public xpd::ConsoleObserver {
     PdConsoleViewController* _pdConsoleWindow = 0;
+
 public:
-    void setConsoleWindow(PdConsoleViewController*w){_pdConsoleWindow = w;};
+    void setConsoleWindow(PdConsoleViewController* w) { _pdConsoleWindow = w; };
 
     virtual void update();
 };
@@ -42,10 +45,17 @@ class AppController : public AppControllerBase {
     PdCommonMenus _commonMenus;
 
     PdConsoleViewController* _pdConsoleViewController = 0;
+
 public:
     AppController();
 
     void createNewPatchWindow();
+
+    //
+    void openFile(std::string f)
+    {
+        _serverProcess->post("open file: " + f);
+    }
 
     // ----------
 
@@ -55,13 +65,20 @@ public:
 
     });
 
+    IUObserver menuOpen = IUObserver([this] {
+
+        nfdchar_t* f = new nfdchar_t[1024];
+        if (NFD_OpenDialog("", "~/", &f) == NFD_OKAY)
+            openFile(std::string(f));
+    });
+
     IUObserver menuExit = IUObserver([this] {
         for (auto w : _windowControllers) {
             glfwSetWindowShouldClose(w->glWindow, 1);
         }
     });
 
-    IUObserver showConsoleWindow = IUObserver([this]{});
+    IUObserver showConsoleWindow = IUObserver([this] {});
 };
 
 #endif /* AppController_hpp */

@@ -6,11 +6,11 @@
 //  Copyright © 2018 Alex Nadzharov. All rights reserved.
 //
 
-#include "NodeConnection.hpp"
+#include "UiObjects/UIPatchcord.hpp"
 
 #include "UiObjects/UIObject.hpp"
 
-void NodeConnection::draw()
+void UIPatchcord::draw()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 offset = ImVec2(0, 0);

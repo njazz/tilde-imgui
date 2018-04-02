@@ -24,6 +24,15 @@ file (GLOB SRC_IMGUI
     "../imgui/main/*.cpp"
     "../imgui/GL/*.c"
     "../imgui/imgui/*.c*"
+
+    )
+
+#todo : x-platform
+set (SRC_IMGUI
+    ${SRC_IMGUI}
+
+    "../imgui/nfd/src/nfd_common.c"
+    "../imgui/nfd/src/nfd_cocoa.m"
     )
 
 include_directories(../imgui/lib)
@@ -31,6 +40,8 @@ include_directories(../imgui/imgui)
 include_directories(../imgui/GL)
 include_directories(../imgui/GLFW)
 include_directories(../imgui/lib)
+include_directories(../imgui/nfd/src)
+include_directories(../imgui/nfd/src/include)
 
 FILE(GLOB R_FONTS "../imgui/fonts/Arial*.ttf")
 set_property(
@@ -42,7 +53,9 @@ find_package(OpenGL REQUIRED)
 set(EXTERNAL_INCLUDE_DIRS ${EXTERNAL_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
 set(EXTERNAL_LIBRARIES ${EXTERNAL_LIBRARIES} ${OPENGL_LIBRARIES})
 
+#todo: x-platform
 find_library(FOUNDATION Foundation REQUIRED)
+find_library(COCOA Cocoa REQUIRED)
 
 #######
 file(GLOB SRC_PD_IMGUI
@@ -51,8 +64,14 @@ file(GLOB SRC_PD_IMGUI
     "src/UiObjects/*.cpp"
 #    "src/properties/*.cpp"
     "src/menus/*.cpp"
+    "src/undo/*.cpp"
+    "src/patch_controller/*.cpp"
+    "src/data_models/*.cpp"
+    #"src/file_io/*.cpp"
     )
 include_directories(src)
+include_directories(src/patch_controller)
+
 INCLUDE_DIRECTORIES(xpd/src)
 
 INCLUDE_DIRECTORIES(xpd/distrib/variant/include)
@@ -79,229 +98,10 @@ set_target_properties(pd_imgui
 
 
 target_link_libraries(pd_imgui glfw)
-target_link_libraries(pd_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION})
+target_link_libraries(pd_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 
 target_link_libraries(pd_imgui xpd_static)
 
-#add_definitions(-DHAVE_UNISTD_H)
 
-#file(GLOB UTF8
-#    "utf8/*.h"
-#    "utf8/*.c"
-#    "utf8/internal/*.c"
-#)
-
-#set (CICM
-
-#    CICMWrapper/ebox.c
-#    CICMWrapper/eclass.c
-#    CICMWrapper/ecommon.c
-#    CICMWrapper/egraphics.c
-#    CICMWrapper/eobj.c
-#    CICMWrapper/epopup.c
-
-#    )
-
-#set (SDIFLIB
-#    ../miniSDIF/src/mSDIFFile.cpp
-#    ../miniSDIF/src/mSDIFFrame.cpp
-#    ../miniSDIF/src/mSDIFMatrix.cpp
-#    ../miniSDIF/src/mSDIFTypes.cpp
-#    )
-
-#set (SYNTH
-#    ../PartialSynth/src/BasePartial.cpp
-#    ../PartialSynth/src/SinePartial.cpp
-#    ../PartialSynth/src/ResPartial.cpp
-#    ../PartialSynth/src/SineSynth.cpp
-#    ../PartialSynth/src/ResSynth.cpp
-#    )
-
-#set (SOURCES
-#    sdif_lib.cpp
-#    )
-
-#set (SRC_SDIF
-
-#    src/sdif/sdif_file.cpp
-#    src/sdif/sdif_frame.cpp
-#    src/sdif/sdif_matrix.cpp
-
-#    src/sdif/sdif_data_types.cpp
-
-#    src/sdif/sdif_1trc.cpp
-#    src/sdif/sdif_1trc_merge.cpp
-#    )
-
-#set (SRC_SYNTH
-#    src/synth/synth_sine.cpp
-#    src/synth/synth_res.cpp
-#    )
-
-#set (SRC_LIST
-#    src/list/list_do.cpp
-#    )
-
-#set (SRC_MLIST
-
-#    src/mlist/mlist_obj.cpp
-#    src/mlist/mlist_unpack.cpp
-
-#    src/mlist/mlist_flip.cpp
-
-#    src/mlist/mlist_data_type.cpp
-#    )
-
-#set (SRC_JSON
-#    src/json/json_data_type.cpp
-#    src/json/mstring_data_type.cpp
-
-#    src/json/json_obj.cpp
-
-#    src/json/json_dict.cpp
-
-#    src/json/json_recorder.cpp
-#    )
-
-#set (SRC_IMG
-#    src/img/image_obj.cpp
-
-#    src/img/image_data_type.cpp
-#    )
-
-#set (SRC_MAT
-#    src/matrix/matrix_obj.cpp
-
-#    src/matrix/matrix_data_type.cpp
-#    )
-
-#set (SRC_CONV
-
-#    src/conv/mlist_llll.cpp
-#    src/conv/mlist_flat.cpp
-#    src/conv/mlist_json.cpp
-#    src/conv/mlist_image.cpp
-
-#    src/conv/image_mlist.cpp
-#    src/conv/image_matrix.cpp
-
-#    src/conv/list_json.cpp
-
-#    src/conv/json_mlist.cpp
-#    src/conv/json_list.cpp
-
-#    src/conv/conv_mlist.cpp
-#    src/conv/conv_image.cpp
-#    src/conv/conv_list.cpp
-#    src/conv/conv_json.cpp
-#    src/conv/conv_matrix.cpp
-
-#    src/conv/matrix_image.cpp
-
-#    )
-
-#set (SRC_TL
-#    src/tl/tl_bang.cpp
-#    src/tl/tl_cue.cpp
-#    src/tl/tl_transport.cpp
-
-#    src/tl/tl_toggle.cpp
-#    src/tl/tl_value.cpp
-#    src/tl/tl_parameter.cpp
-#    src/tl/tl_delay.cpp
-#)
-
-#set (HEADERS
-#    ../miniSDIF/src/mSDIFFile.hpp
-#    ../miniSDIF/src/mSDIFFrame.hpp
-#    ../miniSDIF/src/mSDIFMatrix.hpp
-#)
-
-#file(GLOB LIB_SRC
-#    "lib/ceammc_atomlist.cpp"
-#    "lib/ceammc_atom.cpp"
-#    "lib/ceammc_abstractdata.cpp"
-#    "lib/ceammc_dataatom.cpp"
-#    "lib/ceammc_data.cpp"
-#    "lib/ceammc_datastorage.cpp"
-#    "lib/ceammc_log.cpp"
-
-
-#)
-
-#find_package(Boost 1.47.0 REQUIRED)
-#include_directories(${Boost_INCLUDE_DIRS})
-#include_directories( ${CMAKE_BINARY_DIR} )
-
-#include_directories(.)
-#include_directories(./tl/)
-#include_directories(./lib/)
-#include_directories(./pd/)
-#include_directories(./utf8/)
-#include_directories(./CICMWrapper/)
-
-#include_directories(../miniSDIF/src/)
-#include_directories(../PartialSynth/src/)
-
-#include_directories(../miniSDIF/src/mlist)
-#include_directories(../miniSDIF/src/json)
-
-#include_directories(../miniSDIF/src/img)
-#include_directories(../miniSDIF/src/conv)
-
-#add_library(sdif_lib SHARED
-#    ${SOURCES}
-#    ${UTF8}
-#    ${SDIFLIB}
-#    ${SYNTH}
-#    ${SRC_SDIF}
-#    ${SRC_SYNTH}
-#    ${SRC_MLIST}
-#    ${SRC_LIST}
-#    ${SRC_JSON}
-#    ${SRC_IMG}
-#    ${SRC_MAT}
-#    ${SRC_CONV}
-
-#    #${LIB_SRC}
-#    )
-
-#target_link_libraries(sdif_lib "-undefined dynamic_lookup")
-#SET_TARGET_PROPERTIES(sdif_lib PROPERTIES PREFIX "")
-#set_target_properties(sdif_lib PROPERTIES SUFFIX ".pd_darwin")
-
-#FIND_PACKAGE(JPEG REQUIRED)
-#IF(JPEG_FOUND)
-#  INCLUDE_DIRECTORIES(${JPEG_INCLUDE_DIR})
-#  TARGET_LINK_LIBRARIES(sdif_lib ${JPEG_LIBRARIES})
-#ENDIF()
-
-#add_subdirectory(tests)
-
-
-########
-#enable_testing()
-
-#macro(add_unit_test target target_test)
-#    set(UNIT_TEST_TARGETS ${UNIT_TEST_TARGETS} ${target_test})
-#    add_test(target ${CMAKE_BINARY_DIR}/tests/${target_test})
-#endmacro(add_unit_test)
-
-#add_unit_test (all_tests test_converters)
-
-#add_custom_target( all_tests ALL
-#                   DEPENDS ${UNIT_TEST_TARGETS}
-#)
-
-#add_custom_command(TARGET all_tests
-#                   COMMENT "Running tests..."
-#                   POST_BUILD
-#                   COMMAND ${CMAKE_CTEST_COMMAND}
-#                   ARGS --output-on-failure -fprofile-arcs -ftest-coverage
-#                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-#                   )
-
-
-#install(TARGETS timeline LIBRARY DESTINATION ${CMAKE_BINARY_DIR}/../bin)
 
 

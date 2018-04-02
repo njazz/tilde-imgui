@@ -31,6 +31,7 @@ AppController::AppController()
     _consoleObserver.setConsoleWindow(_pdConsoleViewController);
 
     _pdConsoleViewController->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileNew, &menuNew);
+    _pdConsoleViewController->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileOpen, &menuOpen);
     _pdConsoleViewController->_menu.common->menuFile.setAction(PdCommonFileMenu::aFileQuit, &menuExit);
 
     addWindow(new IUWindowController(_pdConsoleViewController, "Pd Console", 0, 100, 400, 600));

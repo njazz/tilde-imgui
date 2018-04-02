@@ -16,7 +16,7 @@
 #include "pd_localserver.h"
 
 #include "UiObjects/UIObject.hpp"
-#include "views/NodeConnection.hpp"
+#include "UiObjects/UIPatchcord.hpp"
 
 #include "views/NewConnection.hpp"
 
@@ -25,14 +25,23 @@
 #include "UiObjects/UIObjectFactory.h"
 #include "menus/PdPatchMenu.hpp"
 
+#include "undo/UndoStack.hpp"
+
+#include "nfd.h"
+
+#include "data_models/CanvasData.h"
+
+
 class PdPatchViewController : public IUViewController {
 
     xpd::CanvasPtr _canvas;
-
     xpd::ProcessPtr _pdProcess = 0;
 
-    std::vector<IUView*> _objects;
-    std::vector<IUView*> _patchcords;
+    CanvasData _data;
+
+//    std::vector<ObjectBase*> _objects;
+//    std::vector<UIPatchcord*> _patchcords;
+
     NewConnection _newPatchcord;
 
     ImVec2 _selectionStart;
@@ -52,6 +61,9 @@ class PdPatchViewController : public IUViewController {
     inline void _drawSelectionFrame();
     inline void _drawObjectMaker();
 
+    //
+    UndoStack _undoStack;
+
 public:
     PdPatchViewController(PdCommonMenus* m);
 
@@ -62,7 +74,7 @@ public:
 
     virtual void draw() override;
 
-    ObjectBase* addObject(std::string text, int x, int y);
+    ObjectBase* createObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
 
     // ===============
@@ -103,13 +115,16 @@ public:
 
             o->errorBox = (o->pdObject == 0);
 
-            if (o->pdObject) {
-                o->inletCount = o->pdObject->inletCount();
-                o->outletCount = o->pdObject->outletCount();
-                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
-                _pdProcess->post(info);
-            }
+            o->updateFromPdObject();
+
+            //            if (o->pdObject) {
+            //                o->inletCount = o->pdObject->inletCount();
+            //                o->outletCount = o->pdObject->outletCount();
+            //                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
+            //                }
+            _pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
         }
+
         // todo replace
 
         //        if (text.size())
@@ -127,7 +142,7 @@ public:
 
         // test
         if (o)
-            addObject(o->objectText, o->x, o->y);
+            createObject(o->objectText, o->x, o->y);
 
         _emptyObject.hidden = true;
 
@@ -167,7 +182,30 @@ public:
         editMode = !editMode;
     });
 
-    //
+    IUObserver deleteObjectAction = IUObserver([this]() {
+
+    });
+
+    // ----------
+
+    IUObserver menuSaveAction = IUObserver([this]() {
+        NFD_SaveDialog("pd", "~/", 0);
+
+    });
+
+    IUObserver menuSaveAsAction = IUObserver([this]() {
+        NFD_SaveDialog("pd", "~/", 0);
+    });
+
+    // ----------
+
+    IUObserver arrangeLeftAction;
+    IUObserver arrangeCenterAction;
+    IUObserver arrangeRightAction;
+    IUObserver arrangeTopAction;
+    IUObserver arrangeBottomAction;
+    IUObserver arrangeDHAction;
+    IUObserver arrangeDVAction;
 
     bool hitObject(ImVec2 pos);
 

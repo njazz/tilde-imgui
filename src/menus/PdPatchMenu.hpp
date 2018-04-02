@@ -27,7 +27,13 @@ public:
     virtual void shortcuts() override;
     virtual void draw() override;
 
-    static const int aFileNew = 1;
+    static const int aAlignLeft = 50;
+    static const int aAlignCenter = 51;
+    static const int aAlignRight = 52;
+    static const int aAlignTop = 53;
+    static const int aAlignBottom = 54;
+    static const int aDistributeH = 55;
+    static const int aDistributeV = 56;
 };
 
 class PdPatchMenu : public IUMainMenuBase {

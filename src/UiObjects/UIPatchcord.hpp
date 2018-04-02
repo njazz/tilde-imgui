@@ -15,17 +15,19 @@
 
 class ObjectBase;
 
-class NodeConnection:public IUView
-{
-    
+class UIPatchcord : public IUView {
+
 public:
     ObjectBase* outputObj;
     int outputIdx;
     ObjectBase* inputObj;
     int inputIdx;
-    
+
     virtual void draw();
-    
+
+    bool selected;
+
 };
 
 #endif /* NodeInlet_hpp */
+
