@@ -12,9 +12,6 @@
 class Clipboard {
 
 private:
-    static Clipboard* _instance;
-    explicit Clipboard(){};
-
     std::vector<std::string> _data;
 
 public:

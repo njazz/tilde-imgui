@@ -11,6 +11,10 @@ public:
     bool* editModeFlag = 0;
 
     static const int aEditMode = 1;
+
+    static const int aCut = 10;
+    static const int aCopy = 11;
+    static const int aPaste = 12;
 };
 
 class PdPatchPutMenu : public IUMenuBase {

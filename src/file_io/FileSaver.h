@@ -18,6 +18,11 @@ class FileSaver {
 private:
     FileSaver(){};
 
+    ////
+    /// \brief new API saveCanvas
+    /// \param canvas
+    /// \param file
+    static void saveCanvas(CanvasData* CanvasData, std::ofstream &file);
 public:
     ////
     /// \brief save file to disk; runs 'savecanvas' recursively
@@ -25,11 +30,7 @@ public:
     /// \param canvas
     static void save(std::string fname, CanvasData* canvasData);
 
-    ////
-    /// \brief new API saveCanvas
-    /// \param canvas
-    /// \param file
-    static void saveCanvas(CanvasData* CanvasData, std::ofstream &file);
+
 };
 
 #endif // CM_FILESAVER_H

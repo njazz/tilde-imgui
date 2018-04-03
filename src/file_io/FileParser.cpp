@@ -33,9 +33,6 @@ std::string FileParser::pdParserFileName = "";
 
 std::string FileParser::legacyCanvasCoords = "";
 
-//
-
-
 // ----------------
 
 inline void legacyProcessMsg(PdPatchViewController* controller, std::vector<std::string> list)

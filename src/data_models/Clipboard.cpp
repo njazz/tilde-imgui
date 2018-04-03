@@ -7,7 +7,8 @@
 
 void Clipboard::append(std::vector<std::string> data)
 {
-    //    _data += data;
+    for (auto d:data)
+        _data.push_back(d);
 }
 
 void Clipboard::clear()

@@ -81,7 +81,7 @@ public:
 
     std::string asPdFileString()
     {
-        return "#X obj " + std::to_string(x) + " " + std::to_string(y) + " " + objectText;
+        return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
     }
 };
 

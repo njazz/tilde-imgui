@@ -33,16 +33,13 @@
 
 #include "file_io/FileSaver.h"
 
-
 class PdPatchViewController : public IUViewController {
 
     xpd::CanvasPtr _canvas;
     xpd::ProcessPtr _pdProcess = 0;
 
-
-
-//    std::vector<ObjectBase*> _objects;
-//    std::vector<UIPatchcord*> _patchcords;
+    //    std::vector<ObjectBase*> _objects;
+    //    std::vector<UIPatchcord*> _patchcords;
 
     NewConnection _newPatchcord;
 
@@ -80,7 +77,7 @@ public:
 
     ObjectBase* createObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
-    void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx );
+    void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
 
     // ===============
 
@@ -196,17 +193,32 @@ public:
     IUObserver menuSaveAction = IUObserver([this]() {
         nfdchar_t* f = new nfdchar_t[1024];
 
-        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY)
-        {
+        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
             FileSaver::save(f, &data);
         }
-
-
 
     });
 
     IUObserver menuSaveAsAction = IUObserver([this]() {
-        NFD_SaveDialog("pd", "~/", 0);
+        nfdchar_t* f = new nfdchar_t[1024];
+
+        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
+            FileSaver::save(f, &data);
+        }
+    });
+
+    // ----------
+
+    IUObserver menuCutAction = IUObserver([this]() {
+        data.cut();
+    });
+
+    IUObserver menuCopyAction = IUObserver([this]() {
+        data.copy();
+    });
+
+    IUObserver menuPasteAction = IUObserver([this]() {
+        data.paste();
     });
 
     // ----------
@@ -229,7 +241,8 @@ public:
 
     void resizeToObjects(){};
 
-    void loadbang(){
+    void loadbang()
+    {
         _canvas->loadbang();
     }
 };

@@ -26,6 +26,8 @@
 
 #include "file_io/FileParser.h"
 
+#include "data_models/Clipboard.h"
+
 class AppConsoleObserver : public xpd::ConsoleObserver {
     PdConsoleViewController* _pdConsoleWindow = 0;
 
@@ -47,6 +49,8 @@ class AppController : public AppControllerBase {
     PdCommonMenus _commonMenus;
 
     PdConsoleViewController* _pdConsoleViewController = 0;
+
+    Clipboard _clipboard;
 
 public:
     AppController();

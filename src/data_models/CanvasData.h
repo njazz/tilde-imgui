@@ -38,31 +38,11 @@ public:
     CanvasData();
     ~CanvasData();
 
-    //    portItemVec* inlets() { return _inlets; }
-    //    portItemVec* outlets() { return _outlets; }
-
-    //    void setInlets(portItemVec* inlets) { _inlets = inlets; }
-    //    void setOutlets(portItemVec* outlets) { _outlets = outlets; }
-
     Clipboard* clipboard = 0;
 
     std::string fileName;
     std::string filePath;
     bool firstSave = true;
-
-    //PropertyList* properties
-    //
-
-    //        void
-    //        setPosition(QPoint p)
-    //    {
-    //        _position = p;
-    //    }
-    //    void setSize(QSize s) { _size = s; }
-
-    //
-    bool hasObjects() { return ((objects.size() > 0) || (patchcords.size() > 0)); }
-    bool hasSelectedObjects() { return ((selectedObjects.size() > 0) || (selectedPatchcords.size() > 0)); }
 
     objectVec objects;
     patchcordVec patchcords;
@@ -72,10 +52,9 @@ public:
 
     bool gridSnap = false;
 
-    //    objectVec* boxes() { return &_boxes; }
-    //    patchcordVec* patchcords() { return &_patchcords; }
-    //    objectVec* selectedBoxes() { return &_selectedBoxes; }
-    //    patchcordVec* selectedPatchcords() { return &_selectedPatchcords; }
+    //
+    bool hasObjects() { return ((objects.size() > 0) || (patchcords.size() > 0)); }
+    bool hasSelectedObjects() { return ((selectedObjects.size() > 0) || (selectedPatchcords.size() > 0)); }
 
     // ------------------------------
 

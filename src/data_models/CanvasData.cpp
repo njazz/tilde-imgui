@@ -341,10 +341,10 @@ std::string CanvasData::canvasAsPdFileString()
     std::string ret;
 
     ret = "#N canvas ";
-    ret += std::to_string(p.x) + " ";
-    ret += std::to_string(p.y) + " ";
-    ret += std::to_string(size.x) + " ";
-    ret += std::to_string(size.y) + " ";
+    ret += std::to_string(int(p.x)) + " ";
+    ret += std::to_string(int(p.y)) + " ";
+    ret += std::to_string(int(size.x)) + " ";
+    ret += std::to_string(int(size.y)) + " ";
     ret += "10; \r\n";
 
     return ret;

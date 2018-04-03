@@ -25,6 +25,10 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
     _menu.menuEdit.editModeFlag = &editMode;
 
+    _menu.menuEdit.setAction(PdPatchEditMenu::aCut, &menuCutAction);
+    _menu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
+    _menu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
+
     //
 
     arrangeLeftAction = IUObserver([this]() {
@@ -120,7 +124,9 @@ void PdPatchViewController::_drawSelectionFrame()
         }
         _draggingObjects = _clickedObject;
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects) {
+        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y >20)) {
+            printf("pos %f", ImGui::GetMousePos().y);
+
             deselectAll();
             _multipleObjectsSelected = false;
             _draggingObjects = false;
@@ -285,8 +291,10 @@ void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx
     }
 
     // todo: correct error object connections handling
-    if (outletIdx>= obj1->outletCount) return;
-    if (inletIdx>= obj2->inletCount) return;
+    if (outletIdx >= obj1->outletCount)
+        return;
+    if (inletIdx >= obj2->inletCount)
+        return;
 
     if (!obj1->errorBox && !obj2->errorBox) {
         printf("patchcord\n");

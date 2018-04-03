@@ -49,6 +49,7 @@ PdPatchViewController* AppController::createNewPatchWindow()
     PdPatchViewController* p = new PdPatchViewController(&_commonMenus);
     p->pdServer = _server;
     p->setPdProcess(_serverProcess);
+    p->data.clipboard = &_clipboard;
 
     addWindow(new IUWindowController(p, "Patch", 300, 300, 640, 480));
 
