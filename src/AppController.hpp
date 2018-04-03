@@ -24,6 +24,8 @@
 
 #include "nfd.h"
 
+#include "file_io/FileParser.h"
+
 class AppConsoleObserver : public xpd::ConsoleObserver {
     PdConsoleViewController* _pdConsoleWindow = 0;
 
@@ -49,12 +51,13 @@ class AppController : public AppControllerBase {
 public:
     AppController();
 
-    void createNewPatchWindow();
+    PdPatchViewController *createNewPatchWindow();
 
     //
     void openFile(std::string f)
     {
         _serverProcess->post("open file: " + f);
+        FileParser::open(f);
     }
 
     // ----------
@@ -68,7 +71,7 @@ public:
     IUObserver menuOpen = IUObserver([this] {
 
         nfdchar_t* f = new nfdchar_t[1024];
-        if (NFD_OpenDialog("", "~/", &f) == NFD_OKAY)
+        if (NFD_OpenDialog("pd", "~/", &f) == NFD_OKAY)
             openFile(std::string(f));
     });
 
@@ -79,6 +82,8 @@ public:
     });
 
     IUObserver showConsoleWindow = IUObserver([this] {});
+
+    void post(std::string s){_serverProcess->post(s);}
 };
 
 #endif /* AppController_hpp */

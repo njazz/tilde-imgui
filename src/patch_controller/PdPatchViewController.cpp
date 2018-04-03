@@ -22,25 +22,25 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
     _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
 
-    _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode,&editModeAction);
+    _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
     _menu.menuEdit.editModeFlag = &editMode;
 
     //
 
-    arrangeLeftAction = IUObserver([this](){
-        ArrangeObjects::alignLeft(&_data.objects);
+    arrangeLeftAction = IUObserver([this]() {
+        ArrangeObjects::alignLeft(&data.objects);
     });
-    arrangeCenterAction = IUObserver([this](){
-        ArrangeObjects::alignCenter(&_data.objects);
+    arrangeCenterAction = IUObserver([this]() {
+        ArrangeObjects::alignCenter(&data.objects);
     });
-    arrangeRightAction = IUObserver([this](){
-        ArrangeObjects::alignRight(&_data.objects);
+    arrangeRightAction = IUObserver([this]() {
+        ArrangeObjects::alignRight(&data.objects);
     });
-    arrangeTopAction = IUObserver([this](){
-        ArrangeObjects::alignTop(&_data.objects);
+    arrangeTopAction = IUObserver([this]() {
+        ArrangeObjects::alignTop(&data.objects);
     });
-    arrangeBottomAction = IUObserver([this](){
-        ArrangeObjects::alignBottom(&_data.objects);
+    arrangeBottomAction = IUObserver([this]() {
+        ArrangeObjects::alignBottom(&data.objects);
     });
 
     //
@@ -50,7 +50,6 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
-
 }
 
 void PdPatchViewController::_drawMenu()
@@ -233,26 +232,25 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(n->pdObjectID));
 
-//    n->errorBox = (n->pdObject == 0);
+    //    n->errorBox = (n->pdObject == 0);
 
-//    if (n->pdObject) {
-//        n->inletCount = n->pdObject->inletCount();
-//        n->outletCount = n->pdObject->outletCount();
-//
-//
+    //    if (n->pdObject) {
+    //        n->inletCount = n->pdObject->inletCount();
+    //        n->outletCount = n->pdObject->outletCount();
+    //
+    //
     n->updateFromPdObject();
 
     std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
     _pdProcess->post(info);
 
-
     n->width = 90;
 
     addSubview(n);
 
-//    _data.objects.push_back(n);
+    //    data.objects.push_back(n);
 
-    _data.addObject(n);
+    data.addObject(n);
 
     n->addObserverFor(UIObject::oAutocomplete, &autocomplete);
     n->addObserverFor(UIObject::oObjectChanged, &objectUpdated);
@@ -273,14 +271,34 @@ void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, Objec
     _canvas->connect(outObj->pdObjectID, outIdx, inObj->pdObjectID, inIdx);
 
     addSubview(c);
-    _data.addPatchcord(c);
+    data.addPatchcord(c);
+}
+
+void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx)
+{
+    ObjectBase* obj1 = data.getObjectByIndex(outObjIdx);
+    ObjectBase* obj2 = data.getObjectByIndex(inObjIdx);
+
+    if (!obj1 || !obj2) {
+        printf("object not found - could not connect");
+        return;
+    }
+
+    // todo: correct error object connections handling
+    if (outletIdx>= obj1->outletCount) return;
+    if (inletIdx>= obj2->inletCount) return;
+
+    if (!obj1->errorBox && !obj2->errorBox) {
+        printf("patchcord\n");
+        connectObjects(obj1, outletIdx, obj2, inletIdx);
+    }
 }
 
 void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
 {
     if (_selectionFrame)
         return;
-    for (auto o : _data.objects) {
+    for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
         if (obj->selected) {
             o->x += delta.x;
@@ -291,11 +309,8 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
 
 void PdPatchViewController::deselectAll()
 {
-    for (auto o : _data.objects) {
-        UIObject* obj = (UIObject*)o;
-
-        obj->selected = false;
-    }
+    data.deselectObjects();
+    data.deselectPatchcords();
 
     _multipleObjectsSelected = false;
     _draggingObjects = false;
@@ -304,7 +319,7 @@ void PdPatchViewController::deselectAll()
 void PdPatchViewController::selectSingleObject(ImVec2 pos)
 {
     bool ret = false;
-    for (auto o : _data.objects) {
+    for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
 
         obj->selected = (obj->x <= pos.x);
@@ -321,7 +336,7 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
 bool PdPatchViewController::hitObject(ImVec2 pos)
 {
     bool ret = false;
-    for (auto o : _data.objects) {
+    for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
 
         bool hit;
@@ -337,18 +352,18 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
 
 bool PdPatchViewController::selectObjects()
 {
-    bool ret = false;
-    for (auto o : _data.objects) {
-        UIObject* obj = (UIObject*)o;
+    return data.selectObjectsInFrame(_selectionStart, _selectionEnd);
 
-        obj->selected = (obj->x >= _selectionStart.x);
-        obj->selected &= (obj->y >= _selectionStart.y);
-        obj->selected &= (obj->x <= _selectionEnd.x);
-        obj->selected &= (obj->y <= _selectionEnd.y);
+    //    bool ret = false;
+    //    for (auto o : data.objects) {
+    //        UIObject* obj = (UIObject*)o;
 
-        ret |= obj->selected;
-    }
-    return ret;
+    //        obj->selected = (obj->x >= _selectionStart.x);
+    //        obj->selected &= (obj->y >= _selectionStart.y);
+    //        obj->selected &= (obj->x <= _selectionEnd.x);
+    //        obj->selected &= (obj->y <= _selectionEnd.y);
+
+    //        ret |= obj->selected;
+    //    }
+    //    return ret;
 }
-
-

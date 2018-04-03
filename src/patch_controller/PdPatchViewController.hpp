@@ -31,13 +31,15 @@
 
 #include "data_models/CanvasData.h"
 
+#include "file_io/FileSaver.h"
+
 
 class PdPatchViewController : public IUViewController {
 
     xpd::CanvasPtr _canvas;
     xpd::ProcessPtr _pdProcess = 0;
 
-    CanvasData _data;
+
 
 //    std::vector<ObjectBase*> _objects;
 //    std::vector<UIPatchcord*> _patchcords;
@@ -65,6 +67,8 @@ class PdPatchViewController : public IUViewController {
     UndoStack _undoStack;
 
 public:
+    CanvasData data;
+
     PdPatchViewController(PdCommonMenus* m);
 
     xpd::PdLocalServer* pdServer = 0;
@@ -76,6 +80,7 @@ public:
 
     ObjectBase* createObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
+    void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx );
 
     // ===============
 
@@ -189,7 +194,14 @@ public:
     // ----------
 
     IUObserver menuSaveAction = IUObserver([this]() {
-        NFD_SaveDialog("pd", "~/", 0);
+        nfdchar_t* f = new nfdchar_t[1024];
+
+        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY)
+        {
+            FileSaver::save(f, &data);
+        }
+
+
 
     });
 
@@ -214,6 +226,12 @@ public:
     void deselectAll();
 
     void dragSelectedObjects(ImVec2 delta);
+
+    void resizeToObjects(){};
+
+    void loadbang(){
+        _canvas->loadbang();
+    }
 };
 
 #endif /* AppController_hpp */

@@ -30,7 +30,6 @@ protected:
 
     std::string id() { return std::to_string((long)this); };
 
-
 public:
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
@@ -53,7 +52,6 @@ public:
     bool emptyBox = false;
     bool selected = false;
 
-
     int outletClicked = -1;
     int inletClicked = -1;
 
@@ -75,14 +73,15 @@ public:
 
     void pdObjUpdatePosition()
     {
-        if (!pdObject) return;
+        if (!pdObject)
+            return;
         pdObject->setX(x);
         pdObject->setY(y);
     }
 
     std::string asPdFileString()
     {
-        return "";
+        return "#X obj " + std::to_string(x) + " " + std::to_string(y) + " " + objectText;
     }
 };
 

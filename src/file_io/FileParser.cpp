@@ -3,49 +3,55 @@
 
 #include "FileParser.h"
 
-#include "PatchWindow.h"
+//#include "PatchWindow.h"
 
-#include "ApplicationController.h"
-#include "CanvasView.h"
-#include "PatchWindowController.h"
+//#include "ApplicationController.h"
+//#include "CanvasView.h"
+//#include "PdPatchViewController.h"
 
-#include <QFile>
-#include <QTextStream>
+//#include <QFile>
+//#include <QTextStream>
 
-#include "fileparserconverter.h"
+#include "PdStringConverter.h"
 
-using namespace std;
+#include "PdPatchViewController.hpp"
 
-namespace tilde {
+#include "AppController.hpp"
 
-//PatchWindowController* FileParser::_pdParserPrevWindowController = 0;
+#include <fstream>
+#include <iostream>
 
-PatchWindowControllerStack FileParser::_stack;
-PatchWindowController* FileParser::_pdParserWindowController = 0;
-PatchWindowController* FileParser::_pdParserFirstWindowController = 0;
+#include <regex>
 
-ApplicationController* FileParser::_appController = 0;
+PdPatchViewControllerStack FileParser::_stack;
+PdPatchViewController* FileParser::_pdParserWindowController = 0;
+PdPatchViewController* FileParser::_pdParserFirstWindowController = 0;
 
-string FileParser::pdParserFileName = "";
+AppController* FileParser::_appController = 0;
 
-string FileParser::legacyCanvasCoords;
+std::string FileParser::pdParserFileName = "";
+
+std::string FileParser::legacyCanvasCoords = "";
+
+//
+
 
 // ----------------
 
-inline void legacyProcessMsg(PatchWindowController* controller, QStringList list)
+inline void legacyProcessMsg(PdPatchViewController* controller, std::vector<std::string> list)
 {
     list[0] = "obj";
-    list.insert(3, "ui.msg");
+    list.insert(list.begin() + 3, "ui.msg");
     FileParser::sendStringToCanvas(controller, list);
 
     // no special properties
 }
 
-inline void legacyProcessText(PatchWindowController* controller, QStringList list)
+inline void legacyProcessText(PdPatchViewController* controller, std::vector<std::string> list)
 {
     list[0] = "obj";
-    list.insert(3, "ui.text");
-    list.insert(4, "@Text");
+    list.insert(list.begin() + 3, "ui.text");
+    list.insert(list.begin() + 4, "@Text");
 
     //UIObject* obj =
     FileParser::sendStringToCanvas(controller, list);
@@ -54,14 +60,14 @@ inline void legacyProcessText(PatchWindowController* controller, QStringList lis
     //        list.removeAt(0);
     //        list.removeAt(0);
     //        list.removeAt(0);
-    //        QString text = list.join(" ");
+    //        std::string text = list.join(" ");
     //        obj->properties()->set("Text", text);
 }
 
-inline void legacyProcessAtom(PatchWindowController* controller, QStringList list)
+inline void legacyProcessAtom(PdPatchViewController* controller, std::vector<std::string> list)
 {
     list[0] = "obj";
-    list.insert(3, "ui.float");
+    list.insert(list.begin() + 3, "ui.float");
     //UIObject* obj =
     FileParser::sendStringToCanvas(controller, list);
 
@@ -69,28 +75,28 @@ inline void legacyProcessAtom(PatchWindowController* controller, QStringList lis
     //box_width lower upper 1 label send receive
 
     //check bounds
-    //int lBoxWidth = ((QString)list.at(4)).toInt();
-    //float lMinimum = ((QString)list.at(5)).toFloat();
-    //float lMaximum = ((QString)list.at(6)).toFloat();
-    //int lInit = ((QString)list.at(7)).toInt();
+    //int lBoxWidth = ((std::string)list.at(4)).toInt();
+    //float lMinimum = ((std::string)list.at(5)).toFloat();
+    //float lMaximum = ((std::string)list.at(6)).toFloat();
+    //int lInit = ((std::string)list.at(7)).toInt();
 
-    QString lLabel = "";
-    QString lSend = "";
-    QString lReceive = "";
+    std::string lLabel = "";
+    std::string lSend = "";
+    std::string lReceive = "";
 
     if (list.size() > 10) {
-        lLabel = ((QString)list.at(8));
-        lSend = ((QString)list.at(9));
-        lReceive = ((QString)list.at(10));
+        lLabel = ((std::string)list.at(8));
+        lSend = ((std::string)list.at(9));
+        lReceive = ((std::string)list.at(10));
     }
 
     //todo set / create
 }
 
-inline void legacyProcessSymbolAtom(PatchWindowController* controller, QStringList list)
+inline void legacyProcessSymbolAtom(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
-    QStringList list2 = QString("obj 0 0 ui.msg <symbol>").split(" ");
+    std::vector<std::string> list2 = {"obj","0","0","ui.msg","<symbol>"};
 
     list2[1] = list[1];
     list2[2] = list[2];
@@ -101,92 +107,95 @@ inline void legacyProcessSymbolAtom(PatchWindowController* controller, QStringLi
     //box_width lower upper 1 label send receive
 
     //check bounds
-    //        int lBoxWidth = ((QString)list.at(4)).toInt();
-    //        float lMinimum = ((QString)list.at(5)).toFloat();
-    //        float lMaximum = ((QString)list.at(6)).toFloat();
-    //        int lInit = ((QString)list.at(7)).toInt();
-    //        QString lLabel = ((QString)list.at(8));
-    //        QString lSend = ((QString)list.at(9));
-    //        QString lReceive = ((QString)list.at(10));
+    //        int lBoxWidth = ((std::string)list.at(4)).toInt();
+    //        float lMinimum = ((std::string)list.at(5)).toFloat();
+    //        float lMaximum = ((std::string)list.at(6)).toFloat();
+    //        int lInit = ((std::string)list.at(7)).toInt();
+    //        std::string lLabel = ((std::string)list.at(8));
+    //        std::string lSend = ((std::string)list.at(9));
+    //        std::string lReceive = ((std::string)list.at(10));
 
     //todo set / create
 }
 
-inline void legacyProcessArray(PatchWindowController* controller, QStringList list)
+inline void legacyProcessArray(PdPatchViewController* controller, std::vector<std::string> list)
 {
     // lol
-    QStringList l2 = QString(QString("obj ") + QString("20 ") + QString("20 ") + QString("ui.array ") + list.at(1) + " " + list.at(2)).split(" ");
+    std::vector<std::string> l2 = { "obj ", "20 ", "20 ", "ui.array ", list.at(1) }; //list.at(2).split(" ")
 
-    //QStringList l2 = QString("obj 20 20 ui.array temp 100").split(" ");
-    qDebug() << "array parse" << l2;
+    //std::string(std::string("obj ") + std::string("20 ") + std::string("20 ") + std::string("ui.array ") + list.at(1) + " " + list.at(2)).split(" ");
+
+    //std::vector<std::string> l2 = std::string("obj 20 20 ui.array temp 100").split(" ");
+
+    std::cout << "array parse"; // TODO: << l2;
     FileParser::sendStringToCanvas(controller, l2);
 }
 
 // ----------
 
-inline void legacyProcessUIBang(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUIBang(PdPatchViewController* controller, std::vector<std::string> list)
 {
     //box_width time1 time2 init send_ receive_ label label_offset_x label_offset_y (font) font_size bgcolor frontcolor labelcolor ?
 
-    QStringList list2 = QString("obj 0 0 ui.bang").split(" ");
+    std::vector<std::string> list2 = {"obj","0","0","ui.bang"};
 
     list2[1] = list[1];
     list2[2] = list[2];
 
-    list2.append("@Size " + list[4] + list[4]);
+    list2.push_back("@Size " + list[4] + list[4]);
 
     // TODO
 
     FileParser::sendStringToCanvas(controller, list2);
 }
 
-inline void legacyProcessUIToggle(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUIToggle(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
     //box_width init send_ receive_ label label_offset_x label_offset_y (font) font_size bgcolor frontcolor labelcolor low_value high_value
 
-    QStringList list2 = QString("obj 0 0 ui.toggle").split(" ");
+    std::vector<std::string> list2; //TODO: !! = std::string("obj 0 0 ui.toggle").split(" ");
 
     list2[1] = list[1];
     list2[2] = list[2];
 
-    list2.append("@Size " + list[4] + list[4]);
+    list2.push_back("@Size " + list[4] + list[4]);
 
     // TODO
 
     FileParser::sendStringToCanvas(controller, list2);
 }
 
-inline void legacyProcessUISlider(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUISlider(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
-    QStringList list2 = QString("obj 0 0 ui.slider").split(" ");
+    std::vector<std::string> list2 = {"obj","0","0","ui.slider"};
 
     list2[1] = list[1];
     list2[2] = list[2];
 
     if (list.size() > 5) {
-        list2.append("@Size " + list[4] + " " + list[5]);
-        list2.append("@Offset " + list[6]);
-        list2.append("@Range " + list[7]);
+        list2.push_back("@Size " + list[4] + " " + list[5]);
+        list2.push_back("@Offset " + list[6]);
+        list2.push_back("@Range " + list[7]);
     }
 
     FileParser::sendStringToCanvas(controller, list2);
 }
 
-inline void legacyProcessUIHRadio(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUIHRadio(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
-    QStringList list2 = QString("obj 0 0 ui.matrix").split(" ");
+    std::vector<std::string> list2 = {"obj","0","0","ui.matrix"};
 
     list2[1] = list[1];
     list2[2] = list[2];
 
     // temporary
-    list2.append("@Columns 5 @Rows 1");
+    list2.push_back("@Columns 5 @Rows 1");
 
     if (list.size() > 4)
-        list2.append("@Size " + QString::number(list[4].toFloat() * 5) + " " + list[4]); //replace 5 with size
+        list2.push_back("@Size " + std::to_string(std::stof(list[4]) * 5) + " " + list[4]); //replace 5 with size
 
     //list2.append("@Offset " + list2[6] );
     //list2.append("@Range" +  list2[7]);
@@ -194,19 +203,19 @@ inline void legacyProcessUIHRadio(PatchWindowController* controller, QStringList
     FileParser::sendStringToCanvas(controller, list2);
 }
 
-inline void legacyProcessUIVRadio(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUIVRadio(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
-    QStringList list2 = QString("obj 0 0 ui.matrix").split(" ");
+    std::vector<std::string> list2 = {"obj","0","0","ui.matrix"};
 
     list2[1] = list[1];
     list2[2] = list[2];
 
     // temporary
-    list2.append("@Columns 1 @Rows 5");
+    list2.push_back("@Columns 1 @Rows 5");
 
     if (list.size() > 4)
-        list2.append("@Size " + list[4] + " " + QString::number(list[4].toFloat() * 5));
+        list2.push_back("@Size " + list[4] + " " + std::to_string(std::stof(list[4]) * 5));
 
     //list2.append("@Offset " + list2[6] );
     //list2.append("@Range" +  list2[7]);
@@ -214,24 +223,24 @@ inline void legacyProcessUIVRadio(PatchWindowController* controller, QStringList
     FileParser::sendStringToCanvas(controller, list2);
 }
 
-inline void legacyProcessUINumber2(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUINumber2(PdPatchViewController* controller, std::vector<std::string> list)
 {
     // TODO
 }
 
-inline void legacyProcessUICnv(PatchWindowController* controller, QStringList list)
+inline void legacyProcessUICnv(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
     // ----- canvas
 
     //temporary
     //check bounds
-    //int lBoxWidth = ((QString)list.at(4)).toInt(); //?
-    QString lSend = ((QString)list.at(7));
-    QString lReceive = ((QString)list.at(8));
-    QString lLabel = ((QString)list.at(9));
+    //int lBoxWidth = ((std::string)list.at(4)).toInt(); //?
+    std::string lSend = (list.at(7));
+    std::string lReceive = (list.at(8));
+    std::string lLabel = (list.at(9));
 
-    QString fontSize = (list.size() > 13) ? ((QString)list.at(13)) : "11";
+    std::string fontSize = (list.size() > 13) ? (list.at(13)) : "11";
     if (lLabel == "empty")
         lLabel = "";
 
@@ -241,9 +250,9 @@ inline void legacyProcessUICnv(PatchWindowController* controller, QStringList li
     //    };
 
     long color2;
-    color2 = (list.size() > 14) ? ((QString)list.at(14)).toLong() : 0;
+    color2 = (list.size() > 14) ? std::stol(list.at(14)) : 0;
     long color1;
-    color1 = (list.size() > 15) ? ((QString)list.at(15)).toLong() : 0;
+    color1 = (list.size() > 15) ? std::stol(list.at(15)) : 0;
 
     //    color1.c_i &= 0xFFFFFFFF;
     //    color2.c_i &= 0xFFFFFFFF;
@@ -251,9 +260,9 @@ inline void legacyProcessUICnv(PatchWindowController* controller, QStringList li
     //    QByteArray arr1 = QByteArray::fromRawData((char*)color1.c_i, 1);
     //    QByteArray arr2 = QByteArray::fromRawData((char*)color2.c_i, 1);
 
-    qDebug() << "*** colors" << color1 << color2;
-    //qDebug() << "*** colors" << (QString)list.at(17) << (QString)list.at(16);
-    //qDebug() << "*** colors" << ((QString)list.at(17)).toLong() << ((QString)list.at(16)).toLongLong();
+    std::cout << "*** colors" << color1 << color2;
+    //std::cout << "*** colors" << (std::string)list.at(17) << (std::string)list.at(16);
+    //std::cout << "*** colors" << ((std::string)list.at(17)).toLong() << ((std::string)list.at(16)).toLongLong();
 
     union color {
         int32_t c_int;
@@ -267,7 +276,7 @@ inline void legacyProcessUICnv(PatchWindowController* controller, QStringList li
     color c2;
     c2.c_int = color2;
 
-    qDebug() << "*** colors" << c1.c_int << c2.c_int;
+    std::cout << "*** colors" << c1.c_int << c2.c_int;
 
     c1.c_int = -1 - c1.c_int;
     c1.c_int = ((c1.c_int & 0x3f000) << 6) | ((c1.c_int & 0xfc0) << 4) | ((c1.c_int & 0x3f) << 2);
@@ -275,22 +284,22 @@ inline void legacyProcessUICnv(PatchWindowController* controller, QStringList li
     c2.c_int = -1 - c2.c_int;
     c2.c_int = ((c2.c_int & 0x3f000) << 6) | ((c2.c_int & 0xfc0) << 4) | ((c2.c_int & 0x3f) << 2);
 
-    qDebug() << (c1.c_int & 0xFF) << ((c1.c_int >> 8) & 0xFF) << ((c1.c_int >> 16) & 0xFF) << ((c1.c_int >> 24) & 0xFF);
+    std::cout << (c1.c_int & 0xFF) << ((c1.c_int >> 8) & 0xFF) << ((c1.c_int >> 16) & 0xFF) << ((c1.c_int >> 24) & 0xFF);
 
-    QString lcolor1 = QString::number(c1.c_byte.b[2]) + " " + QString::number(c1.c_byte.b[1]) + " " + QString::number(c1.c_byte.b[0]) + " 255";
-    QString lcolor2 = QString::number(c2.c_byte.b[2]) + " " + QString::number(c2.c_byte.b[1]) + " " + QString::number(c2.c_byte.b[0]) + " 255";
+    std::string lcolor1 = std::to_string(c1.c_byte.b[2]) + " " + std::to_string(c1.c_byte.b[1]) + " " + std::to_string(c1.c_byte.b[0]) + " 255";
+    std::string lcolor2 = std::to_string(c2.c_byte.b[2]) + " " + std::to_string(c2.c_byte.b[1]) + " " + std::to_string(c2.c_byte.b[0]) + " 255";
 
-    //QString lcolor2 = "128 128 255 255"; //QString::number((uint8_t)arr2.at(0)) + " " + QString::number((uint8_t)arr2.at(1)) + " " + QString::number((uint8_t)arr2.at(2)) + " "+ QString::number((uint8_t)arr2.at(2));
+    //std::string lcolor2 = "128 128 255 255"; //std::to_string((uint8_t)arr2.at(0)) + " " + std::to_string((uint8_t)arr2.at(1)) + " " + std::to_string((uint8_t)arr2.at(2)) + " "+ std::to_string((uint8_t)arr2.at(2));
 
-    qDebug() << lcolor1 << lcolor2 << " ***";
+    std::cout << lcolor1 << lcolor2 << " ***";
 
-    //QString lcolor1 = QString::number(((int)color1.c_char[0])) + " " + QString::number(((int)color1.c_char[1])) + " " + QString::number(((int)color1.c_char[2])) + " 255";
-    //QString lcolor2 = "0 0 0 255"; // = QString::number(((int)color2.c_char[0])) + " " + QString::number(((int)color2.c_char[1])) + " " + QString::number(((int)color2.c_char[2])) + " 255";
+    //std::string lcolor1 = std::to_string(((int)color1.c_char[0])) + " " + std::to_string(((int)color1.c_char[1])) + " " + std::to_string(((int)color1.c_char[2])) + " 255";
+    //std::string lcolor2 = "0 0 0 255"; // = std::to_string(((int)color2.c_char[0])) + " " + std::to_string(((int)color2.c_char[1])) + " " + std::to_string(((int)color2.c_char[2])) + " 255";
 
     //...
-    //int lFontSize = ((QString)list.at(4)).toInt() * 8 + 3;
+    //int lFontSize = ((std::string)list.at(4)).toInt() * 8 + 3;
 
-    QStringList list2;
+    std::vector<std::string> list2;
     list2.push_back("obj");
     list2.push_back(list.at(1));
     list2.push_back(list.at(2));
@@ -315,7 +324,7 @@ inline void legacyProcessUICnv(PatchWindowController* controller, QStringList li
 
 // ----------
 
-bool FileParser::legacyProcess(PatchWindowController* controller, QStringList list)
+bool FileParser::legacyProcess(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
     if (list.at(0) == "msg") {
@@ -395,136 +404,145 @@ bool FileParser::legacyProcess(PatchWindowController* controller, QStringList li
     return false; // if it is not a special legacy object
 }
 
-UIObject* FileParser::sendStringToCanvas(PatchWindowController* controller, QStringList list)
+ObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list)
 {
-    qDebug("new obj");
+    printf("new obj");
 
     if (list.size() > 3) {
-        QString objname;
-        QString msgname;
-        QPoint pos;
+        std::string objname;
+        std::string msgname;
+        ImVec2 pos;
 
-        pos.setX(((QString)list.value(1)).toFloat());
-        pos.setY(((QString)list.value(2)).toFloat());
+        pos.x = std::stof(list.at(1)); //(((std::string)list.value(1)).toFloat());
+        pos.y = std::stof(list.at(2)); //(((std::string)list.value(2)).toFloat());
 
         //lol
-        QStringList objList = list;
-        objList.removeAt(0);
-        objList.removeAt(0);
-        objList.removeAt(0);
+        std::vector<std::string> objList = list;
+        objList.erase(objList.begin());
+        objList.erase(objList.begin());
+        objList.erase(objList.begin());
 
-        objname = objList.join(" ");
+        objname = joinStringWithToken(objList," ");//"objname"; // TODO: !!! objList.join(" ");
 
-        objList.removeAt(0);
-        msgname = objList.join(" ");
+        objList.erase(objList.begin());
+        msgname =  joinStringWithToken(objList," ");//"msgname"; // TODO: !!! objList.join(" ");
 
-        //qDebug() << "objname" << objname;
+        //std::cout << "objname" << objname;
 
         // check property handling
         // probably should be moved here?
 
-        return controller->createObject(QString(list.at(3) + " " + msgname).toStdString(), pos);
+        _appController->post("create object: "+ list.at(3)+" "+msgname);
+        return controller->createObject(std::string(list.at(3) + " " + msgname), pos.x, pos.y);
 
     } else {
-        qDebug("list error");
+        printf("list error");
+        _appController->post("list error");
         //create error object here to keep connections
         return 0;
     }
 }
 
-void FileParser::parseStringListAtoms(PatchWindowController* controller, QStringList list) //rename
+void FileParser::parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list) //rename
 {
     //legacy parser first
     if (FileParser::legacyProcess(controller, list))
         return;
 
-    //qDebug() << "list at 0" << list.at(0);
+    //std::cout << "list at 0" << list.at(0);
 
     if (list.at(0) == "obj") {
         FileParser::sendStringToCanvas(controller, list);
     } else
 
         if (list.at(0) == "connect") {
-        //qDebug("new connect");
+        //printf("new connect");
 
         if (list.size() > 4) {
             if (controller) {
                 // TODO
 
-                UIObject* obj1 = controller->canvasData()->getObjectByIndex(((QString)list.value(1)).toInt());
-                UIObject* obj2 = controller->canvasData()->getObjectByIndex(((QString)list.value(3)).toInt());
+                //                UIObject* obj1 = controller->canvasData()->getObjectByIndex(((std::string)list.value(1)).toInt());
+                //                UIObject* obj2 = controller->canvasData()->getObjectByIndex(((std::string)list.value(3)).toInt());
 
-                if (!obj1 || !obj2) {
-                    qDebug("object not found - could not connect");
-                    return;
-                }
+                //                if (!obj1 || !obj2) {
+                //                    printf("object not found - could not connect");
+                //                    return;
+                //                }
 
-                int idx1 = ((QString)list.value(2)).toInt();
-                int idx2 = ((QString)list.value(4)).toInt();
+                //                int idx1 = ((std::string)list.value(2)).toInt();
+                //                int idx2 = ((std::string)list.value(4)).toInt();
 
-                //cmcanvasView()->patchcord();
-                if (!obj1->errorBox() && !obj2->errorBox()) {
-                    qDebug("patchcord");
-                    controller->createPatchcord(obj1, idx1, obj2, idx2);
-                }
+                //                //cmcanvasView()->patchcord();
+                //                if (!obj1->errorBox() && !obj2->errorBox()) {
+                //                    printf("patchcord");
+                //                    controller->connectObjects(obj1, idx1, obj2, idx2);
+                //                }
+
+
+                //---
+                controller->connectObjectsByIndices(std::stoi(list.at(1)), std::stoi(list.at(2)), std::stoi(list.at(3)), std::stoi(list.at(4)));
             }
         }
 
         else {
-            qDebug("list error");
+            printf("list error");
         }
     } else if (list.at(0) == "coords") {
     } else if (list.at(0) == "restore") {
 
-        qDebug("restore canvas: %lu | previous %lu", _pdParserWindowController, _stack.last());
+        printf("restore canvas: %lu | previous %lu", (long)_pdParserWindowController, (long)_stack.last());
 
         //parserwindow - subpatch
         //prev window - parent patch
 
         //restore pd box
         if (list.size() > 2) {
-            QString objname;
-            QPoint pos;
+            std::string objname;
+            ImVec2 pos;
 
-            pos.setX(((QString)list.value(1)).toFloat());
-            pos.setY(((QString)list.value(2)).toFloat());
+            pos.x = std::stof(list.at(1)); //(((std::string)list.value(1)).toFloat());
+            pos.y = std::stof(list.at(2)); //(((std::string)list.value(2)).toFloat());
 
             //lol
-            QStringList objList = list;
-            objList.removeAt(0);
-            objList.removeAt(0);
-            objList.removeAt(0);
-            objname = objList.join(" ");
+            std::vector<std::string> objList = list;
+            objList.erase(objList.begin());
+            objList.erase(objList.begin());
+            objList.erase(objList.begin());
 
-            qDebug() << "objname" << objname;
+            objname =  joinStringWithToken(objList," ");//"objlist";  objList.join(" ");
+
+            std::cout << "objname" << objname;
             //temporary
 
-            QString objectData = objList.join(" ");
+            std::string objectData =  joinStringWithToken(objList," ");//"objdata";  objList.join(" ");
 
             //if (objList.at(0) == "pd")
             {
                 if (_stack.last()) {
+                    // TODO: !!!
+                    //_stack.last()->restoreUIBoxForSubpatch(_pdParserWindowController, objectData, pos);
+                    printf("restore");
+                    std::cout << "data" << objectData;
+
+                    // ----------
+
                     //if (_pdParserPrevWindowController->firstWindow()->canvasView())
                     //{
 
                     //                                                UIBox *b1 = 0;
 
-                    //                                                b1 = pdParserPrevWindow->canvasView()->restoreSubcanvas(objname.toStdString(), pos, pdParserWindow->canvasView()->pdCanvas);
+                    //                                                b1 = pdParserPrevWindow->canvasView()->restoreSubcanvas(objname, pos, pdParserWindow->canvasView()->pdCanvas);
                     //                                                b1->cmSubcanvas = pdParserWindow;
 
                     //                        UIBox* b1 = _pdParserWindowController->subpatchBox();
 
                     //                        b1->setPos(pos.x(),pos.y());
 
-                    _stack.last()->restoreUIBoxForSubpatch(_pdParserWindowController, objectData, pos);
-
-                    qDebug("restore");
-                    qDebug() << "data" << objectData;
-
                     // TODO
                     // UIObject* b = _pdParserPrevWindow->canvasView()->createBoxForPatchWindow(_pdParserWindow, objData, pos);
 
-                    //UIObject* b = _pdParserPrevWindow->canvasView()->createObject(QString(objData.c_str()), pos);
+                    //UIObject* b = _pdParserPrevWindow->canvasView()->createObject(std::string(objData.c_str()), pos);
 
                     //IObject *b = createBoxForCanvas(newCanvas, objectData, pos);
                     //((UIBox*)b)->setSubpatchWindow((QMainWindow*)_pdParserPrevWindow);
@@ -533,7 +551,7 @@ void FileParser::parseStringListAtoms(PatchWindowController* controller, QString
             }
             //            }
             //            else {
-            //                qDebug("pd subpatch error");
+            //                printf("pd subpatch error");
             //            }
 
             //draw subpatch
@@ -542,89 +560,127 @@ void FileParser::parseStringListAtoms(PatchWindowController* controller, QString
             _stack.pop();
 
         } else {
-            qDebug("list error");
+            printf("list error");
         }
     } else {
         // add dummy object to keep connections
 
         if (list.size() > 2) {
-            QString objname;
-            QString msgname;
-            QPoint pos;
+            std::string objname;
+            std::string msgname;
+            ImVec2 pos;
 
-            pos.setX(((QString)list.value(1)).toFloat());
-            pos.setY(((QString)list.value(2)).toFloat());
+            pos.x = std::stof(list.at(1)); //(((std::string)list.value(1)).toFloat());
+            pos.y = std::stof(list.at(2)); //(((std::string)list.value(2)).toFloat());
 
             //lol
-            QStringList objList = list;
-            objList.removeAt(1);
-            objList.removeAt(1);
+            std::vector<std::string> objList = list;
+            objList.erase(objList.begin() + 1);
+            objList.erase(objList.begin() + 1);
 
-            objname = objList.join(" ");
+            objname =  joinStringWithToken(objList," ");//"objlist";  !!! objList.join(" ");
 
-            qDebug() << "objname" << objname;
+            std::cout << "objname" << objname;
 
             //temporary
-            //cmcanvasView()->createBox(objname.toStdString(), pos);
+            //cmcanvasView()->createBox(objname, pos);
 
             // TODO cmcanvas->createObject(objname, pos);
         }
     }
 }
 
-void FileParser::parseQString(QString line)
+void FileParser::parseString(std::string line)
 {
-    line = FileParserConverter::unescapeString(line);
+    line = line.substr(0,line.size()-1);
 
-    QStringList atoms = line.split(QRegExp("\\ (?!\\\\\\ )")); //
+    line = PdStringConverter::unescapeString(line);
 
-    atoms.last() = atoms.last().remove(";");
+    std::vector<std::string> atoms = splitStringByToken(line, " "); //  !!! = line.split(QRegExp("\\ (?!\\\\\\ )")); //
+
+    std::cout << "src" << line << ", atoms";
+    for (auto a : atoms)
+        std::cout << "," << a;
+    std::cout << "\n";
+
+    //return;
+
+    if (atoms.size() == 0) {
+
+        printf("==0\n");
+        return;
+    }
+
+    //    atoms.erase(atoms.end());
+
+    //    if (atoms.size()==0)
+    //    {
+    //        return;
+    //    }
+
+    if (atoms.size() < 4) {
+        printf("<4\n");
+        return;
+    }
 
     if (atoms.at(0) == "#N") {
 
-        QStringList msg = atoms;
-        msg.removeFirst();
+        _appController->post("new canvas");
+        //return;
+
+        std::vector<std::string> msg = atoms;
+        msg.erase(msg.begin());
 
         _stack.push(_pdParserWindowController);
 
-        PatchWindowController* newWnd = new PatchWindowController(FileParser::_appController);
-        newWnd->setAppController(FileParser::_appController);
+        PdPatchViewController* newWnd = _appController->createNewPatchWindow(); //new PdPatchViewController();    //FileParser::_appController
         _pdParserWindowController = newWnd;
 
         //save pointer to first canvas. needed to set file name
         if (!_stack.last())
             _pdParserFirstWindowController = _pdParserWindowController;
 
-        msg.removeFirst();
-        if (_pdParserWindowController)
-            newWnd->mainWindow()->setWindowTitle(msg.at(4));
+        msg.erase(msg.begin());
+
+        // todo: title
+        //        if (_pdParserWindowController)
+        //            newWnd->windowController()->setTitle(msg.at(4));
+
+        //newWnd->mainWindow()->setWindowTitle(msg.at(4));
 
         // todo different canvas argumentlists
-        QPoint pos = QPoint(((QString)msg.at(0)).toInt(), ((QString)msg.at(1)).toInt());
-        QSize size = QSize(((QString)msg.at(2)).toInt(), ((QString)msg.at(3)).toInt());
+        ImVec2 pos = ImVec2(std::stoi(msg.at(0)), std::stoi(msg.at(1))); //((std::string)msg.at(0)).toInt(), ((std::string)msg.at(1)).toInt());
+        ImVec2 size = ImVec2(std::stoi(msg.at(2)), std::stoi(msg.at(3))); // (((std::string)msg.at(2)).toInt(), ((std::string)msg.at(3)).toInt());
 
-        if (pos.x() > 1000)
-            pos.setX(1000);
-        if (pos.y() > 500)
-            pos.setY(500);
-        if (size.width() > 1000)
-            size.setWidth(1000);
-        if (size.height() > 700)
-            size.setHeight(700);
+        if (pos.x > 1000)
+            pos.x = (1000);
+        if (pos.y > 500)
+            pos.y = (500);
+        if (size.x > 1000)
+            size.x = (1000);
+        if (size.y > 700)
+            size.y = (700);
 
-        if (size.width() < 40)
-            size.setWidth(1000);
-        if (size.height() < 40)
-            size.setHeight(100);
+        if (size.x < 40)
+            size.x = (1000);
+        if (size.y < 40)
+            size.y = (100);
 
-        //qDebug() << "*** canvas dim" << pos << size;
+        //std::cout << "*** canvas dim" << pos << size;
 
-        newWnd->mainWindow()->canvasView()->setWindowSize(size);
-        newWnd->mainWindow()->setBaseSize(size);
-        newWnd->mainWindow()->move(pos);
+        newWnd->windowController()->width = size.x;
+        newWnd->windowController()->height = size.y;
+        newWnd->windowController()->x = pos.x;
+        newWnd->windowController()->y = pos.y;
+        // TODO: set base size
 
-        // TODO
+        //newWnd->mainWindow()->canvasView()->setWindowSize(size);
+        //        newWnd->mainWindow()->setBaseSize(size);
+        //        newWnd->mainWindow()->move(pos);
 
+        // TODO: !!! hide
+
+        /*
         if (msg.size() > 5) {
 
             if (msg.at(5).toInt())
@@ -633,17 +689,21 @@ void FileParser::parseQString(QString line)
                 newWnd->mainWindow()->hide();
         } else
             newWnd->mainWindow()->show();
+            */
     }
 
     if (atoms.at(0) == "#X") {
-        QStringList msg = atoms;
-        msg.removeFirst();
+        _appController->post("new object");
+        //return;
+
+        std::vector<std::string> msg = atoms;
+        msg.erase(msg.begin());
 
         if (_pdParserWindowController) {
-            //qDebug("X");
+            //printf("X");
             FileParser::parseStringListAtoms(_pdParserWindowController, msg);
         } else {
-            qDebug("parser error - no canvas");
+            printf("parser error - no canvas");
         }
     }
 
@@ -653,63 +713,71 @@ void FileParser::parseQString(QString line)
     //TODO
 }
 
-void FileParser::open(QString fname)
+void FileParser::open(std::string fname)
 {
-    QFile f(fname);
+    //    QFile f(fname);
 
-    if (f.open(QIODevice::ReadOnly)) {
-        QStringList stringList;
+    std::ifstream f(fname);
+
+    //f.open(fname);
+    {
+        std::vector<std::string> stringList;
 
         setParserWindowController(0);
 
-        pdParserFileName = fname.toStdString();
+        pdParserFileName = fname;
 
-        QTextStream textStream(&f);
-        while (true) {
-            QString line = textStream.readLine();
-            if (line.isNull())
+        std::string line;
+        while (std::getline(f, line)) {
+            // = //textStream.readLine();
+
+            if (line == "\0")
                 break;
             else {
-                stringList.append(line);
-                qDebug("* %s", line.toStdString().c_str());
+                stringList.push_back(line);
+                printf("* %s\n", line.c_str());
                 //
 
-                FileParser::parseQString(line);
+                FileParser::parseString(line);
             }
         }
 
         if (_pdParserWindowController) {
-            _pdParserWindowController->mainWindow()->setFileName(fname);
-            _pdParserWindowController->mainWindow()->canvasView()->setEditMode(em_Locked);
+            _pdParserWindowController->data.fileName = fname;
+            _pdParserWindowController->editMode = true;
+            //            _pdParserWindowController->mainWindow()->setFileName(fname);
+            //            _pdParserWindowController->mainWindow()->canvasView()->setEditMode(em_Locked);
 
-            _pdParserWindowController->mainWindow()->canvasView()->resizeToObjects();
-            _pdParserWindowController->mainWindow()->show();
+            _pdParserWindowController->resizeToObjects(); //mainWindow()->canvasView()->resizeToObjects();
+            //_pdParserWindowController->mainWindow()->show();
 
-            _pdParserWindowController->serverCanvas()->loadbang();
+            _pdParserWindowController->loadbang();
         }
 
         f.close();
-    } else {
+        //    } else {
         //_pdParserWindowController->mainServerInstance()->
-        ApplicationController::post("error: cannot open file: " + fname);
+        //        ApplicationController::post("error: cannot open file: " + fname);
+
+        //        _appController->post("error: cannot open file: " + fname);
     }
 }
 
 // --------------------------------------------------
 
-void FileParser::setAppController(AppController *appController)
+void FileParser::setAppController(AppController* appController)
 {
     _appController = appController;
 }
 
-void FileParser::setParserWindowController(PatchWindowController* wnd)
+void FileParser::setParserWindowController(PdPatchViewController* wnd)
 {
     //_pdParserPrevWindowController = wnd;
     _stack.clear();
     _pdParserWindowController = wnd;
 }
 
-void FileParser::setParserWindowControllers(PatchWindowController* wnd, PatchWindowController*, PatchWindowController* first)
+void FileParser::setParserWindowControllers(PdPatchViewController* wnd, PdPatchViewController*, PdPatchViewController* first)
 {
     _pdParserWindowController = wnd;
     _stack.clear();
@@ -721,13 +789,12 @@ void FileParser::setParserWindowControllers(PatchWindowController* wnd, PatchWin
 /// \details mostly used by OOP loader
 /// \return
 ///
-PatchWindowController* FileParser::parserFirstWindowController()
+PdPatchViewController* FileParser::parserFirstWindowController()
 {
     return _pdParserFirstWindowController;
 }
 
-PatchWindowController* FileParser::parserWindowController()
+PdPatchViewController* FileParser::parserWindowController()
 {
     return _pdParserWindowController;
-}
 }

@@ -67,7 +67,7 @@ file(GLOB SRC_PD_IMGUI
     "src/undo/*.cpp"
     "src/patch_controller/*.cpp"
     "src/data_models/*.cpp"
-    #"src/file_io/*.cpp"
+    "src/file_io/*.cpp"
     )
 include_directories(src)
 include_directories(src/patch_controller)

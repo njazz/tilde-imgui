@@ -41,14 +41,16 @@ AppController::AppController()
     _serverProcess->addSearchPath("/Users/njazz/Documents/tilde~/Libraries/");
     _serverProcess->loadLibrary("tilde~_imgui");
 
-
+    FileParser::setAppController(this);
 }
 
-void AppController::createNewPatchWindow()
+PdPatchViewController* AppController::createNewPatchWindow()
 {
     PdPatchViewController* p = new PdPatchViewController(&_commonMenus);
     p->pdServer = _server;
     p->setPdProcess(_serverProcess);
 
     addWindow(new IUWindowController(p, "Patch", 300, 300, 640, 480));
+
+    return p;
 }

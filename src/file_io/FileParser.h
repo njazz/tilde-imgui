@@ -7,8 +7,6 @@
 #include <string>
 #include <vector>
 
-// todo: non-static class ?
-
 #include <vector>
 #include <string>
 
@@ -49,18 +47,26 @@ private:
     FileParser(){};
 
     static PdPatchViewControllerStack _stack;
+
     static PdPatchViewController* _pdParserWindowController;
     static PdPatchViewController* _pdParserFirstWindowController;
 
     static AppController* _appController;
+
+    //
+
+    static void parseString(std::string line); ///> [2] checks first atoms ("#N", "#X" etc) and sends contents as string vectors to canvas
+    static void parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list); ///> [3] parses QStringLists of atoms to canvas - creates objects etc, converts list, passes data to 'sendStringToCanvas'
+
+    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.2] process legacy pd files
 
 public:
     static std::string pdParserFileName;
     static std::string legacyCanvasCoords; ///> used for #X coords
 
     static void setAppController(AppController* appController);
-    static void setParserWindowController(PatchWindowController* wnd);
-    static void setParserWindowControllers(PatchWindowController* wnd, PatchWindowController*, PatchWindowController* first);
+    static void setParserWindowController(PdPatchViewController* wnd);
+    static void setParserWindowControllers(PdPatchViewController* wnd, PdPatchViewController*, PdPatchViewController* first);
 
     ////
     /// \brief returns first created window
@@ -69,11 +75,10 @@ public:
     static PdPatchViewController* parserWindowController();
 
     static void open(std::string fname); ///> [1] opens file, converts to QStrings, calls 'parseString'
-    static void parseString(std::string line); ///> [2] checks first atoms ("#N", "#X" etc) and sends QStringList of contents to canvas
-    static void parseStringListAtoms(PatchWindowController* controller, std::vector<std::string> list); ///> [3] parses QStringLists of atoms to canvas - creates objects etc, converts list, passes data to 'sendStringToCanvas'
 
     static ObjectBase* sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.1] subroutine - formats list and send it to canvas as a string
-    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.2] process legacy pd files
+
+
 };
 
 

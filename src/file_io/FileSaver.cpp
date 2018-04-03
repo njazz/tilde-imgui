@@ -1,33 +1,48 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
+
 #include "FileSaver.h"
-#include "CanvasData.h"
-#include "PatchWindow.h"
+#include "data_models/CanvasData.h"
+#include "PdPatchViewController.hpp"
 
-namespace tilde {
+#include <vector>
 
-void FileSaver::saveCanvas(CanvasData* canvasData, QFile* file)
+#include "PdStringConverter.h"
+
+void FileSaver::saveCanvas(CanvasData* canvasData, std::ofstream& file)
 {
     // this calls top 'canvas' and gets all data as QStringList
     // canvas saves contents recursively
 
-    QStringList fileData = canvasData->asPdFileStrings();
+
+
+    std::vector<std::string> fileData = canvasData->asPdFileStrings();
+
+//    printf("*** File: \n%s\n",joinStringWithToken(fileData,"\n").c_str());
 
     //todo check
-    for (int i = 0; i < fileData.count(); i++) {
-        QString str1 = fileData.at(i);
-        file->write(str1.toStdString().c_str(), str1.size());
+    //for (int i = 0; i < fileData.size(); i++) {
+    //    std::string str1 = fileData.at(i);
+
+    for (auto str1 : fileData)
+    {
+        file << str1 << "\r\n";
+//        printf("* %s \n", str1.c_str());
     }
+
+    //}
 };
 
-void FileSaver::save(QString fname, CanvasData* canvasData)
+void FileSaver::save(std::string fname, CanvasData* canvasData)
 {
-    QFile f(fname);
-    f.open(QIODevice::WriteOnly);
 
-    FileSaver::saveCanvas(canvasData, &f);
+    std::ofstream f(fname,std::ios_base::binary);
 
+    if (!f.is_open())
+        printf("file %s not open\n",fname.c_str());
+
+    FileSaver::saveCanvas(canvasData, f);
     f.close();
-}
+
 }

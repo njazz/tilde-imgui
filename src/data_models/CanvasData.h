@@ -7,12 +7,14 @@
 #include "Clipboard.h"
 #include "UiObjects/UIPatchcord.hpp"
 
+#include "imgui.h"
+
 class ServerCanvas;
 
 class ObjectBase;
 class UIPatchcord;
 
-class ImVec2;
+//class ImVec2;
 
 typedef std::vector<ObjectBase*> objectVec;
 typedef std::vector<UIPatchcord*> patchcordVec;
