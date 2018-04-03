@@ -12,9 +12,19 @@ public:
 
     static const int aEditMode = 1;
 
+    static const int aUndo = 5;
+    static const int aRedo = 6;
+
     static const int aCut = 10;
     static const int aCopy = 11;
     static const int aPaste = 12;
+
+    static const int aSelectAll = 15;
+
+    static const int aDelete = 20;
+
+    std::string undoActionName = "";
+    std::string redoActionName = "";
 };
 
 class PdPatchPutMenu : public IUMenuBase {

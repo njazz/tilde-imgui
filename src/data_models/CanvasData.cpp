@@ -153,7 +153,30 @@ void CanvasData::deselectPatchcords()
     }
 }
 
+void CanvasData::selectAllObjects()
+{
+    for (auto o: objects)
+        if (!o->selected)
+            selectObject(o);
+}
+
 // ----------
+
+void CanvasData::deleteSelectedObjects()
+{
+    for (auto o:selectedObjects)
+    {
+        deleteObject(o);
+    }
+}
+
+void CanvasData::deleteObject(ObjectBase* obj)
+{
+    // todo: remove patchcords for object
+
+    obj->removeFromParentView();
+    objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());
+}
 
 void CanvasData::deletePatchcord(UIPatchcord* pc)
 {
@@ -168,7 +191,8 @@ void CanvasData::cut()
     clipboard->append(objectsAsPdFileStrings(&selectedObjects));
     clipboard->append(patchcordsAsPdFileStrings(&selectedPatchcords));
 
-    // todo move delete objects to this class; put here
+    deleteSelectedObjects();
+    deselectObjects();
 }
 
 void CanvasData::copy()

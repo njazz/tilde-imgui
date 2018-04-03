@@ -29,6 +29,10 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _menu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
     _menu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
 
+    _menu.menuEdit.setAction(PdPatchEditMenu::aSelectAll, &menuSelectAllAction);
+
+    _menu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
+
     //
 
     arrangeLeftAction = IUObserver([this]() {
@@ -65,10 +69,10 @@ void PdPatchViewController::_drawMenu()
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
 {
-    _pdProcess = p;
+    data.pdProcess = p;
 
-    if (_pdProcess)
-        _canvas = _pdProcess->createCanvas();
+    if (data.pdProcess)
+        data.canvas = data.pdProcess->createCanvas();
 
     // test
     createObject("print", 300, 300);
@@ -222,7 +226,7 @@ void PdPatchViewController::draw()
 
 ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 {
-    if (!_pdProcess)
+    if (!data.pdProcess)
         return 0;
 
     ObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
@@ -231,12 +235,12 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->y = y;
 
     if (text.size())
-        n->pdObjectID = _canvas->createObject(text, x, y);
+        n->pdObjectID = data.canvas->createObject(text, x, y);
 
     //    else
     //        n->emptyBox = true;
 
-    n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(n->pdObjectID));
+    n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->pdObjectID));
 
     //    n->errorBox = (n->pdObject == 0);
 
@@ -248,7 +252,7 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->updateFromPdObject();
 
     std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
-    _pdProcess->post(info);
+    data.pdProcess->post(info);
 
     n->width = 90;
 
@@ -274,7 +278,7 @@ void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, Objec
     c->inputObj = inObj;
     c->inputIdx = inIdx;
 
-    _canvas->connect(outObj->pdObjectID, outIdx, inObj->pdObjectID, inIdx);
+    data.canvas->connect(outObj->pdObjectID, outIdx, inObj->pdObjectID, inIdx);
 
     addSubview(c);
     data.addPatchcord(c);

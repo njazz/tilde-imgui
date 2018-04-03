@@ -9,6 +9,9 @@
 
 #include "imgui.h"
 
+#include "pd_localprocess.h"
+#include "pd_localserver.h"
+
 class ServerCanvas;
 
 class ObjectBase;
@@ -26,9 +29,6 @@ class CanvasData {
     objectVec _previouslySelectedBoxes;
     patchcordVec _previouslySelectedPatchcords;
 
-    //    portItemVec* _inlets;
-    //    portItemVec* _outlets;
-
     // PropertyList* _properties;
 
     ImVec2 _position;
@@ -37,6 +37,9 @@ class CanvasData {
 public:
     CanvasData();
     ~CanvasData();
+
+    xpd::CanvasPtr canvas;
+    xpd::ProcessPtr pdProcess = 0;
 
     Clipboard* clipboard = 0;
 
@@ -78,9 +81,12 @@ public:
     void selectPatchcord(UIPatchcord* pc);
     void deselectObjects();
     void deselectPatchcords();
+    void selectAllObjects();
 
     // ----------
 
+    void deleteSelectedObjects();
+    void deleteObject(ObjectBase* obj);
     void deletePatchcord(UIPatchcord* pc);
 
     // ----------

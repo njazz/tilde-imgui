@@ -31,6 +31,7 @@ protected:
     std::string id() { return std::to_string((long)this); };
 
 public:
+
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
 

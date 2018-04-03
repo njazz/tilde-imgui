@@ -12,8 +12,7 @@
 #include "IUViewController.hpp"
 #include "imgui.h"
 
-#include "pd_localprocess.h"
-#include "pd_localserver.h"
+
 
 #include "UiObjects/UIObject.hpp"
 #include "UiObjects/UIPatchcord.hpp"
@@ -35,8 +34,7 @@
 
 class PdPatchViewController : public IUViewController {
 
-    xpd::CanvasPtr _canvas;
-    xpd::ProcessPtr _pdProcess = 0;
+
 
     //    std::vector<ObjectBase*> _objects;
     //    std::vector<UIPatchcord*> _patchcords;
@@ -89,7 +87,7 @@ public:
 
         UIObject* b = (UIObject*)autocomplete.sender;
 
-        for (auto s : _canvas->availableObjects()) {
+        for (auto s : data.canvas->availableObjects()) {
             if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
                 if (ImGui::MenuItem(s.c_str())) {
                     //printf(">>>\n");
@@ -112,8 +110,8 @@ public:
         //            addObject(o->objectText, o->x,o->y);
 
         if (!o->pdObject) {
-            o->pdObjectID = _canvas->createObject(o->objectText.c_str(), o->x, o->y);
-            o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(_canvas->objects().findObject(o->pdObjectID));
+            o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
+            o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
 
             o->errorBox = (o->pdObject == 0);
 
@@ -124,13 +122,13 @@ public:
             //                o->outletCount = o->pdObject->outletCount();
             //                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
             //                }
-            _pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
+            data.pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
         }
 
         // todo replace
 
         //        if (text.size())
-        //            n->pdObjectID = _canvas->createObject(text, x, y);
+        //            n->pdObjectID = data.canvas->createObject(text, x, y);
         //        else
         //            n->emptyBox = true;
 
@@ -140,7 +138,7 @@ public:
 
         UIObject* o = (UIObject*)objectCreated.sender;
 
-        _pdProcess->post(("created: " + o->objectText).c_str());
+        data.pdProcess->post(("created: " + o->objectText).c_str());
 
         // test
         if (o)
@@ -221,6 +219,14 @@ public:
         data.paste();
     });
 
+    IUObserver menuSelectAllAction = IUObserver([this](){
+        data.selectAllObjects();
+    });
+
+    IUObserver menuDeleteObjectAction = IUObserver([this](){
+        data.deleteSelectedObjects();
+    });
+
     // ----------
 
     IUObserver arrangeLeftAction;
@@ -230,6 +236,8 @@ public:
     IUObserver arrangeBottomAction;
     IUObserver arrangeDHAction;
     IUObserver arrangeDVAction;
+
+    // ----------
 
     bool hitObject(ImVec2 pos);
 
@@ -243,7 +251,7 @@ public:
 
     void loadbang()
     {
-        _canvas->loadbang();
+        data.canvas->loadbang();
     }
 };
 

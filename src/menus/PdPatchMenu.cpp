@@ -5,20 +5,28 @@
 void PdPatchEditMenu::shortcuts()
 {
     shortcut(aEditMode, IUKey::Action() + IUKey::KeyE());
+
+    shortcut(aCut, IUKey::Action() + IUKey::KeyX());
+    shortcut(aCopy, IUKey::Action() + IUKey::KeyC());
+    shortcut(aPaste, IUKey::Action() + IUKey::KeyV());
+
+    shortcut(aSelectAll, IUKey::Action()+IUKey::KeyA());
+    shortcut(aDelete, IUKey::Delete());
 }
 
 void PdPatchEditMenu::draw()
 {
-    ImGui::MenuItem("Undo", "Cmd + Z");
-    ImGui::MenuItem("Redo", "Cmd + Shift + Z");
+    // todo: action names
+    item("Undo", aUndo, IUKey::Action() + IUKey::KeyZ());
+    item("Redo", aUndo, IUKey::Action() + IUKey::Shift() + IUKey::KeyZ());
     ImGui::Separator();
-    ImGui::MenuItem("Cut", "Cmd + X");
-    ImGui::MenuItem("Copy", "Cmd + C");
-    ImGui::MenuItem("Paste", "Cmd + V");
+    item("Cut", aCut, IUKey::Action() + IUKey::KeyX());
+    item("Copy", aCopy, IUKey::Action() + IUKey::KeyC());
+    item("Paste", aPaste, IUKey::Action() + IUKey::KeyV());
     ImGui::Separator();
-    ImGui::MenuItem("Select all", "Cmd + A");
+    item("Select all", aSelectAll, IUKey::Action() + IUKey::KeyA());
     ImGui::Separator();
-    ImGui::MenuItem("Delete selected", "Del");
+    item("Delete selected", aDelete, IUKey::Delete());
     ImGui::Separator();
 
     bool e = (editModeFlag) ? *editModeFlag : false;
