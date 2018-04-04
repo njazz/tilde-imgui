@@ -10,11 +10,11 @@ void UIFloat::_drawBackground()
 
     draw_list->ChannelsSetCurrent(1);
 
-    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
+    ImU32 borderColor = (this->data.selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
 
-    if (errorBox)
+    if (data.errorBox)
         borderColor = IM_COL32(255, 0, 0, 255);
-    if (emptyBox)
+    if (data.emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
 
     ImVec2 node_rect_min = ImVec2(this->x, this->y);

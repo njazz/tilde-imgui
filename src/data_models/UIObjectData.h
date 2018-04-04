@@ -1,67 +1,53 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
-/*
 #ifndef UIOBJECTDATA_H
 #define UIOBJECTDATA_H
 
-#include "CommonTypes.h"
-#include <QObject>
+#include <string>
+#include "properties/PropertyList.h"
 
-namespace tilde {
-
-class PropertyList;
-class Port;
-
-typedef std::vector<Port*> portItemVec;
+typedef enum {
+    os_FixedSize,
+    os_FixedHeight,
+    os_Free
+} ObjectSizeMode;
 
 ////
 /// \brief Data model for UIObject
-///
-class UIObjectData : public QObject {
-    Q_OBJECT
+class UIObjectData {
 
-    QString _dataString;
-    PropertyList* _properties;
+    std::string _dataString;
+    PropertyList _properties;
 
-    QString _fullHelpName;
-    bool _errorBox;
-
-    t_objectSize _objectSizeMode;
-    int _minimumBoxWidth;
-    int _minimumBoxHeight;
+    ObjectSizeMode _objectSizeMode;
 
 public:
-    explicit UIObjectData(QObject* parent = 0);
-    ~UIObjectData();
+    //explicit UIObjectData();
+    //~UIObjectData();
 
-    QString toQString();
+    std::string fullHelpName;
+
+    bool errorBox;
+    bool emptyBox = false;
+    bool selected = false;
+
+    int outletClicked = -1;
+    int inletClicked = -1;
+
+    std::string toString();
     PropertyList* properties();
 
-    QString fullHelpName();
-    bool errorBox();
-    void setFullHelpName(QString fullHelpName);
-    void setErrorBox(bool errorBox);
+    void setData(std::string inputData); ///> set both properties and Pd object string
+    std::string data();
 
-    void setData(QString inputData); ///> set both properties and Pd object string
-    QString data();
+    void setObjectSizeConstraints(int minW, int minH); ///> sets all size constraints
 
-    void setObjectSize(t_objectSize sizeMode, int minW, int minH); ///> sets all size constraints
+    int minimumBoxWidth;
+    int minimumBoxHeight;
 
-    void setMminimumBoxWidth(int w);
-    void setMminimumBoxHeight(int h);
-
-    int minimumBoxWidth();
-    int minimumBoxHeight();
-    t_objectSize objectSizeMode();
-
-
-
-signals:
-
-public slots:
+    ObjectSizeMode objectSizeMode();
 };
-}
+
 
 #endif // UIOBJECTDATA_H
-*/

@@ -160,8 +160,8 @@ void PdPatchViewController::_drawObjectMaker()
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = ImGui::GetIO().MousePos.x;
             _emptyObject.y = ImGui::GetIO().MousePos.y;
-            _emptyObject.emptyBox = true;
-            _emptyObject.errorBox = true;
+            _emptyObject.data.emptyBox = true;
+            _emptyObject.data.errorBox = true;
             _emptyObject.pdObject = 0;
             _emptyObject.pdObjectID = 0;
             _emptyObject.objectText = "";
@@ -303,7 +303,7 @@ void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx
     if (inletIdx >= obj2->inletCount)
         return;
 
-    if (!obj1->errorBox && !obj2->errorBox) {
+    if (!obj1->data.errorBox && !obj2->data.errorBox) {
         printf("patchcord\n");
         connectObjects(obj1, outletIdx, obj2, inletIdx);
     }
@@ -315,7 +315,7 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
         return;
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
-        if (obj->selected) {
+        if (obj->data.selected) {
             o->x += delta.x;
             o->y += delta.y;
         }
@@ -337,12 +337,12 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
 
-        obj->selected = (obj->x <= pos.x);
-        obj->selected &= (obj->y <= pos.y);
-        obj->selected &= (obj->x + obj->width >= pos.x);
-        obj->selected &= (obj->y + obj->height >= pos.y);
+        obj->data.selected = (obj->x <= pos.x);
+        obj->data.selected &= (obj->y <= pos.y);
+        obj->data.selected &= (obj->x + obj->width >= pos.x);
+        obj->data.selected &= (obj->y + obj->height >= pos.y);
 
-        ret |= obj->selected;
+        ret |= obj->data.selected;
         _multipleObjectsSelected = false;
     }
     //        return ret;

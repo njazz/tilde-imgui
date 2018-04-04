@@ -12,6 +12,8 @@
 #include "pd_localprocess.h"
 #include "pd_localserver.h"
 
+#include "properties/PropertyList.h"
+
 class ServerCanvas;
 
 class ObjectBase;
@@ -34,18 +36,14 @@ class CanvasData {
     ImVec2 _position;
     ImVec2 _size;
 
-public:
-    CanvasData();
-    ~CanvasData();
+    PropertyList _properties;
 
+public:
     xpd::CanvasPtr canvas;
     xpd::ProcessPtr pdProcess = 0;
 
     Clipboard* clipboard = 0;
 
-    std::string fileName;
-    std::string filePath;
-    bool firstSave = true;
 
     objectVec objects;
     patchcordVec patchcords;
@@ -53,12 +51,24 @@ public:
     objectVec selectedObjects;
     patchcordVec selectedPatchcords;
 
+    std::string fileName;
+    std::string filePath;
+    bool firstSave = true;
+
     bool showGrid = true;
     bool snapToGrid = false;
 
     //
+    CanvasData();
+    ~CanvasData();
+
+    //
     bool hasObjects() { return ((objects.size() > 0) || (patchcords.size() > 0)); }
     bool hasSelectedObjects() { return ((selectedObjects.size() > 0) || (selectedPatchcords.size() > 0)); }
+
+    // ----------
+
+    PropertyList* properties();
 
     // ------------------------------
 

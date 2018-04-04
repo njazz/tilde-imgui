@@ -104,12 +104,12 @@ bool CanvasData::selectObjectsInFrame(ImVec2 start, ImVec2 end)
     for (auto o : objects) {
         UIObject* obj = (UIObject*)o;
 
-        obj->selected = (obj->x >= start.x);
-        obj->selected &= (obj->y >= start.y);
-        obj->selected &= (obj->x <= end.x);
-        obj->selected &= (obj->y <= end.y);
+        obj->data.selected = (obj->x >= start.x);
+        obj->data.selected &= (obj->y >= start.y);
+        obj->data.selected &= (obj->x <= end.x);
+        obj->data.selected &= (obj->y <= end.y);
 
-        ret |= obj->selected;
+        ret |= obj->data.selected;
     }
     return ret;
 }
@@ -117,7 +117,7 @@ bool CanvasData::selectObjectsInFrame(ImVec2 start, ImVec2 end)
 void CanvasData::selectObject(ObjectBase* box)
 {
     addUniqueObject(&selectedObjects, box);
-    box->selected = true;
+    box->data.selected = true;
 }
 
 void CanvasData::selectPatchcord(UIPatchcord* pc)
@@ -134,7 +134,7 @@ void CanvasData::deselectObjects()
 
     for (int i = 0; i < (int)objects.size(); i++) {
         if (objects.at(i)) {
-            ((ObjectBase*)objects.at(i))->selected = false;
+            ((ObjectBase*)objects.at(i))->data.selected = false;
         }
     }
 
@@ -156,7 +156,7 @@ void CanvasData::deselectPatchcords()
 void CanvasData::selectAllObjects()
 {
     for (auto o: objects)
-        if (!o->selected)
+        if (!o->data.selected)
             selectObject(o);
 }
 

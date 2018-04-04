@@ -113,7 +113,7 @@ public:
             o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
             o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
 
-            o->errorBox = (o->pdObject == 0);
+            o->data.errorBox = (o->pdObject == 0);
 
             o->updateFromPdObject();
 
@@ -153,7 +153,7 @@ public:
     IUObserver outletClicked = IUObserver([this] {
         ObjectBase* b = (ObjectBase*)outletClicked.sender;
         _newPatchcord.outputObj = b;
-        _newPatchcord.outputIdx = b->outletClicked;
+        _newPatchcord.outputIdx = b->data.outletClicked;
         _newPatchcord.inputObj = 0;
 
     });
@@ -164,7 +164,7 @@ public:
         if (b == _newPatchcord.outputObj)
             return;
         _newPatchcord.inputObj = b;
-        _newPatchcord.inputIdx = b->inletClicked;
+        _newPatchcord.inputIdx = b->data.inletClicked;
     });
 
     IUObserver inletClicked = IUObserver([this] {
@@ -173,7 +173,7 @@ public:
         ObjectBase* b = (ObjectBase*)inletClicked.sender;
         if (b == _newPatchcord.outputObj)
             return;
-        connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->inletClicked);
+        connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);
 
         _newPatchcord.outputObj = 0;
     });

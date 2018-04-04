@@ -38,7 +38,7 @@ void UIObject::draw()
     if (width < 60)
         width = 60;
 
-    if (emptyBox) {
+    if (data.emptyBox) {
         _objectReplaceMode = true;
         windowController()->isEditingText = true;
     }
@@ -194,7 +194,7 @@ void UIObject::finishedEditingText()
         io.KeysDown[i] = false;
 
     _objectReplaceMode = false;
-    emptyBox = false;
+    data.emptyBox = false;
     windowController()->isEditingText = false;
     objectText = _editText;
 

@@ -18,6 +18,8 @@
 
 #include "pd_object.h"
 
+#include "data_models/UIObjectData.h"
+
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 
@@ -47,14 +49,16 @@ public:
     int inletType(int idx);
     int outletType(int idx);
 
+    UIObjectData data;
+
     std::string objectText = "object";
 
-    bool errorBox = false;
-    bool emptyBox = false;
-    bool selected = false;
+    // bool errorBox = false;
+    // bool emptyBox = false;
+    // bool selected = false;
 
-    int outletClicked = -1;
-    int inletClicked = -1;
+    // int outletClicked = -1;
+    // int inletClicked = -1;
 
     static const int oOutletClicked = 100;
     static const int oInletClicked = 101;
@@ -63,7 +67,7 @@ public:
     //
     void updateFromPdObject()
     {
-        errorBox = (pdObject == 0);
+        data.errorBox = (pdObject == 0);
 
         if (pdObject) {
             inletCount = pdObject->inletCount();
