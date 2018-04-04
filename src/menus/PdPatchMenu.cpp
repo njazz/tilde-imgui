@@ -10,7 +10,7 @@ void PdPatchEditMenu::shortcuts()
     shortcut(aCopy, IUKey::Action() + IUKey::KeyC());
     shortcut(aPaste, IUKey::Action() + IUKey::KeyV());
 
-    shortcut(aSelectAll, IUKey::Action()+IUKey::KeyA());
+    shortcut(aSelectAll, IUKey::Action() + IUKey::KeyA());
     shortcut(aDelete, IUKey::Delete());
 }
 
@@ -53,8 +53,17 @@ void PdPatchArrangeMenu::shortcuts()
 }
 void PdPatchArrangeMenu::draw()
 {
-    ImGui::MenuItem("Show grid");
-    ImGui::MenuItem("Snap to grid");
+    bool sh = (showGrid) ? *showGrid : false;
+    bool sg = (snapToGrid) ? *snapToGrid : false;
+
+    if (item("Show grid", 0, IUShortcut::None(), sh)) {
+        if (showGrid)
+            *showGrid = !*showGrid;
+    }
+    if (item("Snap to grid", 0, IUShortcut::None(), sg)) {
+        if (snapToGrid)
+            *snapToGrid = !*snapToGrid;
+    }
     ImGui::Separator();
     ImGui::MenuItem("Align to grid");
     ImGui::MenuItem("Tidy up");

@@ -53,7 +53,8 @@ public:
     objectVec selectedObjects;
     patchcordVec selectedPatchcords;
 
-    bool gridSnap = false;
+    bool showGrid = true;
+    bool snapToGrid = false;
 
     //
     bool hasObjects() { return ((objects.size() > 0) || (patchcords.size() > 0)); }
@@ -68,7 +69,7 @@ public:
 
     //
     bool selectObjectsInFrame(ImVec2 start, ImVec2 end);
-    void moveSelectedObjects(ImVec2 pos, bool gridSnap);
+    void moveSelectedObjects(ImVec2 pos, bool snapToGrid);
 
     // ------------------------------
 

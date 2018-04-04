@@ -81,7 +81,8 @@ public:
 
     IUObserver menuExit = IUObserver([this] {
         for (auto w : _windowControllers) {
-            glfwSetWindowShouldClose(w->glWindow, 1);
+            //glfwSetWindowShouldClose(w->glWindow, 1);
+            w->close();
         }
     });
 

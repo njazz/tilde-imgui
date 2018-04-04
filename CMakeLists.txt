@@ -62,7 +62,7 @@ file(GLOB SRC_PD_IMGUI
     "src/*.cpp"
     "src/views/*.cpp"
     "src/UiObjects/*.cpp"
-#    "src/properties/*.cpp"
+    "src/properties/*.cpp"
     "src/menus/*.cpp"
     "src/undo/*.cpp"
     "src/patch_controller/*.cpp"
@@ -101,6 +101,33 @@ target_link_libraries(pd_imgui glfw)
 target_link_libraries(pd_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 
 target_link_libraries(pd_imgui xpd_static)
+
+#####
+#add_subdirectory(../imgui/tests)
+
+
+########
+#enable_testing()
+
+#macro(add_unit_test target target_test)
+#    set(UNIT_TEST_TARGETS ${UNIT_TEST_TARGETS} ${target_test})
+#    add_test(target ${CMAKE_BINARY_DIR}/tests/${target_test})
+#endmacro(add_unit_test)
+
+#add_unit_test (all_tests test_imgui)
+
+#add_custom_target( all_tests ALL
+#                   DEPENDS ${UNIT_TEST_TARGETS}
+#)
+
+#add_custom_command(TARGET all_tests
+#                   COMMENT "Running tests..."
+#                   POST_BUILD
+#                   COMMAND ${CMAKE_CTEST_COMMAND}
+#                   ARGS --output-on-failure -fprofile-arcs -ftest-coverage
+#                   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+#                   )
+
 
 
 

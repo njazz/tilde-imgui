@@ -2,73 +2,191 @@
 // License: GPL3
 
 #include "Property.h"
-//#include <QDebug>
 
-//#include <QVariantList>
+#include "imgui.h"
 
-using namespace std;
+template <>
+void Variant::set<std::string>(std::string val)
+{
+    _stringValue = val;
+    _intValue = std::stoi(val);
+    _floatValue = std::stof(val);
+}
 
-namespace tilde {
+template <>
+std::string Variant::get<std::string>()
+{
+    return _stringValue;
+}
 
-// ----------
+template <>
+int Variant::get<int>()
+{
+    return _intValue;
+}
+
+Variant::Variant(int v)
+{
+    set<int>(v);
+}
+Variant::Variant(bool b)
+{
+    set<int>(b);
+}
+Variant::Variant(float f)
+{
+    set<float>(f);
+}
+
+Variant::Variant(double f)
+{
+    set<double>(f);
+}
+
+Variant::Variant(long f)
+{
+    set<long>(f);
+}
+
+Variant::Variant(std::string s)
+{
+    set<std::string>(s);
+}
+
+// -------
 
 Property::Property()
 {
-    _readOnly = false;
-    _type = ptList; //?
+    readOnly = false;
+    type = ptNull; //?
     _applyToPd = false;
 };
 
 Property::Property(const Property& rval)
 {
-    _readOnly = false;
-    _type = ptList; //?
+    readOnly = false;
+    type = ptNull; //?
     _applyToPd = false;
 
     Property* src = const_cast<Property*>(&rval);
 
-    setGroup(src->group());
-    setVersion(src->version());
-    setType(src->type());
+    group = (src->group);
+    version = (src->version);
+    type = (src->type);
 
-    setRawData(src->data());
-    setRawDefaultData(src->defaultData());
+    _data = (src->_data);
+    _defaultData = (src->_defaultData);
+}
+
+Property::Property(Property& src)
+{
+    group = (src.group);
+    version = (src.version);
+    type = (src.type);
+
+    _data = (src._data);
+    _defaultData = (src._defaultData);
+}
+
+const Property Property::operator=(const Property& rval)
+{
+    Property ret(rval);
+    return ret;
+}
+
+Property Property::operator=(Property& rval)
+{
+    Property ret(rval);
+    return Property(rval);
+}
+
+// ----------
+
+template <>
+void Property::set<bool>(bool value)
+{
+    _data.clear();
+    _data.push_back(Variant(value));
+
+    type = (ptBool);
+    _updated();
+}
+
+template <>
+void Property::set<ImVec2>(ImVec2 value)
+{
+    _data.clear();
+    _data.push_back(Variant(value.x));
+    _data.push_back(Variant(value.y));
+
+    type = (ptVec2);
+    _updated();
 }
 
 // -------
 
 template <>
-void Property::set(bool value)
+void Property::set<float>(float value)
 {
-    _data = QVariantList() << value;
-    setDefaultType(ptBool);
+    _data.clear();
+    _data.push_back(Variant(value));
 
-    emit changed();
+    type = (ptFloat);
+    _updated();
 }
 
 template <>
-void Property::set(QPoint point)
+void Property::set<double>(double value)
 {
-    _data = QVariantList() << point.x() << point.y();
-    setDefaultType(ptVec2);
-    emit changed();
+    _data.clear();
+    _data.push_back(Variant(value));
+
+    type = (ptFloat);
+    _updated();
 }
 
 template <>
-void Property::set(QPointF point)
+void Property::set<int>(int value)
 {
+    _data.clear();
+    _data.push_back(Variant(value));
 
-    _data = QVariantList() << point.x() << point.y();
-    setDefaultType(ptVec2);
-
-    emit changed();
+    type = (ptInt);
+    _updated();
 }
+
+template <>
+void Property::set<long>(long value)
+{
+    _data.clear();
+    _data.push_back(Variant(value));
+
+    type = (ptInt);
+    _updated();
+}
+
+// -------
+
+template <>
+void Property::set<std::string>(std::string value)
+{
+    _data.clear();
+    _data.push_back(Variant(value));
+
+    type = (ptString);
+    _updated();
+}
+
+/*
+
+// -------
+
 
 template <>
 void Property::set(QRect rect)
 {
     _data = QVariantList() << rect.left() << rect.top() << rect.width() << rect.height();
-    setDefaultType(ptVector);
+    type = (ptVector);
 
     emit changed();
 }
@@ -77,65 +195,23 @@ template <>
 void Property::set(QRectF rect)
 {
     _data = QVariantList() << rect.left() << rect.top() << rect.width() << rect.height();
-    setDefaultType(ptVector);
-
-    emit changed();
-}
-template <>
-void Property::set(QSize size)
-{
-    _data = QVariantList() << size.width() << size.height();
-    setDefaultType(ptVec2);
+    type = (ptVector);
 
     emit changed();
 }
 
-template <>
-void Property::set(QSizeF size)
-{
-    _data = QVariantList() << size.width() << size.height();
-    setDefaultType(ptVec2);
-
-    emit changed();
-}
 
 template <>
 void Property::set(QColor color)
 {
     _data = QVariantList() << color.red() << color.green() << color.blue() << color.alpha();
-    setDefaultType(ptColor);
+    type = (ptColor);
 
     //qDebug() << "set" << sL;
 
     emit changed();
 }
 
-template <>
-void Property::set(float val)
-{
-    _data = QVariantList() << val;
-    setDefaultType(ptFloat);
-
-    emit changed();
-}
-
-template <>
-void Property::set(double val)
-{
-    _data = QVariantList() << val;
-    setDefaultType(ptFloat);
-
-    emit changed();
-}
-
-template <>
-void Property::set(int val)
-{
-    _data = QVariantList() << val;
-    setDefaultType(ptInt);
-
-    emit changed();
-}
 
 template <>
 void Property::set(QStringList strlist)
@@ -143,27 +219,11 @@ void Property::set(QStringList strlist)
     _data = QVariantList();
     for (int i = 0; i < strlist.size(); i++)
         _data << strlist.at(i);
-    setDefaultType(ptStringList);
+    type = (ptStringList);
     emit changed();
 }
 
-template <>
-void Property::set(QString string)
-{
-    set(string.split(" "));
-}
 
-template <>
-void Property::set(string string)
-{
-    set(QString(string.c_str()));
-}
-
-template <>
-void Property::set(char const* string)
-{
-    set(QString(string));
-}
 
 // -------
 
@@ -267,61 +327,16 @@ string Property::asPdSaveString()
     return ret;
 }
 
-// -------
 
-Property::Property(Property& src)
-{
-    //Property* src = const_cast<Property*>(&rval);
 
-    setGroup(src.group());
-    setVersion(src.version());
-    setType(src.type());
-
-    setRawData(src.data());
-    setRawDefaultData(src.defaultData());
-}
-
-const Property Property::operator=(const Property& rval)
-{
-    Property ret(rval);
-    //qDebug() << "const" << ret.asQString();
-    return ret;
-}
-
-Property Property::operator=(Property& rval)
-{
-    Property ret(rval);
-    qDebug() << "non const" << ret.asQString();
-    return Property(rval);
-}
-
-// -------
-
-void Property::setDefaultType(UIPropertyType type)
-{
-    if (_defaultData == QVariant())
-        _type = type;
-}
+// ----------
 
 void Property::copyDataToDefault()
 {
     _defaultData = _data;
 }
 
-void Property::setVersion(string version)
-{
-    _version = version;
-}
 
-void Property::setGroup(string grp)
-{
-    _group = grp;
-}
-
-void Property::setType(UIPropertyType type)
-{
-    _type = type;
-}
 
 void Property::setRawData(std::vector<_pType> data)
 {
@@ -333,17 +348,9 @@ void Property::setRawDefaultData(std::vector<_pType> data)
     _defaultData = data;
 }
 
-std::string Property::version() { return _version; }
-std::string Property::group() { return _group; }
 
 // ----------
 
-void Property::setReadonly(bool v) { _readOnly = v; }
-bool Property::readOnly() { return _readOnly; };
-
-// ----------
-
-UIPropertyType Property::type() { return _type; };
 
 QVariantList Property::data()
 {
@@ -388,3 +395,5 @@ QString Property::unescapeString(QString input)
     return ret;
 }
 }
+
+*/

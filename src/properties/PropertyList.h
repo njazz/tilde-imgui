@@ -8,31 +8,19 @@
 
 #include <map>
 
-//#include <QDebug>
-//#include <QObject>
-
-using namespace std;
-
-namespace tilde {
-
 class UIObject;
 
-typedef map<string, Property*> UIPropertyData;
-typedef map<string, UIPropertyData*> UIPropertyGroups;
+typedef std::map<std::string, Property*> UIPropertyData;
+typedef std::map<std::string, UIPropertyData*> UIPropertyGroups;
 
-typedef map<string, Property*>::iterator UIPropertyDataIterator;
-typedef map<string, UIPropertyData*>::iterator UIPropertyGroupIterator;
-
-#define PROPERTY_LISTENER(x, y) connect(objectData()->properties()->get(x), &Property::changed, this, y)
-#define PROPERTY_DISCONNECT_LISTENER(x, y) disconnect(objectData()->properties()->get(x), &Property::changed, this, y)
-#define PROPERTY_SET(x, y) objectData()->properties()->set(x, y)
-#define PROPERTY_GET(x) objectData()->properties()->get(x)
+//#define PROPERTY_LISTENER(x, y) connect(objectData()->properties()->get(x), &Property::changed, this, y)
+//#define PROPERTY_DISCONNECT_LISTENER(x, y) disconnect(objectData()->properties()->get(x), &Property::changed, this, y)
+//#define PROPERTY_SET(x, y) objectData()->properties()->set(x, y)
+//#define PROPERTY_GET(x) objectData()->properties()->get(x)
 
 ////
 /// \brief Property handling class for ui object - property list
-///
-class PropertyList : public QObject {
-    Q_OBJECT
+class PropertyList {
 
 private:
     UIPropertyData _data;
@@ -41,16 +29,15 @@ private:
 public:
     PropertyList(){};
 
-    UIPropertyData* group(QString grpName);
-    UIPropertyData* fromGroup(QString grpName);
+    UIPropertyData* group(std::string grpName);
+    UIPropertyData* fromGroup(std::string grpName);
 
     template <typename T>
-    void create(string pName, string pGroup, QString pVersion, T defaultData)
+    void create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
     {
         Property* newP = new Property;
 
-        //newP->setGroup(pGroup);
-        newP->setVersion(pVersion);
+        newP->version = (pVersion);
         newP->set(defaultData);
         newP->copyDataToDefault();
 
@@ -67,79 +54,43 @@ public:
     // ----------
 
     template <typename U>
-    void set(string pName, U value)
+    void set(std::string pName, U value)
     {
         if (_data[pName]) {
             _data[pName]->set(value);
-            //            emit propertyChangedSignal(QString(pName.c_str()));
-
-            emit get(pName.c_str())->changed();
         }
     };
 
-    Property* get(QString pName);
-
-    //todo
-
-    //    Property* operator[](QString pName)
-    //    {
-    //        return get(pName);
-    //    }
-
-    //    Property* operator[](QString pName) const
-    //    {
-    //        return get(pName);
-    //    }
+    Property* get(std::string pName);
 
     // ------------
 
     ////
     /// \brief returns string for saving in file
-    /// \return
-    ///
-    string asPdFileString();
+    std::string asPdFileString();
 
     ////
     /// \brief list of all property names
     /// \return
     ///
-    QStringList names();
+    std::vector<std::string> names();
 
     ////
     /// \brief list of all property names for specific propertyData
     /// \detais todo normal classes
-    /// \return
-    ///
-    QStringList names(UIPropertyData* data1);
+    std::vector<std::string> names(UIPropertyData* data1);
 
     ////
     /// \brief list of all group names
-    /// \return
-    ///
-    QStringList groupNames();
+    std::vector<std::string> groupNames();
 
     ////
     /// \brief extract properties from string in pd file
     /// \details returns first part of the string before the first property
     /// \return
     ///
-    QString extractFromPdFileString(QString input);
-
-    //    void addListener(QString name, QObject *obj, t_PropertyListener func)
-    //    {
-    //        Property *prop = get(name);
-
-    //        if (prop)
-    //        {
-    //            connect(prop, &Property::changed, (UIObject*)obj, func);
-
-    //        }
-
-    //    }
-
-signals:
-    void propertyChangedSignal();
+    std::string extractFromPdFileString(std::string input);
 };
-}
+
 
 #endif // CM_PROPERTYLIST_H

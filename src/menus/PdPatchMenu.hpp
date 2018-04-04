@@ -37,9 +37,12 @@ public:
 
 class PdPatchArrangeMenu : public IUMenuBase {
 public:
-    ;
+    bool *showGrid = 0;
+    bool *snapToGrid = 0;
+
     virtual void shortcuts() override;
     virtual void draw() override;
+
 
     static const int aAlignLeft = 50;
     static const int aAlignCenter = 51;

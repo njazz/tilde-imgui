@@ -1,8 +1,10 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
+
 #include "PropertyList.h"
 
+/*
 namespace tilde {
 
 UIPropertyData* PropertyList::group(QString grpName)
@@ -146,3 +148,5 @@ QString PropertyList::extractFromPdFileString(QString input)
     return ret;
 }
 }
+
+*/

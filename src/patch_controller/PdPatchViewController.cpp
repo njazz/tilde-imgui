@@ -53,6 +53,9 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
 
+    _menu.menuArrange.showGrid = &data.showGrid;
+    _menu.menuArrange.snapToGrid = &data.snapToGrid;
+
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
@@ -99,7 +102,7 @@ void PdPatchViewController::_drawGrid()
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 scrolling;
     ImGui::BeginChild(ImGui::GetID("grid"));
-    if (editMode) {
+    if (editMode && data.showGrid) {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
         float GRID_SZ = 30.0f;
 
