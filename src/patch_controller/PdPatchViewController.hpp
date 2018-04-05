@@ -12,8 +12,6 @@
 #include "IUViewController.hpp"
 #include "imgui.h"
 
-
-
 #include "UiObjects/UIObject.hpp"
 #include "UiObjects/UIPatchcord.hpp"
 
@@ -33,8 +31,6 @@
 #include "file_io/FileSaver.h"
 
 class PdPatchViewController : public IUViewController {
-
-
 
     //    std::vector<ObjectBase*> _objects;
     //    std::vector<UIPatchcord*> _patchcords;
@@ -63,6 +59,8 @@ class PdPatchViewController : public IUViewController {
 
 public:
     CanvasData data;
+
+    ImVec2 contentSize;
 
     PdPatchViewController(PdCommonMenus* m);
 
@@ -219,11 +217,11 @@ public:
         data.paste();
     });
 
-    IUAction menuSelectAllAction = IUAction([this](){
+    IUAction menuSelectAllAction = IUAction([this]() {
         data.selectAllObjects();
     });
 
-    IUAction menuDeleteObjectAction = IUAction([this](){
+    IUAction menuDeleteObjectAction = IUAction([this]() {
         data.deleteSelectedObjects();
     });
 
@@ -247,7 +245,21 @@ public:
 
     void dragSelectedObjects(ImVec2 delta);
 
-    void resizeToObjects(){};
+    void resizeToObjects()
+    {
+        int w = 0;
+        int h = 0;
+
+        for (auto o : data.objects) {
+            if (w < (o->x + o->width))
+                w = o->x + o->width;
+            if (h < (o->y + o->height))
+                h = o->y + o->height;
+        }
+
+        contentSize.x = (width > w) ? width : w;
+        contentSize.y = (height > h) ? height : h;
+    };
 
     void loadbang()
     {

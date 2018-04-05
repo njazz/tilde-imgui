@@ -61,13 +61,16 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
     _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
+
+    //
+    contentSize = ImVec2(width, height);
 }
 
 void PdPatchViewController::_drawMenu()
 {
     _menu.setWindowController(windowController());
     _menu.common->setWindowController(windowController());
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(4,4));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
     _menu.draw();
     ImGui::PopStyleVar();
 }
@@ -108,15 +111,15 @@ void PdPatchViewController::_drawGrid()
     ImGui::BeginChild(ImGui::GetID("grid"));
     if (editMode && data.showGrid) {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
-        float GRID_SZ = data.gridStep;//30.0f;
+        float GRID_SZ = data.gridStep; //30.0f;
 
         ImVec2 win_pos = ImGui::GetCursorScreenPos() - ImVec2(0, 0);
-        ImVec2 canvas_sz = ImVec2(width, height - 20); //ImGui::GetWindowSize();
+        ImVec2 canvas_sz = ImVec2(contentSize.x, contentSize.y - 20); //ImGui::GetWindowSize();
 
-        for (float x = fmodf(scrolling.x, GRID_SZ); x < this->width; x += GRID_SZ)
-            draw_list->AddLine(ImVec2(x, 0.0f) + win_pos, ImVec2(x, this->height - 20) + win_pos, GRID_COLOR);
-        for (float y = fmodf(scrolling.y, GRID_SZ); y < this->height - 20; y += GRID_SZ)
-            draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(this->width, y) + win_pos, GRID_COLOR);
+        for (float x = fmodf(scrolling.x, GRID_SZ); x < contentSize.x; x += GRID_SZ)
+            draw_list->AddLine(ImVec2(x, 0.0f) + win_pos, ImVec2(x, contentSize.y - 20) + win_pos, GRID_COLOR);
+        for (float y = fmodf(scrolling.y, GRID_SZ); y < contentSize.y - 20; y += GRID_SZ)
+            draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(contentSize.x, y) + win_pos, GRID_COLOR);
     }
     ImGui::EndChild();
 }
@@ -135,7 +138,7 @@ void PdPatchViewController::_drawSelectionFrame()
         }
         _draggingObjects = _clickedObject;
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y >20)) {
+        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
             printf("pos %f", ImGui::GetMousePos().y);
 
             deselectAll();
@@ -178,10 +181,20 @@ void PdPatchViewController::_drawObjectMaker()
 void PdPatchViewController::draw()
 {
     ImGui::SetNextWindowSize(ImVec2(width, height - 20));
+
+    // temporary!
+    resizeToObjects();
+
+    ImGui::SetNextWindowContentSize(contentSize);
     ImGui::SetNextWindowPos(ImVec2(0, 20));
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(0,0));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::Begin("patch");
+
+    ImGui::BeginTooltip();
+    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
+    ImGui::EndTooltip();
+
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
     _drawMenu();
@@ -253,7 +266,8 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     n->data.errorBox = (n->pdObject == 0);
 
-    if (!n->pdObject) return 0;
+    if (!n->pdObject)
+        return 0;
 
     //    if (n->pdObject) {
     //        n->inletCount = n->pdObject->inletCount();
@@ -278,7 +292,6 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->addAction(ObjectBase::oInletClicked, &inletClicked);
     n->addAction(ObjectBase::oInletHovered, &inletHovered);
     n->addAction(ObjectBase::oOutletClicked, &outletClicked);
-
 
     n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
 

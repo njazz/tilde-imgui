@@ -6,10 +6,10 @@ if (APPLE)
 	set(CMAKE_MACOSX_RPATH FALSE)
 endif()
 
-project(pd_imgui)
+project(tilde_imgui)
 
 set (MY_APP_VERSION "0.01")
-set (MY_APP_NAME "pd-imgui")
+set (MY_APP_NAME "tilde~")
 
 set (MACOSX_BUNDLE true)
 set (MACOSX_BUNDLE_BUNDLE_NAME ${MY_APP_NAME})
@@ -62,7 +62,7 @@ find_library(FOUNDATION Foundation REQUIRED)
 find_library(COCOA Cocoa REQUIRED)
 
 #######
-file(GLOB SRC_PD_IMGUI
+file(GLOB SRC_tilde_imgui
     "src/*.cpp"
     "src/views/*.cpp"
     "src/UiObjects/*.cpp"
@@ -86,29 +86,29 @@ add_subdirectory(ui-lib)
 #######
 add_subdirectory(xpd)
 #######
-add_executable(pd_imgui
-    ${SRC_IMGUI} ${SRC_PD_IMGUI}
+add_executable(tilde_imgui
+    ${SRC_IMGUI} ${SRC_tilde_imgui}
     ${R_FONTS} ${APP_ICON}
     )
-set_target_properties(pd_imgui PROPERTIES DEPENDS xpd)
+set_target_properties(tilde_imgui PROPERTIES DEPENDS xpd)
 
 set_target_properties(
-     pd_imgui
+     tilde_imgui
      PROPERTIES
      MACOSX_BUNDLE TRUE
      )
-set_target_properties(pd_imgui
+set_target_properties(tilde_imgui
      PROPERTIES
      MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/res/Info.plist.in)
 
- set (pd_imgui
+ set (tilde_imgui
      PROPERTIES
      MACOSX_BUNDLE_ICON_FILE tilde~.icns)
 
-target_link_libraries(pd_imgui glfw)
-target_link_libraries(pd_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
+target_link_libraries(tilde_imgui glfw)
+target_link_libraries(tilde_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 
-target_link_libraries(pd_imgui xpd_static)
+target_link_libraries(tilde_imgui xpd_static)
 
 #####
 #add_subdirectory(../imgui/tests)

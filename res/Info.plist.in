@@ -5,15 +5,15 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
-	<string>pd_imgui</string>
+	<string>tilde_imgui</string>
 	<key>CFBundleIconFile</key>
 	<string>tilde~.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.an.pd-imgui</string>
+	<string>com.an.tilde~</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>pd-imgui</string>
+	<string>tilde~</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
