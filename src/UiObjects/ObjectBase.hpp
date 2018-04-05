@@ -20,8 +20,24 @@
 
 #include "data_models/UIObjectData.h"
 
+
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
+
+#include <functional>
+
+class ObjectBaseObserver : public xpd::PdObjectObserver {
+
+public:
+    std::function <void(void)> callback = 0;
+
+    virtual void update() override
+    {
+        printf("observer update\n");
+        if (callback)
+            callback();
+    }
+};
 
 class ObjectBase : public IUView {
 protected:
@@ -33,15 +49,32 @@ protected:
     std::string id() { return std::to_string((long)this); };
 
 public:
+    ObjectBase()
+    {
+        observer.callback = [this](){
+
+            std::string d;
+            if (observer.data().size())
+                d = observer.data().getStringAt(0);
+
+            for (int i=1; i<observer.data().size();i++)
+                d += " + " + observer.data().getStringAt(i);
+
+            printf("callback: %s\n",d.c_str());
+
+        };
+    }
+
+    int inletCount = 0;
+    int outletCount = 0;
 
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
 
+    ObjectBaseObserver observer;
+
     virtual void draw() override;
     virtual void drawObjectContents(){};
-
-    int inletCount = 0;
-    int outletCount = 0;
 
     ImVec2 inletPos(int idx);
     ImVec2 outletPos(int idx);
@@ -53,41 +86,15 @@ public:
 
     std::string objectText = "object";
 
-    // bool errorBox = false;
-    // bool emptyBox = false;
-    // bool selected = false;
-
-    // int outletClicked = -1;
-    // int inletClicked = -1;
-
     static const int oOutletClicked = 100;
     static const int oInletClicked = 101;
     static const int oInletHovered = 102;
 
     //
-    void updateFromPdObject()
-    {
-        data.errorBox = (pdObject == 0);
+    void updateFromPdObject();
+    void pdObjUpdatePosition();
 
-        if (pdObject) {
-            inletCount = pdObject->inletCount();
-            outletCount = pdObject->outletCount();
-            std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
-        }
-    }
-
-    void pdObjUpdatePosition()
-    {
-        if (!pdObject)
-            return;
-        pdObject->setX(x);
-        pdObject->setY(y);
-    }
-
-    std::string asPdFileString()
-    {
-        return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
-    }
+    std::string asPdFileString();
 };
 
 #endif /* NodeObject_hpp */

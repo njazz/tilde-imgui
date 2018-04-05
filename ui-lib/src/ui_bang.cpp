@@ -13,6 +13,7 @@ using namespace ceammc;
 void UIpdBang::updateUI()
 {
 //    forwardUIMessage((long)owner(), AtomList(Atom(gensym("bang"))));
+    BaseUIObject::updateUI();
 }
 
 UIpdBang::UIpdBang(const PdArgs& a)

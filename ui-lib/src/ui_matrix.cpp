@@ -17,7 +17,7 @@ class UIpdMatrix;
 
 void UIpdMatrix::updateUI()
 {
-    forwardUIMessage((long)owner(), AtomList(Atom(value())));
+    forwardUIMessage(AtomList(Atom(value())));
 }
 
 float UIpdMatrix::value()

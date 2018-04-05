@@ -30,13 +30,16 @@ void UIObject::draw()
     if (hidden)
         return;
 
-    width = 90;
-    height = 30;
+    width = 75;
+    height = 25;
 
     int mc = (inletCount > outletCount) ? inletCount : outletCount;
-    width = 45 * mc;
-    if (width < 60)
-        width = 60;
+    width = 25 * mc;
+    if (width < 50)
+        width = 50;
+
+    float text_w = ImGui::CalcTextSize(objectText.c_str()).x + 8;
+    if (width<text_w) width =text_w;
 
     if (data.emptyBox) {
         _objectReplaceMode = true;
@@ -143,7 +146,7 @@ void UIObject::drawObjectContents()
 
     ImGui::PushItemWidth(114.0f);
 
-    ImGui::SetCursorScreenPos(ImVec2(this->x + 6, this->y + 5));
+    ImGui::SetCursorScreenPos(ImVec2(this->x + 4, this->y + height/6));
     if (!_objectReplaceMode) {
         ImGui::Text("%s", (char*)objectText.c_str());
         if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25))) {

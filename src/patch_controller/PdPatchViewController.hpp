@@ -79,7 +79,7 @@ public:
 
     // ===============
 
-    IUObserver autocomplete = IUObserver([this] {
+    IUAction autocomplete = IUAction([this] {
 
         ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
 
@@ -101,7 +101,7 @@ public:
 
     });
 
-    IUObserver objectUpdated = IUObserver([this] {
+    IUAction objectUpdated = IUAction([this] {
 
         UIObject* o = (UIObject*)objectUpdated.sender;
 
@@ -134,7 +134,7 @@ public:
 
     });
 
-    IUObserver objectCreated = IUObserver([this] {
+    IUAction objectCreated = IUAction([this] {
 
         UIObject* o = (UIObject*)objectCreated.sender;
 
@@ -150,7 +150,7 @@ public:
 
     //
 
-    IUObserver outletClicked = IUObserver([this] {
+    IUAction outletClicked = IUAction([this] {
         ObjectBase* b = (ObjectBase*)outletClicked.sender;
         _newPatchcord.outputObj = b;
         _newPatchcord.outputIdx = b->data.outletClicked;
@@ -158,7 +158,7 @@ public:
 
     });
 
-    IUObserver inletHovered = IUObserver([this] {
+    IUAction inletHovered = IUAction([this] {
         // hovered
         ObjectBase* b = (ObjectBase*)inletClicked.sender;
         if (b == _newPatchcord.outputObj)
@@ -167,7 +167,7 @@ public:
         _newPatchcord.inputIdx = b->data.inletClicked;
     });
 
-    IUObserver inletClicked = IUObserver([this] {
+    IUAction inletClicked = IUAction([this] {
 
         // hovered
         ObjectBase* b = (ObjectBase*)inletClicked.sender;
@@ -178,17 +178,17 @@ public:
         _newPatchcord.outputObj = 0;
     });
 
-    IUObserver editModeAction = IUObserver([this]() {
+    IUAction editModeAction = IUAction([this]() {
         editMode = !editMode;
     });
 
-    IUObserver deleteObjectAction = IUObserver([this]() {
+    IUAction deleteObjectAction = IUAction([this]() {
 
     });
 
     // ----------
 
-    IUObserver menuSaveAction = IUObserver([this]() {
+    IUAction menuSaveAction = IUAction([this]() {
         nfdchar_t* f = new nfdchar_t[1024];
 
         if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
@@ -197,7 +197,7 @@ public:
 
     });
 
-    IUObserver menuSaveAsAction = IUObserver([this]() {
+    IUAction menuSaveAsAction = IUAction([this]() {
         nfdchar_t* f = new nfdchar_t[1024];
 
         if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
@@ -207,35 +207,35 @@ public:
 
     // ----------
 
-    IUObserver menuCutAction = IUObserver([this]() {
+    IUAction menuCutAction = IUAction([this]() {
         data.cut();
     });
 
-    IUObserver menuCopyAction = IUObserver([this]() {
+    IUAction menuCopyAction = IUAction([this]() {
         data.copy();
     });
 
-    IUObserver menuPasteAction = IUObserver([this]() {
+    IUAction menuPasteAction = IUAction([this]() {
         data.paste();
     });
 
-    IUObserver menuSelectAllAction = IUObserver([this](){
+    IUAction menuSelectAllAction = IUAction([this](){
         data.selectAllObjects();
     });
 
-    IUObserver menuDeleteObjectAction = IUObserver([this](){
+    IUAction menuDeleteObjectAction = IUAction([this](){
         data.deleteSelectedObjects();
     });
 
     // ----------
 
-    IUObserver arrangeLeftAction;
-    IUObserver arrangeCenterAction;
-    IUObserver arrangeRightAction;
-    IUObserver arrangeTopAction;
-    IUObserver arrangeBottomAction;
-    IUObserver arrangeDHAction;
-    IUObserver arrangeDVAction;
+    IUAction arrangeLeftAction;
+    IUAction arrangeCenterAction;
+    IUAction arrangeRightAction;
+    IUAction arrangeTopAction;
+    IUAction arrangeBottomAction;
+    IUAction arrangeDHAction;
+    IUAction arrangeDVAction;
 
     // ----------
 

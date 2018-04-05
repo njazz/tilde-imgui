@@ -30,6 +30,8 @@ public:
     /// @brief Get contents as CPD list
     const t_cpd_list* atomList() const;
 
+    size_t size(){return cpd_list_size(lst_);}
+
 private:
     void free();
 };

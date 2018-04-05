@@ -6,19 +6,21 @@
 
 class UIFloat : public ObjectBase {
 
-    std::string _contents = "0.";
+    //std::string _contents = "0.";
 
     virtual void _drawBackground() override;
 
     bool _mouseDown = false;
+
+    float _value = 0.;
 public:
     UIFloat();
 
     virtual void draw() override
     {
 
-        width = 60;
-        height = 30;
+        width = 50;
+        height = 25;
 
         ObjectBase::draw();
     };
@@ -29,7 +31,7 @@ public:
 
         ImGui::BeginGroup();
         ImGui::SetCursorScreenPos(ImVec2(x+4,y+4));
-        ImGui::Text("%s",_contents.c_str());
+        ImGui::Text("%f",_value);
         ImGui::EndGroup();
 
         if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {

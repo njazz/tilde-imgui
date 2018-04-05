@@ -4,13 +4,16 @@
 #include "ObjectBase.hpp"
 
 class UIBang : public ObjectBase {
+    int _bangFrameCounter = 0; // display when non-zero; decrement
+
+    void _bang();
 public:
     UIBang();
 
     virtual void draw() override
     {
-        width = 45;
-        height = 45;
+        width = 25;
+        height = 25;
 
         ObjectBase::draw();
     };

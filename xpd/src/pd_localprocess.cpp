@@ -120,8 +120,11 @@ std::vector<std::string> PdLocalProcess::getLoadedClassesList()
 
 void PdLocalProcess::receiverCallback(t_cpd_list* msg)
 {
+    // printf("receiver callback \n");
+
     if (cpd_list_size(msg) < 1) {
         // error message here
+        // printf("receiver: empty list\n");
         return;
     }
 
@@ -130,14 +133,15 @@ void PdLocalProcess::receiverCallback(t_cpd_list* msg)
 
     if (!s) {
         // error message here
+        // printf("receiver: bad symbol\n");
         return;
     }
 
     std::string sym = cpd_symbol_name(s);
 
     // UI object pointer
-    if (sym == "pd_ui_object") {
-        if (cpd_list_size(msg) < 3)
+    if (sym == "ui_object") {
+        if (cpd_list_size(msg) < 2)
             return;
 
         a = cpd_list_at(msg, 1);
@@ -164,13 +168,22 @@ void PdLocalProcess::receiverCallback(t_cpd_list* msg)
         PdObjectObserver* observer = reinterpret_cast<PdObjectObserver*>(p.get());
 
         // todo:
-        t_cpd_list* o = cpd_list_new(cpd_list_size(msg) - 2);
-        cpd_list_set_atom_at(o, 0, cpd_list_at(msg, 2));
-        for (int i = 3; i < cpd_list_size(msg); i++) {
-            cpd_list_append(o, cpd_list_at(msg, i));
+
+        t_cpd_list* o;
+
+        if (cpd_list_size(msg) == 2) {
+            o = cpd_list_new(0);
+        } else {
+            o = cpd_list_new(cpd_list_size(msg) - 2);
+            cpd_list_set_atom_at(o, 0, cpd_list_at(msg, 2));
+
+            for (int i = 3; i < cpd_list_size(msg); i++) {
+                cpd_list_append(o, cpd_list_at(msg, i));
+            }
         }
 
-        observer->setData(o);
+        PdArguments a = PdArguments(cpd_list_to_string(o));
+        observer->setData(a);
         observer->update();
 
         cpd_list_free(o);

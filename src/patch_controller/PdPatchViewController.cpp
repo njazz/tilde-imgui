@@ -14,8 +14,8 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _menu(m)
 {
 
-    _emptyObject.addObserverFor(UIObject::oObjectChanged, &objectCreated);
-    _emptyObject.addObserverFor(UIObject::oAutocomplete, &autocomplete);
+    _emptyObject.addAction(UIObject::oObjectChanged, &objectCreated);
+    _emptyObject.addAction(UIObject::oAutocomplete, &autocomplete);
     _emptyObject.hidden = true;
     addSubview(&_emptyObject);
 
@@ -35,19 +35,19 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
 
-    arrangeLeftAction = IUObserver([this]() {
+    arrangeLeftAction = IUAction([this]() {
         ArrangeObjects::alignLeft(&data.objects);
     });
-    arrangeCenterAction = IUObserver([this]() {
+    arrangeCenterAction = IUAction([this]() {
         ArrangeObjects::alignCenter(&data.objects);
     });
-    arrangeRightAction = IUObserver([this]() {
+    arrangeRightAction = IUAction([this]() {
         ArrangeObjects::alignRight(&data.objects);
     });
-    arrangeTopAction = IUObserver([this]() {
+    arrangeTopAction = IUAction([this]() {
         ArrangeObjects::alignTop(&data.objects);
     });
-    arrangeBottomAction = IUObserver([this]() {
+    arrangeBottomAction = IUAction([this]() {
         ArrangeObjects::alignBottom(&data.objects);
     });
 
@@ -67,7 +67,9 @@ void PdPatchViewController::_drawMenu()
 {
     _menu.setWindowController(windowController());
     _menu.common->setWindowController(windowController());
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(4,4));
     _menu.draw();
+    ImGui::PopStyleVar();
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -77,6 +79,7 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
     if (data.pdProcess)
         data.canvas = data.pdProcess->createCanvas();
 
+    /*
     // test
     createObject("print", 300, 300);
 
@@ -94,6 +97,7 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
     createObject("ui.bang", 100, 150);
     createObject("ui.msg", 100, 200);
     createObject("ui.float", 100, 250);
+    */
 }
 
 void PdPatchViewController::_drawGrid()
@@ -104,9 +108,9 @@ void PdPatchViewController::_drawGrid()
     ImGui::BeginChild(ImGui::GetID("grid"));
     if (editMode && data.showGrid) {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
-        float GRID_SZ = 30.0f;
+        float GRID_SZ = data.gridStep;//30.0f;
 
-        ImVec2 win_pos = ImGui::GetCursorScreenPos() - ImVec2(4, 4);
+        ImVec2 win_pos = ImGui::GetCursorScreenPos() - ImVec2(0, 0);
         ImVec2 canvas_sz = ImVec2(width, height - 20); //ImGui::GetWindowSize();
 
         for (float x = fmodf(scrolling.x, GRID_SZ); x < this->width; x += GRID_SZ)
@@ -176,6 +180,7 @@ void PdPatchViewController::draw()
     ImGui::SetNextWindowSize(ImVec2(width, height - 20));
     ImGui::SetNextWindowPos(ImVec2(0, 20));
 
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding,ImVec2(0,0));
     ImGui::Begin("patch");
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
@@ -216,6 +221,7 @@ void PdPatchViewController::draw()
     _newPatchcord.draw();
 
     ImGui::End();
+    ImGui::PopStyleVar();
 
     _drawObjectMaker();
 
@@ -245,7 +251,9 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->pdObjectID));
 
-    //    n->errorBox = (n->pdObject == 0);
+    n->data.errorBox = (n->pdObject == 0);
+
+    if (!n->pdObject) return 0;
 
     //    if (n->pdObject) {
     //        n->inletCount = n->pdObject->inletCount();
@@ -265,11 +273,15 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     data.addObject(n);
 
-    n->addObserverFor(UIObject::oAutocomplete, &autocomplete);
-    n->addObserverFor(UIObject::oObjectChanged, &objectUpdated);
-    n->addObserverFor(ObjectBase::oInletClicked, &inletClicked);
-    n->addObserverFor(ObjectBase::oInletHovered, &inletHovered);
-    n->addObserverFor(ObjectBase::oOutletClicked, &outletClicked);
+    n->addAction(UIObject::oAutocomplete, &autocomplete);
+    n->addAction(UIObject::oObjectChanged, &objectUpdated);
+    n->addAction(ObjectBase::oInletClicked, &inletClicked);
+    n->addAction(ObjectBase::oInletHovered, &inletHovered);
+    n->addAction(ObjectBase::oOutletClicked, &outletClicked);
+
+
+    n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
+
     return n;
 }
 
@@ -368,17 +380,4 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
 bool PdPatchViewController::selectObjects()
 {
     return data.selectObjectsInFrame(_selectionStart, _selectionEnd);
-
-    //    bool ret = false;
-    //    for (auto o : data.objects) {
-    //        UIObject* obj = (UIObject*)o;
-
-    //        obj->selected = (obj->x >= _selectionStart.x);
-    //        obj->selected &= (obj->y >= _selectionStart.y);
-    //        obj->selected &= (obj->x <= _selectionEnd.x);
-    //        obj->selected &= (obj->y <= _selectionEnd.y);
-
-    //        ret |= obj->selected;
-    //    }
-    //    return ret;
 }

@@ -12,8 +12,8 @@ public:
     virtual void draw() override
     {
 
-        width = 45;
-        height = 45;
+        width = 25;
+        height = 25;
 
         ObjectBase::draw();
     };

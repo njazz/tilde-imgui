@@ -16,7 +16,7 @@ class UIpdMsg;
 
 void UIpdMsg::updateUI()
 {
-    forwardUIMessage((long)owner(), getMessage());
+    forwardUIMessage( getMessage());
 }
 
 UIpdMsg::UIpdMsg(const PdArgs& a)

@@ -2,6 +2,9 @@
 
 UIFloat::UIFloat()
 {
+    observer.callback = [this](){
+        _value = std::stof(observer.data().getStringAt(0));
+    };
 }
 
 void UIFloat::_drawBackground()

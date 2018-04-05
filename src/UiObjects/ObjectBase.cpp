@@ -37,7 +37,7 @@ int ObjectBase::outletType(int idx)
 
 ImVec2 ObjectBase::inletPos(int idx)
 {
-    float d = (width / (inletCount - 1.0)) * idx - 12.0 * (idx > 0);
+    float d = ((width - 12) / (inletCount - 1.0)) * idx;
     if (inletCount <= 1)
         d = 0;
     return ImVec2(x, y) + ImVec2(0 + d, 0) + ImVec2(6, 0);
@@ -45,7 +45,7 @@ ImVec2 ObjectBase::inletPos(int idx)
 
 ImVec2 ObjectBase::outletPos(int idx)
 {
-    float d = (width / (outletCount - 1.0)) * idx - 12.0 * (idx > 0);
+    float d = ((width - 12) / (outletCount - 1.0)) * idx;
     if (outletCount <= 1)
         d = 0;
     return ImVec2(x, y) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
@@ -156,4 +156,29 @@ void ObjectBase::draw()
     draw_list->ChannelsMerge();
 
     ImGui::PopID();
+}
+
+//
+void ObjectBase::updateFromPdObject()
+{
+    data.errorBox = (pdObject == 0);
+
+    if (pdObject) {
+        inletCount = pdObject->inletCount();
+        outletCount = pdObject->outletCount();
+        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+    }
+}
+
+void ObjectBase::pdObjUpdatePosition()
+{
+    if (!pdObject)
+        return;
+    pdObject->setX(x);
+    pdObject->setY(y);
+}
+
+std::string ObjectBase::asPdFileString()
+{
+    return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
 }

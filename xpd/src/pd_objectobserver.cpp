@@ -4,7 +4,7 @@ namespace xpd {
 
 PdObjectObserver::PdObjectObserver()
 {
-    _data = 0;
+    _data = PdArguments();
 }
 
 PdObjectObserver::~PdObjectObserver()
@@ -15,13 +15,13 @@ void PdObjectObserver::update()
 {
 }
 
-void PdObjectObserver::setData(t_cpd_list* data)
-{
-    _data = data;
-}
-t_cpd_list* PdObjectObserver::data()
-{
-    return _data;
-}
+//void PdObjectObserver::setData(t_cpd_list* data)
+//{
+//    _data = data;
+//}
+//t_cpd_list* PdObjectObserver::data()
+//{
+//    return _data;
+//}
 
 } // namespace xpd

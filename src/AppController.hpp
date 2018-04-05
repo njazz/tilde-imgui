@@ -62,31 +62,33 @@ public:
     {
         _serverProcess->post("open file: " + f);
         FileParser::open(f);
+
+
     }
 
     // ----------
 
-    IUObserver menuNew = IUObserver([this] {
+    IUAction menuNew = IUAction([this] {
 
         createNewPatchWindow();
 
     });
 
-    IUObserver menuOpen = IUObserver([this] {
+    IUAction menuOpen = IUAction([this] {
 
         nfdchar_t* f = new nfdchar_t[1024];
         if (NFD_OpenDialog("pd", "~/", &f) == NFD_OKAY)
             openFile(std::string(f));
     });
 
-    IUObserver menuExit = IUObserver([this] {
+    IUAction menuExit = IUAction([this] {
         for (auto w : _windowControllers) {
             //glfwSetWindowShouldClose(w->glWindow, 1);
             w->close();
         }
     });
 
-    IUObserver showConsoleWindow = IUObserver([this] {});
+    IUAction showConsoleWindow = IUAction([this] {});
 
     void post(std::string s){_serverProcess->post(s);}
 };

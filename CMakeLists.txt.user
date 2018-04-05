@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.4.0, 2018-04-05T00:01:50. -->
+<!-- Written by QtCreator 4.4.0, 2018-04-05T14:59:40. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -111,7 +111,7 @@
     <valuelist type="QVariantList" key="CMake.Configuration">
      <value type="QString">CMAKE_BUILD_TYPE:STRING=Debug</value>
     </valuelist>
-    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build</value>
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build</value>
     <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
      <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
       <value type="QString" key="CMakeProjectManager.MakeStep.AdditionalArguments"></value>
@@ -341,7 +341,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">pd_imgui</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">pd_imgui</value>
@@ -397,7 +397,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_arguments</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_arguments</value>
@@ -453,7 +453,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_array</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_array</value>
@@ -509,7 +509,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_loader</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_loader</value>
@@ -565,7 +565,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_dsp</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_dsp</value>
@@ -621,7 +621,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_localserver</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_localserver</value>
@@ -677,7 +677,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_class</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_class</value>
@@ -733,7 +733,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_method</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_method</value>
@@ -789,7 +789,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_catcher</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_catcher</value>
@@ -845,7 +845,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_floatarray</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_floatarray</value>
@@ -901,7 +901,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd</value>
@@ -957,7 +957,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_object</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_object</value>
@@ -1013,7 +1013,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_observers</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_observers</value>
@@ -1069,7 +1069,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_env</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_env</value>
@@ -1125,7 +1125,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_canvas</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_canvas</value>
@@ -1181,7 +1181,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_object</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_object</value>
@@ -1237,7 +1237,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_atom</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_atom</value>
@@ -1293,7 +1293,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_list</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_list</value>
@@ -1349,7 +1349,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">teststops</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">teststops (disabled)</value>
@@ -1405,7 +1405,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">testall</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">testall (disabled)</value>
@@ -1461,7 +1461,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">duplex</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">duplex (disabled)</value>
@@ -1517,7 +1517,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">record</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">record (disabled)</value>
@@ -1573,7 +1573,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">playraw</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">playraw (disabled)</value>
@@ -1629,7 +1629,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_canvas</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_canvas</value>
@@ -1685,7 +1685,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">playsaw</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">playsaw (disabled)</value>
@@ -1741,7 +1741,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">audioprobe</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/distrib/rtaudio/rtaudio/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">-1</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">audioprobe (disabled)</value>
@@ -1797,7 +1797,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_pd_localprocess</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_pd_localprocess</value>
@@ -1853,7 +1853,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_abstract_server_process</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_abstract_server_process</value>
@@ -1909,7 +1909,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_abstract_server</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_abstract_server</value>
@@ -1965,7 +1965,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_objectlist</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_objectlist</value>
@@ -2021,7 +2021,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_xpd_array</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_xpd_array</value>
@@ -2077,7 +2077,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguation.Title">test_cpd_connections</value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.Arguments"></value>
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory"></value>
-    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/pd-imgui/build/xpd/tests</value>
+    <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/xpd/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_cpd_connections</value>

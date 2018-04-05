@@ -16,7 +16,7 @@ class UIpdSliders;
 
 void UIpdSliders::updateUI()
 {
-    forwardUIMessage((long)owner(), AtomList(Atom(value())));
+    forwardUIMessage(AtomList(Atom(value())));
 }
 
 float UIpdSliders::value()

@@ -12,7 +12,7 @@ namespace ceammc {
 class BaseUIObject : public BaseObject {
 
 protected:
-    void forwardUIMessage(long ptr, AtomList list);
+    void forwardUIMessage(AtomList list);
 public:
     BaseUIObject(const PdArgs& a);
 

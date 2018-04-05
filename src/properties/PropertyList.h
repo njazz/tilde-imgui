@@ -53,13 +53,24 @@ public:
 
     // ----------
 
-    template <typename U>
-    void set(std::string pName, U value)
+    template <typename T>
+    void set(std::string pName, T value)
     {
         if (_data[pName]) {
             _data[pName]->set(value);
         }
     };
+
+
+    // ----------
+
+    Property& operator[](std::string key)
+    {
+        return *_data[key];
+    }
+
+    // ----------
+
 
     Property* get(std::string pName);
 

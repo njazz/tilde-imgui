@@ -8,17 +8,25 @@ BaseUIObject::BaseUIObject(const PdArgs& a)
 
 void BaseUIObject::updateUI()
 {
+    forwardUIMessage(AtomList());
 }
 
-void BaseUIObject::forwardUIMessage(long ptr, AtomList list)
+void BaseUIObject::forwardUIMessage(AtomList list)
 {
+    //printf("forward msg");
+
+    long ptr = reinterpret_cast<long>(owner());
+
+    list.insert(0, Atom(gensym(std::to_string(ptr).c_str())));
+
     t_symbol* receiver = gensym("xpd_receiver");
-    std::stringstream stream;
-    stream << ptr;
-    list.insert(0, Atom(gensym(stream.str().c_str())));
 
     if (receiver->s_thing)
-        pd_typedmess(receiver->s_thing, gensym("pd_ui_object"), list.size(), list.toPdData());
+        pd_typedmess(receiver->s_thing, gensym("ui_object"), list.size(), list.toPdData());
     else
+    {
         error("xpd_receiver symbol error!");
+        printf("xpd_receiver symbol error!\n");
+
+    }
 }

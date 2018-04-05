@@ -17,7 +17,11 @@ set (MACOSX_BUNDLE_INFO_STRING "${MY_APP_NAME} ${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_LONG_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_SHORT_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_BUNDLE_VERSION "${MY_APP_VERSION}")
-set (MACOSX_BUNDLE_ICON_FILE "${PROJECT_SOURCE_DIR}/${MY_APP_NAME}.icns")
+
+
+set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/icons/tilde~.icns)
+set_source_files_properties(${APP_ICON} PROPERTIES
+       MACOSX_PACKAGE_LOCATION "Resources/")
 
 file (GLOB SRC_IMGUI
     "../imgui/lib/*.cpp"
@@ -82,8 +86,9 @@ add_subdirectory(ui-lib)
 #######
 add_subdirectory(xpd)
 #######
-add_executable(pd_imgui ${SRC_IMGUI} ${SRC_PD_IMGUI} ${R_FONTS}
-
+add_executable(pd_imgui
+    ${SRC_IMGUI} ${SRC_PD_IMGUI}
+    ${R_FONTS} ${APP_ICON}
     )
 set_target_properties(pd_imgui PROPERTIES DEPENDS xpd)
 
@@ -96,6 +101,9 @@ set_target_properties(pd_imgui
      PROPERTIES
      MACOSX_BUNDLE_INFO_PLIST ${CMAKE_SOURCE_DIR}/res/Info.plist.in)
 
+ set (pd_imgui
+     PROPERTIES
+     MACOSX_BUNDLE_ICON_FILE tilde~.icns)
 
 target_link_libraries(pd_imgui glfw)
 target_link_libraries(pd_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})

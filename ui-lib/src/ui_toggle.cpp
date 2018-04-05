@@ -12,7 +12,7 @@ class UIpdToggle;
 
 void UIpdToggle::updateUI()
 {
-    forwardUIMessage((long)owner(), AtomList(Atom(_value)));
+    forwardUIMessage(AtomList(Atom(_value)));
 }
 
 UIpdToggle::UIpdToggle(const PdArgs& a)

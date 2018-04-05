@@ -57,6 +57,7 @@ public:
 
     bool showGrid = true;
     bool snapToGrid = false;
+    int gridStep = 25;
 
     //
     CanvasData();

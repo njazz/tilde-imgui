@@ -9,7 +9,7 @@
 #include <utility>
 #include <vector>
 
-#include "IUObserver.hpp"
+#include "IUAction.hpp"
 
 typedef enum {
     // empty
@@ -73,7 +73,7 @@ private:
 
     bool _applyToPd; ///> true if property value should be passed to pd object
 
-    IUObserver _action;
+    IUAction _action;
 
     inline void _updated() { _action(); }
 public:
@@ -95,10 +95,13 @@ public:
     template <typename T>
     bool is();
 
+    template  <typename T>
+    void operator =(T val){set(val);};
+
     void copyDataToDefault(); ///> copy current value to default value
 
     // -------
-    void setAction(IUObserver action) { _action = action; }
+    void setAction(IUAction action) { _action = action; }
 
     // -------
 

@@ -30,7 +30,7 @@ class PdConsoleViewController : public IUViewController {
     void _drawMenu();
 
 public:
-    PdConsoleViewController(PdCommonMenus*m);
+    PdConsoleViewController(PdCommonMenus* m);
 
     xpd::PdLocalServer* pdServer = 0;
     xpd::ProcessPtr pdProcess = 0;
@@ -45,16 +45,16 @@ public:
 
     // -------
 
-    IUObserver clearConsole = IUObserver([this](){
-       _consoleText = "";
+    IUAction clearConsole = IUAction([this]() {
+        _consoleText = "";
     });
 
-    IUObserver dspOn = IUObserver([this](){
+    IUAction dspOn = IUAction([this]() {
         _dspOn = true;
         pdProcess->dspSwitch(_dspOn);
     });
 
-    IUObserver dspOff = IUObserver([this](){
+    IUAction dspOff = IUAction([this]() {
         _dspOn = false;
         pdProcess->dspSwitch(_dspOn);
     });

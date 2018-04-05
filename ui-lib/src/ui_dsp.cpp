@@ -16,7 +16,7 @@ class UIpdDSP;
 
 void UIpdDSP::updateUI()
 {
-    forwardUIMessage((long)owner(), AtomList(Atom(_value)));
+    forwardUIMessage( AtomList(Atom(_value)));
 }
 
 UIpdDSP::UIpdDSP(const PdArgs& a)

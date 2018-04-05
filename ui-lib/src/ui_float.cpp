@@ -15,7 +15,7 @@ class UIpdFloat;
 
 void UIpdFloat::updateUI()
 {
-    forwardUIMessage((long)owner(), AtomList(Atom(value())));
+    forwardUIMessage( AtomList(Atom(value())));
 }
 
 float UIpdFloat::value()
