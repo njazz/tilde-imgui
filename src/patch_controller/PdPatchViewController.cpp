@@ -186,14 +186,15 @@ void PdPatchViewController::draw()
     resizeToObjects();
 
     ImGui::SetNextWindowContentSize(contentSize);
-    ImGui::SetNextWindowPos(ImVec2(0, 20));
+    ImGui::SetNextWindowPos(ImVec2(0, 22));
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::Begin("patch");
+    bool w = true;
+    ImGui::Begin("patch", &w, ImVec2(0,0),0.75, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar );
 
-    ImGui::BeginTooltip();
-    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
-    ImGui::EndTooltip();
+//    ImGui::BeginTooltip();
+//    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
+//    ImGui::EndTooltip();
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
@@ -277,7 +278,7 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->updateFromPdObject();
 
     std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
-    data.pdProcess->post(info);
+    data.pdProcess->post(info+"\n");
 
     n->width = 90;
 

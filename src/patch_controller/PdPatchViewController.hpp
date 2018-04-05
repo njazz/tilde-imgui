@@ -136,7 +136,7 @@ public:
 
         UIObject* o = (UIObject*)objectCreated.sender;
 
-        data.pdProcess->post(("created: " + o->objectText).c_str());
+        data.pdProcess->post(("created: " + o->objectText+ "\n").c_str() );
 
         // test
         if (o)

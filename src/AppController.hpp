@@ -90,7 +90,7 @@ public:
 
     IUAction showConsoleWindow = IUAction([this] {});
 
-    void post(std::string s){_serverProcess->post(s);}
+    void post(std::string s){_serverProcess->post(s+"\n");}
 };
 
 #endif /* AppController_hpp */

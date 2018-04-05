@@ -28,9 +28,10 @@ void PdConsoleViewController::draw()
 {
 
     ImGui::SetNextWindowSize(ImVec2(width, height));
-    ImGui::SetNextWindowPos(ImVec2(0, 20));
+    ImGui::SetNextWindowPos(ImVec2(0, 22));
 
-    ImGui::Begin("pd_console");
+    bool w = true;
+    ImGui::Begin("pd_console", &w, ImVec2(0, 0), 0.75, ImGuiWindowFlags_NoTitleBar);
 
     _drawMenu();
 
@@ -72,7 +73,7 @@ void PdConsoleViewController::draw()
 
 void PdConsoleViewController::post(std::string line)
 {
-    _consoleText = line + "\n" + _consoleText;
+    _consoleText = line + _consoleText;
 }
 
 void PdConsoleViewController::setWindowController(IUWindowController* w)
