@@ -165,8 +165,8 @@ void PdPatchViewController::_drawObjectMaker()
     if (ImGui::IsMouseDoubleClicked(0) && editMode) {
         if (!hitObject(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-            _emptyObject.x = ImGui::GetIO().MousePos.x;
-            _emptyObject.y = ImGui::GetIO().MousePos.y;
+            _emptyObject.setX(ImGui::GetIO().MousePos.x);
+            _emptyObject.setY(ImGui::GetIO().MousePos.y);
             _emptyObject.data.emptyBox = true;
             _emptyObject.data.errorBox = true;
             _emptyObject.pdObject = 0;
@@ -190,11 +190,11 @@ void PdPatchViewController::draw()
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     bool w = true;
-    ImGui::Begin("patch", &w, ImVec2(0,0),0.75, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar );
+    ImGui::Begin("patch", &w, ImVec2(0, 0), 0.75, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-//    ImGui::BeginTooltip();
-//    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
-//    ImGui::EndTooltip();
+    //    ImGui::BeginTooltip();
+    //    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
+    //    ImGui::EndTooltip();
 
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
@@ -254,8 +254,8 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     ObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
     n->objectText = text;
-    n->x = x;
-    n->y = y;
+    n->setX(x);
+    n->setY(y);
 
     if (text.size())
         n->pdObjectID = data.canvas->createObject(text, x, y);
@@ -265,10 +265,10 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->pdObjectID));
 
-    n->data.errorBox = (n->pdObject == 0);
+    n->width = 90;
 
-    if (!n->pdObject)
-        return 0;
+    //    if (!n->pdObject)
+    //        return 0;
 
     //    if (n->pdObject) {
     //        n->inletCount = n->pdObject->inletCount();
@@ -278,9 +278,7 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->updateFromPdObject();
 
     std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
-    data.pdProcess->post(info+"\n");
-
-    n->width = 90;
+    data.pdProcess->post(info + "\n");
 
     addSubview(n);
 
@@ -294,7 +292,8 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     n->addAction(ObjectBase::oInletHovered, &inletHovered);
     n->addAction(ObjectBase::oOutletClicked, &outletClicked);
 
-    n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
+    if (n->pdObject)
+        n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
 
     return n;
 }
@@ -342,8 +341,8 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
         if (obj->data.selected) {
-            o->x += delta.x;
-            o->y += delta.y;
+            o->setX(o->getX() + delta.x);
+            o->setY(o->getY() + delta.y);
         }
     }
 }
@@ -363,10 +362,10 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
 
-        obj->data.selected = (obj->x <= pos.x);
-        obj->data.selected &= (obj->y <= pos.y);
-        obj->data.selected &= (obj->x + obj->width >= pos.x);
-        obj->data.selected &= (obj->y + obj->height >= pos.y);
+        obj->data.selected = (obj->getX() <= pos.x);
+        obj->data.selected &= (obj->getY() <= pos.y);
+        obj->data.selected &= (obj->getX() + obj->width >= pos.x);
+        obj->data.selected &= (obj->getY() + obj->height >= pos.y);
 
         ret |= obj->data.selected;
         _multipleObjectsSelected = false;
@@ -381,10 +380,10 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
         UIObject* obj = (UIObject*)o;
 
         bool hit;
-        hit = (obj->x <= pos.x);
-        hit &= (obj->y <= pos.y);
-        hit &= (obj->x + obj->width >= pos.x);
-        hit &= (obj->y + obj->height >= pos.y);
+        hit = (obj->getX() <= pos.x);
+        hit &= (obj->getY() <= pos.y);
+        hit &= (obj->getX() + obj->width >= pos.x);
+        hit &= (obj->getY() + obj->height >= pos.y);
 
         ret |= hit;
     }
@@ -394,4 +393,145 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
 bool PdPatchViewController::selectObjects()
 {
     return data.selectObjectsInFrame(_selectionStart, _selectionEnd);
+}
+
+// ==========
+
+inline void PdPatchViewController::_autocomplete()
+{
+
+    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->getX(), this->autocomplete.sender->getY() + 10));
+
+    ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100));
+
+    UIObject* b = (UIObject*)autocomplete.sender;
+
+    for (auto s : data.canvas->availableObjects()) {
+        if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
+            if (ImGui::MenuItem(s.c_str())) {
+                //printf(">>>\n");
+                b->objectText = s;
+                b->finishedEditingText();
+                ImGui::EndChildFrame();
+                return;
+            }
+    }
+    ImGui::EndChildFrame();
+}
+
+inline void PdPatchViewController::_objectUpdated()
+{
+    UIObject* o = (UIObject*)objectUpdated.sender;
+
+    // test
+    //        if (o)
+    //            addObject(o->objectText, o->x,o->y);
+
+    if (!o->pdObject) {
+        o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->getX(), o->getY());
+        o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
+
+        o->data.errorBox = (o->pdObject == 0);
+
+        o->updateFromPdObject();
+
+        //            if (o->pdObject) {
+        //                o->inletCount = o->pdObject->inletCount();
+        //                o->outletCount = o->pdObject->outletCount();
+        //                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
+        //                }
+        data.pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
+    }
+
+    // todo replace
+
+    //        if (text.size())
+    //            n->pdObjectID = data.canvas->createObject(text, x, y);
+    //        else
+    //            n->emptyBox = true;
+}
+
+inline void PdPatchViewController::_objectCreated()
+{
+    UIObject* o = (UIObject*)objectCreated.sender;
+
+    data.pdProcess->post(("created: " + o->objectText + "\n").c_str());
+
+    // test
+    if (o)
+        createObject(o->objectText, o->getX(), o->getY());
+
+    _emptyObject.hidden = true;
+}
+
+// ---------------
+
+inline void PdPatchViewController::_outletClicked()
+{
+    ObjectBase* b = (ObjectBase*)outletClicked.sender;
+    _newPatchcord.outputObj = b;
+    _newPatchcord.outputIdx = b->data.outletClicked;
+    _newPatchcord.inputObj = 0;
+}
+
+inline void PdPatchViewController::_inletHovered()
+{
+    ObjectBase* b = (ObjectBase*)inletClicked.sender;
+    if (b == _newPatchcord.outputObj)
+        return;
+    _newPatchcord.inputObj = b;
+    _newPatchcord.inputIdx = b->data.inletClicked;
+}
+
+inline void PdPatchViewController::_inletClicked()
+{
+    ObjectBase* b = (ObjectBase*)inletClicked.sender;
+    if (b == _newPatchcord.outputObj)
+        return;
+    connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);
+
+    _newPatchcord.outputObj = 0;
+}
+
+// --------------
+
+void PdPatchViewController::_menuSaveAction()
+{
+    nfdchar_t* f = new nfdchar_t[1024];
+
+    if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
+        FileSaver::save(f, &data);
+    }
+}
+
+void PdPatchViewController::_menuSaveAsAction()
+{
+    nfdchar_t* f = new nfdchar_t[1024];
+
+    if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
+        FileSaver::save(f, &data);
+    }
+}
+
+// --------------
+
+void PdPatchViewController::resizeToObjects()
+{
+    int w = 0;
+    int h = 0;
+
+    for (auto o : data.objects) {
+        if (w < (o->getX() + o->width))
+            w = o->getX() + o->width;
+        if (h < (o->getY() + o->height))
+            h = o->getY() + o->height;
+    }
+
+    contentSize.x = (width > w) ? width : w;
+    contentSize.y = (height > h) ? height : h;
+};
+
+void PdPatchViewController::loadbang()
+{
+    data.canvas->loadbang();
 }

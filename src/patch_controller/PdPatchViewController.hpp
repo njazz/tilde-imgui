@@ -30,6 +30,15 @@
 
 #include "file_io/FileSaver.h"
 
+#define IU_ACTION(x)               \
+private:                           \
+    void _##x();                   \
+                                   \
+public:                            \
+    IUAction x = IUAction([this] { \
+        _##x();                    \
+    });
+
 class PdPatchViewController : public IUViewController {
 
     //    std::vector<ObjectBase*> _objects;
@@ -77,131 +86,23 @@ public:
 
     // ===============
 
-    IUAction autocomplete = IUAction([this] {
+    IU_ACTION(autocomplete)
+    IU_ACTION(objectUpdated)
+    IU_ACTION(objectCreated)
+    IU_ACTION(outletClicked)
+    IU_ACTION(inletHovered)
+    IU_ACTION(inletClicked)
 
-        ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
-
-        ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100));
-
-        UIObject* b = (UIObject*)autocomplete.sender;
-
-        for (auto s : data.canvas->availableObjects()) {
-            if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
-                if (ImGui::MenuItem(s.c_str())) {
-                    //printf(">>>\n");
-                    b->objectText = s;
-                    b->finishedEditingText();
-                    ImGui::EndChildFrame();
-                    return;
-                }
-        }
-        ImGui::EndChildFrame();
-
-    });
-
-    IUAction objectUpdated = IUAction([this] {
-
-        UIObject* o = (UIObject*)objectUpdated.sender;
-
-        // test
-        //        if (o)
-        //            addObject(o->objectText, o->x,o->y);
-
-        if (!o->pdObject) {
-            o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
-            o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
-
-            o->data.errorBox = (o->pdObject == 0);
-
-            o->updateFromPdObject();
-
-            //            if (o->pdObject) {
-            //                o->inletCount = o->pdObject->inletCount();
-            //                o->outletCount = o->pdObject->outletCount();
-            //                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
-            //                }
-            data.pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
-        }
-
-        // todo replace
-
-        //        if (text.size())
-        //            n->pdObjectID = data.canvas->createObject(text, x, y);
-        //        else
-        //            n->emptyBox = true;
-
-    });
-
-    IUAction objectCreated = IUAction([this] {
-
-        UIObject* o = (UIObject*)objectCreated.sender;
-
-        data.pdProcess->post(("created: " + o->objectText+ "\n").c_str() );
-
-        // test
-        if (o)
-            createObject(o->objectText, o->x, o->y);
-
-        _emptyObject.hidden = true;
-
-    });
-
-    //
-
-    IUAction outletClicked = IUAction([this] {
-        ObjectBase* b = (ObjectBase*)outletClicked.sender;
-        _newPatchcord.outputObj = b;
-        _newPatchcord.outputIdx = b->data.outletClicked;
-        _newPatchcord.inputObj = 0;
-
-    });
-
-    IUAction inletHovered = IUAction([this] {
-        // hovered
-        ObjectBase* b = (ObjectBase*)inletClicked.sender;
-        if (b == _newPatchcord.outputObj)
-            return;
-        _newPatchcord.inputObj = b;
-        _newPatchcord.inputIdx = b->data.inletClicked;
-    });
-
-    IUAction inletClicked = IUAction([this] {
-
-        // hovered
-        ObjectBase* b = (ObjectBase*)inletClicked.sender;
-        if (b == _newPatchcord.outputObj)
-            return;
-        connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);
-
-        _newPatchcord.outputObj = 0;
-    });
+public:
 
     IUAction editModeAction = IUAction([this]() {
         editMode = !editMode;
     });
 
-    IUAction deleteObjectAction = IUAction([this]() {
+    // --------------------
 
-    });
-
-    // ----------
-
-    IUAction menuSaveAction = IUAction([this]() {
-        nfdchar_t* f = new nfdchar_t[1024];
-
-        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
-            FileSaver::save(f, &data);
-        }
-
-    });
-
-    IUAction menuSaveAsAction = IUAction([this]() {
-        nfdchar_t* f = new nfdchar_t[1024];
-
-        if (NFD_SaveDialog("pd", "~/", &f) == NFD_OKAY) {
-            FileSaver::save(f, &data);
-        }
-    });
+    IU_ACTION(menuSaveAction)
+    IU_ACTION(menuSaveAsAction)
 
     // ----------
 
@@ -245,26 +146,8 @@ public:
 
     void dragSelectedObjects(ImVec2 delta);
 
-    void resizeToObjects()
-    {
-        int w = 0;
-        int h = 0;
-
-        for (auto o : data.objects) {
-            if (w < (o->x + o->width))
-                w = o->x + o->width;
-            if (h < (o->y + o->height))
-                h = o->y + o->height;
-        }
-
-        contentSize.x = (width > w) ? width : w;
-        contentSize.y = (height > h) ? height : h;
-    };
-
-    void loadbang()
-    {
-        data.canvas->loadbang();
-    }
+    void resizeToObjects();
+    void loadbang();
 };
 
 #endif /* AppController_hpp */

@@ -4,6 +4,20 @@
 
 #include "PropertyList.h"
 
+
+std::vector<std::string> PropertyList::names()
+{
+    std::vector<std::string> ret;
+
+
+    for (auto it : _data) {
+        //save only modified values
+        ret.push_back(it.first);
+    }
+
+    return ret;
+}
+
 /*
 namespace tilde {
 
@@ -59,18 +73,7 @@ std::string PropertyList::asPdFileString()
     return ret;
 }
 
-QStringList PropertyList::names()
-{
-    QStringList ret;
 
-    UIPropertyDataIterator it;
-    for (it = this->_data.begin(); it != this->_data.end(); ++it) {
-        //save only modified values
-        ret.push_back(it->first.c_str());
-    }
-
-    return ret;
-}
 
 QStringList PropertyList::names(UIPropertyData* data1)
 {

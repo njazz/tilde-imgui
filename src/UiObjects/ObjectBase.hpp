@@ -20,7 +20,6 @@
 
 #include "data_models/UIObjectData.h"
 
-
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 
@@ -29,7 +28,7 @@ static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return Im
 class ObjectBaseObserver : public xpd::PdObjectObserver {
 
 public:
-    std::function <void(void)> callback = 0;
+    std::function<void(void)> callback = 0;
 
     virtual void update() override
     {
@@ -48,22 +47,24 @@ protected:
 
     std::string id() { return std::to_string((long)this); };
 
-public:
-    ObjectBase()
-    {
-        observer.callback = [this](){
+    void _createProperties(){
+        auto p = properties.create("Position","Box","0.1",ImVec2(0,0));
+        p->componentAt(0).bindFloat(&getX());
+        p->componentAt(0).bindFloat(&getY());
+        p->setAction([this,p](){
+            setX (p->as<ImVec2>().x);
+            setY(p->as<ImVec2>().y);
+        });
 
-            std::string d;
-            if (observer.data().size())
-                d = observer.data().getStringAt(0);
-
-            for (int i=1; i<observer.data().size();i++)
-                d += " + " + observer.data().getStringAt(i);
-
-            printf("callback: %s\n",d.c_str());
-
-        };
+        p = properties.create("Size","Box","0.1",ImVec2(0,0));
+        p->setAction([this,p](){
+            width = p->as<ImVec2>().x;
+            height = p->as<ImVec2>().y;
+        });
     }
+
+public:    
+    PropertyList properties;
 
     int inletCount = 0;
     int outletCount = 0;
@@ -72,6 +73,9 @@ public:
     xpd::PdObject* pdObject = 0;
 
     ObjectBaseObserver observer;
+
+//
+    ObjectBase();
 
     virtual void draw() override;
     virtual void drawObjectContents(){};

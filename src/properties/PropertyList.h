@@ -13,11 +13,6 @@ class UIObject;
 typedef std::map<std::string, Property*> UIPropertyData;
 typedef std::map<std::string, UIPropertyData*> UIPropertyGroups;
 
-//#define PROPERTY_LISTENER(x, y) connect(objectData()->properties()->get(x), &Property::changed, this, y)
-//#define PROPERTY_DISCONNECT_LISTENER(x, y) disconnect(objectData()->properties()->get(x), &Property::changed, this, y)
-//#define PROPERTY_SET(x, y) objectData()->properties()->set(x, y)
-//#define PROPERTY_GET(x) objectData()->properties()->get(x)
-
 ////
 /// \brief Property handling class for ui object - property list
 class PropertyList {
@@ -33,7 +28,7 @@ public:
     UIPropertyData* fromGroup(std::string grpName);
 
     template <typename T>
-    void create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
+    Property* create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
     {
         Property* newP = new Property;
 
@@ -49,6 +44,8 @@ public:
             grp = new UIPropertyData();
         (*grp)[pName] = newP;
         _groups[pGroup] = grp;
+
+        return newP;
     }
 
     // ----------
@@ -72,7 +69,10 @@ public:
     // ----------
 
 
-    Property* get(std::string pName);
+    Property* get(std::string key)
+    {
+        return _data[key];
+    };
 
     // ------------
 

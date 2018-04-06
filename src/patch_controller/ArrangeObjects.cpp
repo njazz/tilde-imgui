@@ -15,11 +15,11 @@ void ArrangeObjects::alignLeft(objectVec* v)
     int x = 32768; //big enough lol
 
     for (auto obj : *v) {
-        if (x > obj->x)
-            x = obj->x;
+        if (x > obj->getX())
+            x = obj->getX();
     }
     for (auto obj : *v) {
-        obj->x = x;
+        obj->getX() = x;
     }
 }
 
@@ -28,11 +28,11 @@ void ArrangeObjects::alignRight(objectVec* v)
     int x = 0;
 
     for (auto obj : *v) {
-        if (x < obj->x)
-            x = obj->x;
+        if (x < obj->getX())
+            x = obj->getX();
     }
     for (auto obj : *v) {
-        obj->x = x;
+        obj->getX() = x;
     }
 }
 
@@ -42,11 +42,11 @@ void ArrangeObjects::alignBottom(objectVec* v)
     int y = 0;
 
     for (auto obj : *v) {
-        if (y < obj->y)
-            y = obj->y;
+        if (y < obj->getY())
+            y = obj->getY();
     }
     for (auto obj : *v) {
-        obj->y = y;
+        obj->getY() = y;
     }
 }
 
@@ -55,11 +55,11 @@ void ArrangeObjects::alignTop(objectVec* v)
     int y = 32768; //big enough lol
 
     for (auto obj : *v) {
-        if (y > obj->y)
-            y = obj->y;
+        if (y > obj->getY())
+            y = obj->getY();
     }
     for (auto obj : *v) {
-        obj->y = y;
+        obj->getY() = y;
     }
 }
 
@@ -69,8 +69,8 @@ void ArrangeObjects::alignCenter(objectVec* v)
     int c = 0;
 
     for (auto obj : *v) {
-        //if (x > obj->x)
-        x += obj->x;
+        //if (x > obj->getX())
+        x += obj->getX();
         c++;
     }
 
@@ -80,7 +80,7 @@ void ArrangeObjects::alignCenter(objectVec* v)
     x = x / c;
 
     for (auto obj : *v) {
-        obj->x = x;
+        obj->getX() = x;
     }
 }
 
@@ -90,15 +90,15 @@ void ArrangeObjects::distributeHorizontal(objectVec* v)
     int min_x = 32768; //big enough lol
 
     for (auto obj : *v) {
-        if (min_x > obj->y)
-            min_x = obj->y;
+        if (min_x > obj->getY())
+            min_x = obj->getY();
     }
 
     int max_x = 0;
 
     for (auto obj : *v) {
-        if (max_x < obj->y)
-            max_x = obj->y;
+        if (max_x < obj->getY())
+            max_x = obj->getY();
     }
 
     int i = 0;
@@ -107,7 +107,7 @@ void ArrangeObjects::distributeHorizontal(objectVec* v)
 
         int nx = floor(float(i) / float(v->size()) * float(max_x - min_x) + min_x);
 
-        obj->x = nx;
+        obj->getX() = nx;
         i++;
     }
 }
@@ -118,15 +118,15 @@ void ArrangeObjects::distributeVertical(objectVec* v)
     int min_y = 32768; //big enough lol
 
     for (auto obj : *v) {
-        if (min_y > obj->y)
-            min_y = obj->y;
+        if (min_y > obj->getY())
+            min_y = obj->getY();
     }
 
     int max_y = 0;
 
     for (auto obj : *v) {
-        if (max_y < obj->y)
-            max_y = obj->y;
+        if (max_y < obj->getY())
+            max_y = obj->getY();
     }
 
     int i = 0;
@@ -135,7 +135,7 @@ void ArrangeObjects::distributeVertical(objectVec* v)
 
         int ny = floor(float(i) / float(v->size()) * float(max_y - min_y) + min_y);
 
-        obj->y = ny;
+        obj->getY() = ny;
         i++;
     }
 }

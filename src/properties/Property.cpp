@@ -16,13 +16,21 @@ void Variant::set<std::string>(std::string val)
 template <>
 std::string Variant::get<std::string>()
 {
-    return _stringValue;
+    return *_stringPtr;
 }
 
 template <>
 int Variant::get<int>()
 {
-    return _intValue;
+    return *_intPtr;
+
+}
+
+template <>
+float Variant::get<float>()
+{
+    return *_floatPtr;
+
 }
 
 Variant::Variant(int v)
@@ -175,6 +183,35 @@ void Property::set<std::string>(std::string value)
 
     type = (ptString);
     _updated();
+}
+
+
+// -------
+template <>
+std::string Property::as<std::string>()
+{
+    std::string ret;
+    for (auto a : _data)
+    {
+        ret += a.get<std::string>() + " ";
+    }
+    return ret;
+}
+
+template<>
+ImVec2 Property::as<ImVec2>()
+{
+    if (_data.size()<2) return ImVec2(-1,-1);
+    ImVec2 ret;
+    ret.x = _data.at(0).get<float>();
+    ret.y = _data.at(1).get<float>();
+    return ret;
+}
+
+// --------
+void Property::copyDataToDefault()
+{
+    _defaultData = _data;
 }
 
 /*
@@ -331,10 +368,7 @@ string Property::asPdSaveString()
 
 // ----------
 
-void Property::copyDataToDefault()
-{
-    _defaultData = _data;
-}
+
 
 
 

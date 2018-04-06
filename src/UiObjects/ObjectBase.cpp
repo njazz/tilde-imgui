@@ -12,6 +12,8 @@
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
 
+#include "properties/PropertyList.h"
+
 //int nameChanged(ImGuiTextEditCallbackData* o)
 //{
 //    NodeObject* obj = (NodeObject*)o->UserData;
@@ -20,6 +22,25 @@
 
 //    return 0;
 //}
+
+ObjectBase::ObjectBase()
+{
+    observer.callback = [this](){
+
+        std::string d;
+        if (observer.data().size())
+            d = observer.data().getStringAt(0);
+
+        for (int i=1; i<observer.data().size();i++)
+            d += " + " + observer.data().getStringAt(i);
+
+        printf("callback: %s\n",d.c_str());
+
+    };
+
+    _createProperties();
+}
+
 
 int ObjectBase::inletType(int idx)
 {
@@ -40,7 +61,7 @@ ImVec2 ObjectBase::inletPos(int idx)
     float d = ((width - 12) / (inletCount - 1.0)) * idx;
     if (inletCount <= 1)
         d = 0;
-    return ImVec2(x, y) + ImVec2(0 + d, 0) + ImVec2(6, 0);
+    return ImVec2(getX(), getY()) + ImVec2(0 + d, 0) + ImVec2(6, 0);
 }
 
 ImVec2 ObjectBase::outletPos(int idx)
@@ -48,7 +69,7 @@ ImVec2 ObjectBase::outletPos(int idx)
     float d = ((width - 12) / (outletCount - 1.0)) * idx;
     if (outletCount <= 1)
         d = 0;
-    return ImVec2(x, y) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
+    return ImVec2(getX(), getY()) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
 }
 
 #pragma mark -
@@ -118,7 +139,7 @@ void ObjectBase::_drawBackground()
     if (data.emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
 
-    ImVec2 node_rect_min = ImVec2(this->x, this->y);
+    ImVec2 node_rect_min = ImVec2(this->getX(), this->getY());
     ImVec2 node_rect_max = node_rect_min + ImVec2(width, height); //ImGui::GetItemRectMax();
 
     draw_list->ChannelsSetCurrent(0); // Background
@@ -155,6 +176,22 @@ void ObjectBase::draw()
 
     draw_list->ChannelsMerge();
 
+    //
+    // properties window
+    /*
+    ImGui::BeginTooltip();
+    ImGui::Text("properties:");
+    ImGui::Separator();
+    for (auto n : properties.names())
+    {
+        ImGui::Text("%s",n.c_str());
+        ImGui::SameLine();
+        ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
+    }
+    ImGui::EndTooltip();
+    */
+
+
     ImGui::PopID();
 }
 
@@ -174,11 +211,11 @@ void ObjectBase::pdObjUpdatePosition()
 {
     if (!pdObject)
         return;
-    pdObject->setX(x);
-    pdObject->setY(y);
+    pdObject->setX(getX());
+    pdObject->setY(getY());
 }
 
 std::string ObjectBase::asPdFileString()
 {
-    return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
+    return "#X obj " + std::to_string(int(getX())) + " " + std::to_string(int(getY())) + " " + objectText;
 }

@@ -35,11 +35,13 @@ void UIObject::draw()
 
     int mc = (inletCount > outletCount) ? inletCount : outletCount;
     width = 25 * mc;
-    if (width < 50)
-        width = 50;
 
     float text_w = ImGui::CalcTextSize(objectText.c_str()).x + 8;
-    if (width<text_w) width =text_w;
+    if (width < text_w)
+        width = text_w;
+
+    if (width < 50)
+        width = 50;
 
     if (data.emptyBox) {
         _objectReplaceMode = true;
@@ -137,19 +139,19 @@ void UIObject::drawObjectContents()
 
     ImGui::BeginGroup(); // Lock horizontal position
 
-//    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
+    //    ImU32 borderColor = (this->selected) ? IM_COL32(0, 192, 255, 255) : IM_COL32(192, 192, 192, 255);
 
-//    if (errorBox)
-//        borderColor = IM_COL32(255, 0, 0, 255);
-//    if (emptyBox)
-//        borderColor = IM_COL32(0, 192, 255, 255);
+    //    if (errorBox)
+    //        borderColor = IM_COL32(255, 0, 0, 255);
+    //    if (emptyBox)
+    //        borderColor = IM_COL32(0, 192, 255, 255);
 
     ImGui::PushItemWidth(114.0f);
 
-    ImGui::SetCursorScreenPos(ImVec2(this->x + 4, this->y + height/6));
+    ImGui::SetCursorScreenPos(ImVec2(this->getX() + 4, this->getY() + height / 6));
     if (!_objectReplaceMode) {
         ImGui::Text("%s", (char*)objectText.c_str());
-        if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25))) {
+        if (ImGui::IsMouseHoveringRect(ImVec2(this->getX() + 6, this->getY() + 5), ImVec2(this->getX() + 6 + width, this->getY() + 25))) {
             if (ImGui::IsMouseDoubleClicked(0)) {
                 //                assert(windowController());
                 windowController()->isEditingText = true;

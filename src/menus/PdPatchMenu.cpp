@@ -88,16 +88,22 @@ PdPatchMenu::PdPatchMenu(PdCommonMenus* m)
     // TODO
     common = new PdCommonMenus;
     //common = m;
-    m = common;
 
-    addMenu(&m->menuFile, "File");
-    m->menuFile.inPatch = true;
+    common->menuFile.copyActionsFrom(&m->menuFile);
+    common->menuMedia.copyActionsFrom(&m->menuMedia);
+    common->menuWindow.copyActionsFrom(&m->menuWindow);
+    common->menuHelp.copyActionsFrom(&m->menuHelp);
+
+//    m = common;
+
+    addMenu(&common->menuFile, "File");
+    common->menuFile.inPatch = true;
 
     addMenu(&menuEdit, "Edit");
     addMenu(&menuPut, "Put");
     addMenu(&menuArrange, "Arrange");
 
-    addMenu(&m->menuWindow, "Window");
-    addMenu(&m->menuMedia, "Media");
-    addMenu(&m->menuHelp, "Help");
+    addMenu(&common->menuWindow, "Window");
+    addMenu(&common->menuMedia, "Media");
+    addMenu(&common->menuHelp, "Help");
 }

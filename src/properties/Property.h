@@ -11,6 +11,8 @@
 
 #include "IUAction.hpp"
 
+#include <functional>
+
 typedef enum {
     // empty
     ptNull,
@@ -39,6 +41,10 @@ class Variant {
     float _floatValue;
     std::string _stringValue;
 
+    int* _intPtr = &_intValue;
+    float* _floatPtr = &_floatValue;
+    std::string* _stringPtr = &_stringValue;
+
 public:
     Variant(int v);
     Variant(long v);
@@ -57,10 +63,13 @@ public:
     T get()
     {
         // let's try lol
-        return (T)_floatValue;
+        return (T)*_floatPtr;
     };
-};
 
+    void bindInt(int* p) { _intPtr = p; }
+    void bindFloat(float* p) { _floatPtr = p; }
+    void bindString(std::string* p) { _stringPtr = p; }
+};
 
 ////
 /// \brief property handling class for ui object.
@@ -73,7 +82,7 @@ private:
 
     bool _applyToPd; ///> true if property value should be passed to pd object
 
-    IUAction _action;
+    std::function<void(void)> _action = []() {};
 
     inline void _updated() { _action(); }
 public:
@@ -95,14 +104,21 @@ public:
     template <typename T>
     bool is();
 
-    template  <typename T>
-    void operator =(T val){set(val);};
+    template <typename T>
+    void operator=(T val) { set(val); };
 
     void copyDataToDefault(); ///> copy current value to default value
 
     // -------
-    void setAction(IUAction action) { _action = action; }
+    void setAction(std::function<void(void)> action) { _action = action; }
 
+    // -------
+    Variant componentAt(int idx)
+    {
+        if (idx >= _data.size())
+            return Variant(-1);
+        return _data[idx];
+    }
     // -------
 
     UIPropertyType type;
