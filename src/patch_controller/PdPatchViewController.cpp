@@ -113,7 +113,8 @@ void PdPatchViewController::_drawGrid()
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
         float GRID_SZ = data.gridStep; //30.0f;
 
-        ImVec2 win_pos = ImGui::GetCursorScreenPos() - ImVec2(0, 0);
+        offset = ImGui::GetCursorScreenPos();
+        ImVec2 win_pos = offset; // - ImVec2(0, 0);
         ImVec2 canvas_sz = ImVec2(contentSize.x, contentSize.y - 20); //ImGui::GetWindowSize();
 
         for (float x = fmodf(scrolling.x, GRID_SZ); x < contentSize.x; x += GRID_SZ)
@@ -201,6 +202,10 @@ void PdPatchViewController::draw()
     _drawMenu();
 
     _drawGrid();
+
+    ImGui::SetCursorPos(ImVec2(0, -22));
+    //for (auto s: _subviews)
+    //    s->updateOffset();
 
     _drawSelectionFrame();
 
@@ -341,8 +346,8 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
         if (obj->data.selected) {
-            o->setX(o->getX() + delta.x);
-            o->setY(o->getY() + delta.y);
+            o->setX(o->x() + delta.x);
+            o->setY(o->y() + delta.y);
         }
     }
 }

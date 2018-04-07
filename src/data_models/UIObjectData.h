@@ -26,9 +26,9 @@ public:
     //explicit UIObjectData();
     //~UIObjectData();
 
-    std::string fullHelpName;
+    std::string fullHelpName = "";
 
-    bool errorBox;
+    bool errorBox = false;
     bool emptyBox = false;
     bool selected = false;
 

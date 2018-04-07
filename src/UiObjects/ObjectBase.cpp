@@ -155,10 +155,14 @@ void ObjectBase::draw()
         return;
 
     ImGui::PushID(ImGui::GetID(id().c_str()));
+    ImGui::BeginGroup();
+
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
     //background
     draw_list->ChannelsSplit(2);
+
+    //updateOffset();
 
     _drawBackground();
 
@@ -171,6 +175,8 @@ void ObjectBase::draw()
     for (int slot_idx = 0; slot_idx < outletCount; slot_idx++) {
         _drawOutlet(slot_idx);
     }
+
+
 
     drawObjectContents();
 
@@ -192,6 +198,7 @@ void ObjectBase::draw()
     */
 
 
+    ImGui::EndGroup();
     ImGui::PopID();
 }
 
