@@ -11,27 +11,29 @@
 #include "ArrangeObjects.h"
 
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
-    : _menu(m)
+    : _patchMenu(m)
+
 {
+    menu = &_patchMenu;
 
     _emptyObject.addAction(UIObject::oObjectChanged, &objectCreated);
     _emptyObject.addAction(UIObject::oAutocomplete, &autocomplete);
     _emptyObject.hidden = true;
     addSubview(&_emptyObject);
 
-    _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
-    _menu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
 
-    _menu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
-    _menu.menuEdit.editModeFlag = &editMode;
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
+    _patchMenu.menuEdit.editModeFlag = &editMode;
 
-    _menu.menuEdit.setAction(PdPatchEditMenu::aCut, &menuCutAction);
-    _menu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
-    _menu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCut, &menuCutAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
 
-    _menu.menuEdit.setAction(PdPatchEditMenu::aSelectAll, &menuSelectAllAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aSelectAll, &menuSelectAllAction);
 
-    _menu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
 
     //
 
@@ -53,26 +55,17 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
 
-    _menu.menuArrange.showGrid = &data.showGrid;
-    _menu.menuArrange.snapToGrid = &data.snapToGrid;
+    _patchMenu.menuArrange.showGrid = &data.showGrid;
+    _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
 
-    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
-    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
-    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
-    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
-    _menu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
 
     //
-    contentSize = ImVec2(width, height);
-}
-
-void PdPatchViewController::_drawMenu()
-{
-    _menu.setWindowController(windowController());
-    _menu.common->setWindowController(windowController());
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
-    _menu.draw();
-    ImGui::PopStyleVar();
+    // contentSize = ImVec2(width, height);
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -103,11 +96,23 @@ void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
     */
 }
 
+void PdPatchViewController::drawMenu()
+{
+    _patchMenu.setWindowController(windowController());
+    _patchMenu.common->setWindowController(windowController());
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(4, 4));
+    IUViewController::drawMenu();
+    ImGui::PopStyleVar();
+}
+
 void PdPatchViewController::_drawGrid()
 {
     // grid
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 scrolling;
+
+    ImGui::SetCursorPos(ImVec2(0,0));
+    ImGui::SetNextWindowBgAlpha(0);
     ImGui::BeginChild(ImGui::GetID("grid"));
     if (editMode && data.showGrid) {
         ImU32 GRID_COLOR = IM_COL32(200, 200, 200, 40);
@@ -123,6 +128,7 @@ void PdPatchViewController::_drawGrid()
             draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(contentSize.x, y) + win_pos, GRID_COLOR);
     }
     ImGui::EndChild();
+    ImGui::SetCursorPos(ImVec2(0,0));
 }
 
 void PdPatchViewController::_drawSelectionFrame()
@@ -166,8 +172,8 @@ void PdPatchViewController::_drawObjectMaker()
     if (ImGui::IsMouseDoubleClicked(0) && editMode) {
         if (!hitObject(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-            _emptyObject.setX(ImGui::GetIO().MousePos.x);
-            _emptyObject.setY(ImGui::GetIO().MousePos.y);
+            _emptyObject.x = (ImGui::GetIO().MousePos.x);
+            _emptyObject.y = (ImGui::GetIO().MousePos.y);
             _emptyObject.data.emptyBox = true;
             _emptyObject.data.errorBox = true;
             _emptyObject.pdObject = 0;
@@ -181,27 +187,40 @@ void PdPatchViewController::_drawObjectMaker()
 
 void PdPatchViewController::draw()
 {
-    ImGui::SetNextWindowSize(ImVec2(width, height - 20));
+    //ImGui::SetNextWindowSize(ImVec2(width, height - 20));
 
     // temporary!
     resizeToObjects();
 
-    ImGui::SetNextWindowContentSize(contentSize);
-    ImGui::SetNextWindowPos(ImVec2(0, 22));
+    x = 0;
+    y = 22;
 
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    height = windowController()->height/2-22;
+
     bool w = true;
-    ImGui::Begin("patch", &w, ImVec2(0, 0), 0.75, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar);
 
-    //    ImGui::BeginTooltip();
-    //    ImGui::Text("contents: %f %f (%f %f)", contentSize.x, contentSize.y, width, height);
-    //    ImGui::EndTooltip();
+    title = "patch";
+    flags = ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar;
 
+    manualLayout = true;
+
+    padding = 0;
+    //contentSize = ImVec2(1024,1024);
+    IUViewController::draw();
+
+
+};
+
+void PdPatchViewController::drawLayerContents()
+{
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    _drawMenu();
+    // todo: IULayer
+     ImGui::SetCursorPos(ImVec2(0, -22));
 
     _drawGrid();
+
+    //ImGui::SetTooltip("content size %f %f",contentSize.x,contentSize.y);
 
     ImGui::SetCursorPos(ImVec2(0, -22));
     //for (auto s: _subviews)
@@ -219,7 +238,8 @@ void PdPatchViewController::draw()
     }
 
     //
-    IUViewController::draw();
+    //ImGui::SetCursorPos(ImVec2(0,0));
+    //IULayer::draw();
 
     if (_selectionFrame) {
         draw_list->AddRectFilled(_selectionStart, _selectionEnd, IM_COL32(0, 168, 192, 128));
@@ -239,8 +259,7 @@ void PdPatchViewController::draw()
 
     _newPatchcord.draw();
 
-    ImGui::End();
-    ImGui::PopStyleVar();
+    //ImGui::End();
 
     _drawObjectMaker();
 
@@ -250,7 +269,7 @@ void PdPatchViewController::draw()
             _newPatchcord.outputObj = 0;
         }
     }
-};
+}
 
 ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 {
@@ -259,8 +278,8 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     ObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
     n->objectText = text;
-    n->setX(x);
-    n->setY(y);
+    n->x = (x);
+    n->y = (y);
 
     if (text.size())
         n->pdObjectID = data.canvas->createObject(text, x, y);
@@ -346,8 +365,8 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
         if (obj->data.selected) {
-            o->setX(o->x() + delta.x);
-            o->setY(o->y() + delta.y);
+            o->x = (o->x + delta.x);
+            o->y = (o->y + delta.y);
         }
     }
 }
@@ -367,10 +386,10 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
     for (auto o : data.objects) {
         UIObject* obj = (UIObject*)o;
 
-        obj->data.selected = (obj->getX() <= pos.x);
-        obj->data.selected &= (obj->getY() <= pos.y);
-        obj->data.selected &= (obj->getX() + obj->width >= pos.x);
-        obj->data.selected &= (obj->getY() + obj->height >= pos.y);
+        obj->data.selected = (obj->x <= pos.x);
+        obj->data.selected &= (obj->y <= pos.y);
+        obj->data.selected &= (obj->x + obj->width >= pos.x);
+        obj->data.selected &= (obj->y + obj->height >= pos.y);
 
         ret |= obj->data.selected;
         _multipleObjectsSelected = false;
@@ -385,10 +404,10 @@ bool PdPatchViewController::hitObject(ImVec2 pos)
         UIObject* obj = (UIObject*)o;
 
         bool hit;
-        hit = (obj->getX() <= pos.x);
-        hit &= (obj->getY() <= pos.y);
-        hit &= (obj->getX() + obj->width >= pos.x);
-        hit &= (obj->getY() + obj->height >= pos.y);
+        hit = (obj->x <= pos.x);
+        hit &= (obj->y <= pos.y);
+        hit &= (obj->x + obj->width >= pos.x);
+        hit &= (obj->y + obj->height >= pos.y);
 
         ret |= hit;
     }
@@ -405,7 +424,7 @@ bool PdPatchViewController::selectObjects()
 inline void PdPatchViewController::_autocomplete()
 {
 
-    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->getX(), this->autocomplete.sender->getY() + 10));
+    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
 
     ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100));
 
@@ -433,7 +452,7 @@ inline void PdPatchViewController::_objectUpdated()
     //            addObject(o->objectText, o->x,o->y);
 
     if (!o->pdObject) {
-        o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->getX(), o->getY());
+        o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
         o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
 
         o->data.errorBox = (o->pdObject == 0);
@@ -464,7 +483,7 @@ inline void PdPatchViewController::_objectCreated()
 
     // test
     if (o)
-        createObject(o->objectText, o->getX(), o->getY());
+        createObject(o->objectText, o->x, o->y);
 
     _emptyObject.hidden = true;
 }
@@ -526,10 +545,10 @@ void PdPatchViewController::resizeToObjects()
     int h = 0;
 
     for (auto o : data.objects) {
-        if (w < (o->getX() + o->width))
-            w = o->getX() + o->width;
-        if (h < (o->getY() + o->height))
-            h = o->getY() + o->height;
+        if (w < (o->x + o->width))
+            w = o->x + o->width;
+        if (h < (o->y + o->height))
+            h = o->y + o->height;
     }
 
     contentSize.x = (width > w) ? width : w;

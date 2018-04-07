@@ -104,10 +104,10 @@ bool CanvasData::selectObjectsInFrame(ImVec2 start, ImVec2 end)
     for (auto o : objects) {
         UIObject* obj = (UIObject*)o;
 
-        obj->data.selected = (obj->getX() >= start.x);
-        obj->data.selected &= (obj->getY() >= start.y);
-        obj->data.selected &= (obj->getX() <= end.x);
-        obj->data.selected &= (obj->getY() <= end.y);
+        obj->data.selected = (obj->x >= start.x);
+        obj->data.selected &= (obj->y >= start.y);
+        obj->data.selected &= (obj->x <= end.x);
+        obj->data.selected &= (obj->y <= end.y);
 
         ret |= obj->data.selected;
     }

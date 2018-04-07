@@ -49,11 +49,11 @@ protected:
 
     void _createProperties(){
         auto p = properties.create("Position","Box","0.1",ImVec2(0,0));
-        p->componentAt(0).bindFloat(&getX());
-        p->componentAt(0).bindFloat(&getY());
+        p->componentAt(0).bindFloat(&x);
+        p->componentAt(0).bindFloat(&y);
         p->setAction([this,p](){
-            setX (p->as<ImVec2>().x);
-            setY(p->as<ImVec2>().y);
+            x = (p->as<ImVec2>().x);
+            y = (p->as<ImVec2>().y);
         });
 
         p = properties.create("Size","Box","0.1",ImVec2(0,0));

@@ -148,10 +148,10 @@ void UIObject::drawObjectContents()
 
     ImGui::PushItemWidth(114.0f);
 
-    ImGui::SetCursorScreenPos(ImVec2(this->getX() + 4, this->getY() + height / 6));
+    ImGui::SetCursorScreenPos(ImVec2(this->x + 4, this->y + height / 6));
     if (!_objectReplaceMode) {
         ImGui::Text("%s", (char*)objectText.c_str());
-        if (ImGui::IsMouseHoveringRect(ImVec2(this->getX() + 6, this->getY() + 5), ImVec2(this->getX() + 6 + width, this->getY() + 25))) {
+        if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25))) {
             if (ImGui::IsMouseDoubleClicked(0)) {
                 //                assert(windowController());
                 windowController()->isEditingText = true;

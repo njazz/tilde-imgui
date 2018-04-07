@@ -53,8 +53,8 @@ class PdPatchViewController : public IUViewController {
     bool _clickedObject = false;
     bool _multipleObjectsSelected = false;
 
-    void _drawMenu();
-    PdPatchMenu _menu;
+    virtual void drawMenu() override;
+    PdPatchMenu _patchMenu;
 
     UIObject _emptyObject;
 
@@ -79,6 +79,7 @@ public:
     bool editMode = true;
 
     virtual void draw() override;
+    virtual void drawLayerContents() override;
 
     ObjectBase* createObject(std::string text, int x, int y);
     void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);

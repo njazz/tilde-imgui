@@ -61,7 +61,7 @@ ImVec2 ObjectBase::inletPos(int idx)
     float d = ((width - 12) / (inletCount - 1.0)) * idx;
     if (inletCount <= 1)
         d = 0;
-    return ImVec2(getX(), getY()) + ImVec2(0 + d, 0) + ImVec2(6, 0);
+    return ImVec2(x, y) + ImVec2(0 + d, 0) + ImVec2(6, 0);
 }
 
 ImVec2 ObjectBase::outletPos(int idx)
@@ -69,7 +69,7 @@ ImVec2 ObjectBase::outletPos(int idx)
     float d = ((width - 12) / (outletCount - 1.0)) * idx;
     if (outletCount <= 1)
         d = 0;
-    return ImVec2(getX(), getY()) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
+    return ImVec2(x, y) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
 }
 
 #pragma mark -
@@ -139,7 +139,7 @@ void ObjectBase::_drawBackground()
     if (data.emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
 
-    ImVec2 node_rect_min = ImVec2(this->getX(), this->getY());
+    ImVec2 node_rect_min = ImVec2(this->x, this->y);
     ImVec2 node_rect_max = node_rect_min + ImVec2(width, height); //ImGui::GetItemRectMax();
 
     draw_list->ChannelsSetCurrent(0); // Background
@@ -218,11 +218,11 @@ void ObjectBase::pdObjUpdatePosition()
 {
     if (!pdObject)
         return;
-    pdObject->setX(getX());
-    pdObject->setY(getY());
+    pdObject->setX(x);
+    pdObject->setY(y);
 }
 
 std::string ObjectBase::asPdFileString()
 {
-    return "#X obj " + std::to_string(int(getX())) + " " + std::to_string(int(getY())) + " " + objectText;
+    return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
 }
