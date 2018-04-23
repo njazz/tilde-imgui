@@ -7,7 +7,7 @@
 //  Copyright © 2018 Alex Nadzharov. All rights reserved.
 //
 
-#include "ObjectBase.hpp"
+#include "UIObjectBase.hpp"
 
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
@@ -23,7 +23,7 @@
 //    return 0;
 //}
 
-ObjectBase::ObjectBase()
+UiObjectBase::UiObjectBase()
 {
     observer.callback = [this](){
 
@@ -42,21 +42,21 @@ ObjectBase::ObjectBase()
 }
 
 
-int ObjectBase::inletType(int idx)
+int UiObjectBase::inletType(int idx)
 {
     if (!pdObject)
         return 0;
     return (pdObject->inlets()[idx].type() != xpd::XLET_MESSAGE);
 }
 
-int ObjectBase::outletType(int idx)
+int UiObjectBase::outletType(int idx)
 {
     if (!pdObject)
         return 0;
     return (pdObject->outlets()[idx].type() != xpd::XLET_MESSAGE);
 }
 
-ImVec2 ObjectBase::inletPos(int idx)
+ImVec2 UiObjectBase::inletPos(int idx)
 {
     float d = ((width - 12) / (inletCount - 1.0)) * idx;
     if (inletCount <= 1)
@@ -64,7 +64,7 @@ ImVec2 ObjectBase::inletPos(int idx)
     return ImVec2(x, y) + ImVec2(0 + d, 0) + ImVec2(6, 0);
 }
 
-ImVec2 ObjectBase::outletPos(int idx)
+ImVec2 UiObjectBase::outletPos(int idx)
 {
     float d = ((width - 12) / (outletCount - 1.0)) * idx;
     if (outletCount <= 1)
@@ -74,7 +74,7 @@ ImVec2 ObjectBase::outletPos(int idx)
 
 #pragma mark -
 
-void ObjectBase::_drawInlet(int idx)
+void UiObjectBase::_drawInlet(int idx)
 {
     //    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -100,7 +100,7 @@ void ObjectBase::_drawInlet(int idx)
     draw_list->AddRect(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), inletBorderColor);
 }
 
-void ObjectBase::_drawOutlet(int idx)
+void UiObjectBase::_drawOutlet(int idx)
 {
     //    const int NODE_SLOT_RADIUS = 5;
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
@@ -126,7 +126,7 @@ void ObjectBase::_drawOutlet(int idx)
     draw_list->AddRect(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), outletBorderColor);
 }
 
-void ObjectBase::_drawBackground()
+void UiObjectBase::_drawBackground()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
@@ -149,7 +149,7 @@ void ObjectBase::_drawBackground()
 
 #pragma mark -
 
-void ObjectBase::draw()
+void UiObjectBase::draw()
 {
     if (hidden)
         return;
@@ -203,7 +203,7 @@ void ObjectBase::draw()
 }
 
 //
-void ObjectBase::updateFromPdObject()
+void UiObjectBase::updateFromPdObject()
 {
     data.errorBox = (pdObject == 0);
 
@@ -214,7 +214,7 @@ void ObjectBase::updateFromPdObject()
     }
 }
 
-void ObjectBase::pdObjUpdatePosition()
+void UiObjectBase::pdObjUpdatePosition()
 {
     if (!pdObject)
         return;
@@ -222,7 +222,7 @@ void ObjectBase::pdObjUpdatePosition()
     pdObject->setY(y);
 }
 
-std::string ObjectBase::asPdFileString()
+std::string UiObjectBase::asPdFileString()
 {
     return "#X obj " + std::to_string(int(x)) + " " + std::to_string(int(y)) + " " + objectText;
 }

@@ -17,7 +17,7 @@
 
 #include "IUWindowController.hpp"
 
-#include "menus/PdConsoleMenu.hpp"
+#include "PdConsoleMenu.hpp"
 
 class PdConsoleViewController : public IUViewController {
 

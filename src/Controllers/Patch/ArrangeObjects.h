@@ -5,8 +5,8 @@
 
 using namespace std;
 
-class ObjectBase;
-typedef std::vector<ObjectBase*> objectVec;
+class UiObjectBase;
+typedef std::vector<UiObjectBase*> objectVec;
 
 // static class for arranging objects
 class ArrangeObjects {

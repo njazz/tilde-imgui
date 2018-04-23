@@ -1,18 +1,18 @@
 #ifndef UIOBJECTFACTORY_H
 #define UIOBJECTFACTORY_H
 
-#include "UiObjects/UIObject.hpp"
+#include "UIObject.hpp"
 
-#include "UiObjects/UIBang.h"
-#include "UiObjects/UIToggle.h"
-#include "UiObjects/UIMessage.h"
-#include "UiObjects/UIFloat.h"
+#include "UIBang.h"
+#include "UIToggle.h"
+#include "UIMessage.h"
+#include "UIFloat.h"
 
-typedef ObjectBase* (*objectBaseConstructor)();
+typedef UiObjectBase* (*objectBaseConstructor)();
 
 class _typeConstructorBase {
 public:
-    virtual ObjectBase* operator()() = 0;
+    virtual UiObjectBase* operator()() = 0;
 };
 
 template <typename T>
@@ -42,7 +42,7 @@ public:
         _c[className] = new _typeConstructor<T>;
     }
 
-    static ObjectBase* createUiObject(std::string className)
+    static UiObjectBase* createUiObject(std::string className)
     {
         printf("factory <%s>\n", className.c_str());
 

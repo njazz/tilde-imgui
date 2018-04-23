@@ -48,7 +48,7 @@ void UIObject::draw()
         windowController()->isEditingText = true;
     }
 
-    ObjectBase::draw();
+    UiObjectBase::draw();
 
     //    return;
     //    //

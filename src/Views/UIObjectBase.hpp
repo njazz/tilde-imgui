@@ -18,7 +18,7 @@
 
 #include "pd_object.h"
 
-#include "data_models/UIObjectData.h"
+#include "UIObjectData.h"
 
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
@@ -38,7 +38,7 @@ public:
     }
 };
 
-class ObjectBase : public IUView {
+class UiObjectBase : public IUView {
 protected:
     void _drawInlet(int idx);
     void _drawOutlet(int idx);
@@ -75,7 +75,7 @@ public:
     ObjectBaseObserver observer;
 
 //
-    ObjectBase();
+    UiObjectBase();
 
     virtual void draw() override;
     virtual void drawObjectContents(){};

@@ -64,17 +64,27 @@ find_library(COCOA Cocoa REQUIRED)
 #######
 file(GLOB SRC_tilde_imgui
     "src/*.cpp"
-    "src/views/*.cpp"
-    "src/UiObjects/*.cpp"
-    "src/properties/*.cpp"
-    "src/menus/*.cpp"
-    "src/undo/*.cpp"
-    "src/patch_controller/*.cpp"
-    "src/data_models/*.cpp"
-    "src/file_io/*.cpp"
+    "src/Controllers/*.cpp"
+    "src/Controllers/Patch/*.cpp"
+    "src/Views/*.cpp"
+    "src/UIObjects/*.cpp"
+    "src/Properties/*.cpp"
+    "src/Menus/*.cpp"
+    "src/Undo/*.cpp"
+    "src/DataModels/*.cpp"
+    "src/FileIO/*.cpp"
     )
 include_directories(src)
-include_directories(src/patch_controller)
+
+include_directories(src/Controllers)
+include_directories(src/Controllers/Patch)
+include_directories(src/DataModels)
+include_directories(src/FileIO)
+include_directories(src/Menus)
+include_directories(src/Properties)
+include_directories(src/UIObjects)
+include_directories(src/Undo)
+include_directories(src/Views)
 
 INCLUDE_DIRECTORIES(xpd/src)
 

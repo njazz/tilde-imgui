@@ -6,9 +6,9 @@
 //  Copyright © 2018 Alex Nadzharov. All rights reserved.
 //
 
-#include "UiObjects/UIPatchcord.hpp"
+#include "UIPatchcord.hpp"
 
-#include "UiObjects/UIObject.hpp"
+#include "UIObject.hpp"
 
 void UIPatchcord::draw()
 {

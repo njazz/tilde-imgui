@@ -401,7 +401,7 @@ bool FileParser::legacyProcess(PdPatchViewController* controller, std::vector<st
     return false; // if it is not a special legacy object
 }
 
-ObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list)
+UiObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list)
 {
     printf("new obj");
 

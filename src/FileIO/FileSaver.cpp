@@ -3,7 +3,7 @@
 
 
 #include "FileSaver.h"
-#include "data_models/CanvasData.h"
+#include "CanvasData.h"
 #include "PdPatchViewController.hpp"
 
 #include <vector>

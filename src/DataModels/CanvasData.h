@@ -5,23 +5,23 @@
 #define CM_CANVAS_TYPES_H
 
 #include "Clipboard.h"
-#include "UiObjects/UIPatchcord.hpp"
+#include "UIPatchcord.hpp"
 
 #include "imgui.h"
 
 #include "pd_localprocess.h"
 #include "pd_localserver.h"
 
-#include "properties/PropertyList.h"
+#include "PropertyList.h"
 
 class ServerCanvas;
 
-class ObjectBase;
+class UiObjectBase;
 class UIPatchcord;
 
 //class ImVec2;
 
-typedef std::vector<ObjectBase*> objectVec;
+typedef std::vector<UiObjectBase*> objectVec;
 typedef std::vector<UIPatchcord*> patchcordVec;
 
 ////
@@ -73,9 +73,9 @@ public:
 
     // ------------------------------
 
-    void addUniqueObject(objectVec* objects, ObjectBase* box);
+    void addUniqueObject(objectVec* objects, UiObjectBase* box);
     void addUniquePatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
-    int findObject(objectVec* objects, ObjectBase* box);
+    int findObject(objectVec* objects, UiObjectBase* box);
     int findPatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
 
     //
@@ -84,12 +84,12 @@ public:
 
     // ------------------------------
 
-    void addObject(ObjectBase* box) { addUniqueObject(&objects, box); }
+    void addObject(UiObjectBase* box) { addUniqueObject(&objects, box); }
     void addPatchcord(UIPatchcord* pc) { addUniquePatchcord(&patchcords, pc); }
 
     // ------------------------------
 
-    void selectObject(ObjectBase* box);
+    void selectObject(UiObjectBase* box);
     void selectPatchcord(UIPatchcord* pc);
     void deselectObjects();
     void deselectPatchcords();
@@ -98,7 +98,7 @@ public:
     // ----------
 
     void deleteSelectedObjects();
-    void deleteObject(ObjectBase* obj);
+    void deleteObject(UiObjectBase* obj);
     void deletePatchcord(UIPatchcord* pc);
 
     // ----------
@@ -109,9 +109,9 @@ public:
 
     // -------
 
-    int findObjectIndex(ObjectBase* obj);
-    ObjectBase* getObjectByIndex(int idx);
-    patchcordVec patchcordsForObject(ObjectBase* obj);
+    int findObjectIndex(UiObjectBase* obj);
+    UiObjectBase* getObjectByIndex(int idx);
+    patchcordVec patchcordsForObject(UiObjectBase* obj);
 
     // ------------------------------
 

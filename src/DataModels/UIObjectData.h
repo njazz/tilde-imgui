@@ -5,7 +5,7 @@
 #define UIOBJECTDATA_H
 
 #include <string>
-#include "properties/PropertyList.h"
+#include "PropertyList.h"
 
 typedef enum {
     os_FixedSize,

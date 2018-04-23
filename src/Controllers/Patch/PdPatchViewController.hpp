@@ -12,32 +12,25 @@
 #include "IUViewController.hpp"
 #include "imgui.h"
 
-#include "UiObjects/UIObject.hpp"
-#include "UiObjects/UIPatchcord.hpp"
+#include "UIObject.hpp"
+#include "UIPatchcord.hpp"
 
-#include "views/NewConnection.hpp"
+#include "NewConnection.hpp"
 
 #include "math.h"
 
-#include "UiObjects/UIObjectFactory.h"
-#include "menus/PdPatchMenu.hpp"
+#include "UIObjectFactory.h"
+#include "PdPatchMenu.hpp"
 
-#include "undo/UndoStack.hpp"
+#include "UndoStack.hpp"
 
 #include "nfd.h"
 
-#include "data_models/CanvasData.h"
+#include "CanvasData.h"
 
-#include "file_io/FileSaver.h"
+#include "FileSaver.h"
 
-#define IU_ACTION(x)               \
-private:                           \
-    void _##x();                   \
-                                   \
-public:                            \
-    IUAction x = IUAction([this] { \
-        _##x();                    \
-    });
+
 
 class PdPatchViewController : public IUViewController {
 
@@ -81,8 +74,8 @@ public:
     virtual void draw() override;
     virtual void drawLayerContents() override;
 
-    ObjectBase* createObject(std::string text, int x, int y);
-    void connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx);
+    UiObjectBase* createObject(std::string text, int x, int y);
+    void connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx);
     void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
 
     // ===============

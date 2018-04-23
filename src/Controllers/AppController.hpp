@@ -20,13 +20,13 @@
 
 #include "IUWindowController.hpp"
 
-#include "menus/PdCommonMenus.hpp"
+#include "PdCommonMenus.hpp"
 
 #include "nfd.h"
 
-#include "file_io/FileParser.h"
+#include "FileParser.h"
 
-#include "data_models/Clipboard.h"
+#include "Clipboard.h"
 
 class AppConsoleObserver : public xpd::ConsoleObserver {
     PdConsoleViewController* _pdConsoleWindow = 0;

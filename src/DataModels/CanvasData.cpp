@@ -25,7 +25,7 @@ CanvasData::~CanvasData()
     //    delete _properties;
 }
 
-void CanvasData::addUniqueObject(objectVec* boxes, ObjectBase* box)
+void CanvasData::addUniqueObject(objectVec* boxes, UiObjectBase* box)
 {
     int p = findObject(boxes, box);
 
@@ -49,7 +49,7 @@ void CanvasData::addUniquePatchcord(patchcordVec* patchcords, UIPatchcord* pcord
     patchcords->push_back(pcord);
 }
 
-int CanvasData::findObject(objectVec* boxes, ObjectBase* box)
+int CanvasData::findObject(objectVec* boxes, UiObjectBase* box)
 {
     //todo
     for (size_t i = 0; i < boxes->size(); i++) {
@@ -114,7 +114,7 @@ bool CanvasData::selectObjectsInFrame(ImVec2 start, ImVec2 end)
     return ret;
 }
 
-void CanvasData::selectObject(ObjectBase* box)
+void CanvasData::selectObject(UiObjectBase* box)
 {
     addUniqueObject(&selectedObjects, box);
     box->data.selected = true;
@@ -134,7 +134,7 @@ void CanvasData::deselectObjects()
 
     for (int i = 0; i < (int)objects.size(); i++) {
         if (objects.at(i)) {
-            ((ObjectBase*)objects.at(i))->data.selected = false;
+            ((UiObjectBase*)objects.at(i))->data.selected = false;
         }
     }
 
@@ -170,7 +170,7 @@ void CanvasData::deleteSelectedObjects()
     }
 }
 
-void CanvasData::deleteObject(ObjectBase* obj)
+void CanvasData::deleteObject(UiObjectBase* obj)
 {
     // todo: remove patchcords for object
 
@@ -208,10 +208,10 @@ void CanvasData::paste()
 }
 
 // -------
-int CanvasData::findObjectIndex(ObjectBase* obj)
+int CanvasData::findObjectIndex(UiObjectBase* obj)
 {
     //UIObject* obj1;
-    std::vector<ObjectBase*>::iterator iter = std::find(objects.begin(), objects.end(), obj);
+    std::vector<UiObjectBase*>::iterator iter = std::find(objects.begin(), objects.end(), obj);
 
     size_t index = std::distance(objects.begin(), iter);
     if (index != objects.size()) {
@@ -220,7 +220,7 @@ int CanvasData::findObjectIndex(ObjectBase* obj)
     return -1;
 }
 
-ObjectBase* CanvasData::getObjectByIndex(int idx)
+UiObjectBase* CanvasData::getObjectByIndex(int idx)
 {
 
     if ((idx < (int)objects.size()) && (idx >= 0))
@@ -231,7 +231,7 @@ ObjectBase* CanvasData::getObjectByIndex(int idx)
     }
 }
 
-patchcordVec CanvasData::patchcordsForObject(ObjectBase* obj)
+patchcordVec CanvasData::patchcordsForObject(UiObjectBase* obj)
 {
     patchcordVec ret;
     patchcordVec::iterator it;

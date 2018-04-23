@@ -1,10 +1,10 @@
 #ifndef UIMessage_H
 #define UIMessage_H
 
-#include "ObjectBase.hpp"
+#include "UIObjectBase.hpp"
 #include <string>
 
-class UIMessage : public ObjectBase {
+class UIMessage : public UiObjectBase {
     //bool _value = false;
 
     std::string _contents = "msg";
@@ -21,7 +21,7 @@ public:
         width = 60;
         height = 30;
 
-        ObjectBase::draw();
+        UiObjectBase::draw();
     };
 
     virtual void drawObjectContents() override

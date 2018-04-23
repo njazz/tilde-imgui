@@ -13,14 +13,14 @@
 
 #include "IUView.hpp"
 
-class ObjectBase;
+class UiObjectBase;
 
 class UIPatchcord : public IUView {
 
 public:
-    ObjectBase* outputObj;
+    UiObjectBase* outputObj;
     int outputIdx;
-    ObjectBase* inputObj;
+    UiObjectBase* inputObj;
     int inputIdx;
 
     virtual void draw();

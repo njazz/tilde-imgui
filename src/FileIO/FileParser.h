@@ -14,7 +14,7 @@ class PatchWindow;
 class CanvasData;
 class CanvasView;
 
-class ObjectBase;
+class UiObjectBase;
 
 class AppController;
 class PdPatchViewController;
@@ -76,7 +76,7 @@ public:
 
     static void open(std::string fname); ///> [1] opens file, converts to QStrings, calls 'parseString'
 
-    static ObjectBase* sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.1] subroutine - formats list and send it to canvas as a string
+    static UiObjectBase* sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.1] subroutine - formats list and send it to canvas as a string
 
 
 };

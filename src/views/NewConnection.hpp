@@ -12,15 +12,15 @@
 #include "IUView.hpp"
 #include <stdio.h>
 
-class ObjectBase;
+class UiObjectBase;
 
 class NewConnection : public IUView {
 
 public:
-    ObjectBase* outputObj = 0;
+    UiObjectBase* outputObj = 0;
     int outputIdx = 0;
 
-    ObjectBase* inputObj = 0;
+    UiObjectBase* inputObj = 0;
     int inputIdx = 0;
     float inputX = 0;
     float inputY = 0;

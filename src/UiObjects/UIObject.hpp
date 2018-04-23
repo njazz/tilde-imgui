@@ -18,9 +18,9 @@
 
 #include "pd_object.h"
 
-#include "ObjectBase.hpp"
+#include "UIObjectBase.hpp"
 
-class UIObject : public ObjectBase {
+class UIObject : public UiObjectBase {
 
 public:
     char* _editText = new char[128];

@@ -1,10 +1,10 @@
 #ifndef UIFloat_H
 #define UIFloat_H
 
-#include "ObjectBase.hpp"
+#include "UIObjectBase.hpp"
 #include <string>
 
-class UIFloat : public ObjectBase {
+class UIFloat : public UiObjectBase {
 
     //std::string _contents = "0.";
 
@@ -23,7 +23,7 @@ public:
         width = 50;
         height = 25;
 
-        ObjectBase::draw();
+        UiObjectBase::draw();
     };
 
     virtual void drawObjectContents() override

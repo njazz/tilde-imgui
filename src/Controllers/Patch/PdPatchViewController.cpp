@@ -271,12 +271,12 @@ void PdPatchViewController::drawLayerContents()
     }
 }
 
-ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
+UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 {
     if (!data.pdProcess)
         return 0;
 
-    ObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
+    UiObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
     n->objectText = text;
     n->x = (x);
     n->y = (y);
@@ -312,9 +312,9 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
 
     n->addAction(UIObject::oAutocomplete, &autocomplete);
     n->addAction(UIObject::oObjectChanged, &objectUpdated);
-    n->addAction(ObjectBase::oInletClicked, &inletClicked);
-    n->addAction(ObjectBase::oInletHovered, &inletHovered);
-    n->addAction(ObjectBase::oOutletClicked, &outletClicked);
+    n->addAction(UiObjectBase::oInletClicked, &inletClicked);
+    n->addAction(UiObjectBase::oInletHovered, &inletHovered);
+    n->addAction(UiObjectBase::oOutletClicked, &outletClicked);
 
     if (n->pdObject)
         n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
@@ -322,7 +322,7 @@ ObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
     return n;
 }
 
-void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, ObjectBase* inObj, int inIdx)
+void PdPatchViewController::connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx)
 {
     UIPatchcord* c = new UIPatchcord;
     c->outputObj = outObj;
@@ -338,8 +338,8 @@ void PdPatchViewController::connectObjects(ObjectBase* outObj, int outIdx, Objec
 
 void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx)
 {
-    ObjectBase* obj1 = data.getObjectByIndex(outObjIdx);
-    ObjectBase* obj2 = data.getObjectByIndex(inObjIdx);
+    UiObjectBase* obj1 = data.getObjectByIndex(outObjIdx);
+    UiObjectBase* obj2 = data.getObjectByIndex(inObjIdx);
 
     if (!obj1 || !obj2) {
         printf("object not found - could not connect");
@@ -492,7 +492,7 @@ inline void PdPatchViewController::_objectCreated()
 
 inline void PdPatchViewController::_outletClicked()
 {
-    ObjectBase* b = (ObjectBase*)outletClicked.sender;
+    UiObjectBase* b = (UiObjectBase*)outletClicked.sender;
     _newPatchcord.outputObj = b;
     _newPatchcord.outputIdx = b->data.outletClicked;
     _newPatchcord.inputObj = 0;
@@ -500,7 +500,7 @@ inline void PdPatchViewController::_outletClicked()
 
 inline void PdPatchViewController::_inletHovered()
 {
-    ObjectBase* b = (ObjectBase*)inletClicked.sender;
+    UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
     if (b == _newPatchcord.outputObj)
         return;
     _newPatchcord.inputObj = b;
@@ -509,7 +509,8 @@ inline void PdPatchViewController::_inletHovered()
 
 inline void PdPatchViewController::_inletClicked()
 {
-    ObjectBase* b = (ObjectBase*)inletClicked.sender;
+    UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
+    if (!_newPatchcord.outputObj) return;
     if (b == _newPatchcord.outputObj)
         return;
     connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);

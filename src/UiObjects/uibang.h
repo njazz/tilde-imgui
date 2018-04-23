@@ -1,9 +1,9 @@
 #ifndef UIBANG_H
 #define UIBANG_H
 
-#include "ObjectBase.hpp"
+#include "UIObjectBase.hpp"
 
-class UIBang : public ObjectBase {
+class UIBang : public UiObjectBase {
     int _bangFrameCounter = 0; // display when non-zero; decrement
 
     void _bang();
@@ -15,7 +15,7 @@ public:
         width = 25;
         height = 25;
 
-        ObjectBase::draw();
+        UiObjectBase::draw();
     };
 
     virtual void drawObjectContents() override;
