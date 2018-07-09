@@ -14,7 +14,7 @@ void PdPatchEditMenu::shortcuts()
     shortcut(aDelete, IUKey::Delete());
 }
 
-void PdPatchEditMenu::draw()
+void PdPatchEditMenu::drawContents()
 {
     // todo: action names
     item("Undo", aUndo, IUKey::Action() + IUKey::KeyZ());
@@ -37,7 +37,7 @@ void PdPatchPutMenu::shortcuts()
 {
 }
 
-void PdPatchPutMenu::draw()
+void PdPatchPutMenu::drawContents()
 {
     ImGui::MenuItem("Object", "Cmd + 1");
     ImGui::MenuItem("Message", "Cmd + 2");
@@ -51,7 +51,7 @@ void PdPatchPutMenu::draw()
 void PdPatchArrangeMenu::shortcuts()
 {
 }
-void PdPatchArrangeMenu::draw()
+void PdPatchArrangeMenu::drawContents()
 {
     bool sh = (showGrid) ? *showGrid : false;
     bool sg = (snapToGrid) ? *snapToGrid : false;

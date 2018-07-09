@@ -10,6 +10,8 @@
 
 #include "ArrangeObjects.h"
 
+#include "imgui_internal.h"
+
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
 
@@ -188,6 +190,10 @@ void PdPatchViewController::_drawObjectMaker()
 void PdPatchViewController::draw()
 {
     //ImGui::SetNextWindowSize(ImVec2(width, height - 20));
+
+
+    // todo
+//    ImGui::GetIO().FontAllowUserScaling = true;
 
     // temporary!
     resizeToObjects();

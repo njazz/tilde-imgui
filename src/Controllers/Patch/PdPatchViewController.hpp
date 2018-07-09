@@ -19,8 +19,8 @@
 
 #include "math.h"
 
-#include "UIObjectFactory.h"
 #include "PdPatchMenu.hpp"
+#include "UIObjectFactory.h"
 
 #include "UndoStack.hpp"
 
@@ -29,8 +29,6 @@
 #include "CanvasData.h"
 
 #include "FileSaver.h"
-
-
 
 class PdPatchViewController : public IUViewController {
 
@@ -50,6 +48,7 @@ class PdPatchViewController : public IUViewController {
     PdPatchMenu _patchMenu;
 
     UIObject _emptyObject;
+    UIObject* _movingObject = 0;
 
     //
     inline void _drawGrid();
@@ -88,7 +87,6 @@ public:
     IU_ACTION(inletClicked)
 
 public:
-
     IUAction editModeAction = IUAction([this]() {
         editMode = !editMode;
     });

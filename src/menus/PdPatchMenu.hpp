@@ -6,7 +6,7 @@
 class PdPatchEditMenu : public IUMenuBase {
 public:
     virtual void shortcuts() override;
-    virtual void draw() override;
+    virtual void drawContents() override;
 
     bool* editModeFlag = 0;
 
@@ -30,7 +30,7 @@ public:
 class PdPatchPutMenu : public IUMenuBase {
 public:
     virtual void shortcuts() override;
-    virtual void draw() override;
+    virtual void drawContents() override;
 
     static const int aFileNew = 1;
 };
@@ -41,7 +41,7 @@ public:
     bool *snapToGrid = 0;
 
     virtual void shortcuts() override;
-    virtual void draw() override;
+    virtual void drawContents() override;
 
 
     static const int aAlignLeft = 50;

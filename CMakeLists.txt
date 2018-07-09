@@ -29,6 +29,7 @@ file (GLOB SRC_IMGUI
     "../imgui/GL/*.c"
     "../imgui/imgui/*.c*"
 
+    "../imgui/addons/imguidock/*.c*"
     )
 
 #todo : x-platform
@@ -46,6 +47,8 @@ include_directories(../imgui/GLFW)
 include_directories(../imgui/lib)
 include_directories(../imgui/nfd/src)
 include_directories(../imgui/nfd/src/include)
+
+include_directories(../imgui/addons/imguidock)
 
 FILE(GLOB R_FONTS "../imgui/fonts/Arial*.ttf")
 set_property(

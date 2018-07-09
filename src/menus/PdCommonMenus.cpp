@@ -12,7 +12,7 @@ void PdCommonFileMenu::shortcuts()
     shortcut(aFileQuit, IUKey::Action() + IUKey::KeyQ());
 }
 
-void PdCommonFileMenu::draw()
+void PdCommonFileMenu::drawContents()
 {
     item("New patch window", aFileNew, IUKey::Action() + IUKey::KeyN());
     ImGui::Separator();
@@ -32,7 +32,7 @@ void PdCommonWindowMenu::shortcuts()
 {
     shortcut(aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL() );
 }
-void PdCommonWindowMenu::draw()
+void PdCommonWindowMenu::drawContents()
 {
     item("Settings ...", aSettings);
     item("Audio / MIDI setup...", aAudioMIDI);
@@ -46,7 +46,7 @@ void PdCommonMediaMenu::shortcuts()
     shortcut(aDSPOff,IUKey::Action() + IUKey::Dot() );
 }
 
-void PdCommonMediaMenu::draw()
+void PdCommonMediaMenu::drawContents()
 {
     bool v;
     if (!dspOn)
@@ -57,15 +57,15 @@ void PdCommonMediaMenu::draw()
     item("DSP Off", aDSPOff, IUKey::Action() + IUKey::Dot(), !v);
 }
 
-void PdCommonHelpMenu::draw()
+void PdCommonHelpMenu::drawContents()
 {
     item("Pd Help", aHelp);
 }
 
 void PdCommonMenus::setWindowController(IUWindowController* w)
 {
-    menuFile.windowController = w;
-    menuMedia.windowController = w;
-    menuWindow.windowController = w;
-    menuHelp.windowController = w;
+    menuFile.setWindowController(w);
+    menuMedia.setWindowController(w);
+    menuWindow.setWindowController(w);
+    menuHelp.setWindowController(w);
 }
