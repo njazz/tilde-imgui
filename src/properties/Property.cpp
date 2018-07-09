@@ -16,7 +16,7 @@ void Variant::set<std::string>(std::string val)
 template <>
 std::string Variant::get<std::string>()
 {
-    return *_stringPtr;
+    return _stringValue;//*_stringPtr;
 }
 
 template <>

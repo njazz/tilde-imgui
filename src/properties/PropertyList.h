@@ -71,6 +71,7 @@ public:
 
     Property* get(std::string key)
     {
+        if (_data.find(key)==_data.end()) return 0;
         return _data[key];
     };
 

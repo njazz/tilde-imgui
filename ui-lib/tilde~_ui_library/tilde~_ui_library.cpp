@@ -40,19 +40,23 @@ extern "C" void setup() //0x2e //TILDE_UI_
     setup_ui0x2etoggle();
     setup_ui0x2emsg();
 
-    /*
+
 
     setup_ui0x2ematrix();
+    setup_ui0x2esliders();
+    setup_ui0x2edsp();
+
+    /*
 
     setup_ui0x2escript();
-    setup_ui0x2esliders();
+
 
 
     setup_ui0x2earray();
 
     setup_ui0x2etext();
 
-    setup_ui0x2edsp();
+
     */
 
     post("...done");
