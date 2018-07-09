@@ -45,6 +45,11 @@ int cpd_dsp_switch(int state)
     return 1;
 }
 
+int cpd_dsp_get_state()
+{
+    return THISGUI->i_dspstate;
+}
+
 struct _cpd_audio_devlist {
     std::vector<std::string> in_devices;
     std::vector<std::string> out_devices;

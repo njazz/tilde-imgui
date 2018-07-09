@@ -2,6 +2,7 @@
 #define LOCALPDPROCESS_H
 
 #include "abstractserverprocess.h"
+#include "cpd/cpd.h"
 #include "cpd/cpd_list.h"
 #include "cpd/cpd_receiver.h"
 #include <map>
@@ -22,6 +23,7 @@ public:
     ~PdLocalProcess();
 
     void dspSwitch(bool value) override;
+    int dspState() override {return cpd_dsp_get_state();}
 
     /**
      * @brief Creates PdCanvas
@@ -52,7 +54,10 @@ public:
     static void receiverCallback(t_cpd_list* msg);
     static std::map<t_cpd_object*, ObserverPtr> objectObserverMap;
 
-    virtual void sendMessage(const std::string& object, const std::string& text) override {};
+    virtual void sendMessage(const std::string& object, const std::string& text) override
+    {
+        cpd_send_brodcast_message(cpd_symbol(object.c_str()), cpd_list_new_from_string(text.c_str()));
+    };
 };
 
 } // namespace xpd

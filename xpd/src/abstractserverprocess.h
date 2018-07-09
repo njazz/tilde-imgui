@@ -71,8 +71,10 @@ public:
     void dspOn() { dspSwitch(true); }
     /// @brief Wrapper for dspSwitch(false)
     void dspOff() { dspSwitch(false); }
-    /// @brief Abstract. Switches audio processing on/off
+    /// @brief Switches audio processing on/off
     virtual void dspSwitch(bool value) = 0;
+    /// @brief Get audio processing state
+    virtual int dspState() = 0;
 
     /// @brief Returns ServerProcessSettings
     const ServerProcessSettings& settings() const;

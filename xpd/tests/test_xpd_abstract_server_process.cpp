@@ -18,6 +18,8 @@ public:
         : AbstractServerProcess(parent, s){};
 
     virtual void dspSwitch(bool value) override{};
+    virtual int dspState() override{return 0;};
+
     virtual CanvasPtr createCanvas() override { return CanvasPtr(0); }
 
     virtual bool loadLibrary(const std::string& libraryName) override { return true; };

@@ -15,6 +15,8 @@ extern "C" {
  */
 CPD_EXTERN int cpd_dsp_switch(int state);
 
+CPD_EXTERN int cpd_dsp_get_state();
+
 /**
  * Returns list of available devices
  * @return pointer to device list or NULL
