@@ -23,6 +23,25 @@
 //    return 0;
 //}
 
+void UiObjectBase::_propertiesWindow()
+{
+    // properties window
+
+    ImGui::BeginTooltip();
+    ImGui::Text("properties:");
+    ImGui::Separator();
+    for (auto n : properties.names()) {
+        ImGui::Text("%s", n.c_str());
+        ImGui::SameLine();
+        auto p = properties.get(n);
+        if (p)
+            ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
+        else
+            ImGui::Text("ERR");
+    }
+    ImGui::EndTooltip();
+}
+
 UiObjectBase::UiObjectBase()
 {
     observer.callback = [this]() {
@@ -39,6 +58,8 @@ UiObjectBase::UiObjectBase()
     };
 
     _createProperties();
+
+    _patchMenu.name = "object_menu";
 }
 
 int UiObjectBase::inletType(int idx)
@@ -180,8 +201,8 @@ void UiObjectBase::draw()
     }
 
     // mouse handling
-    if (editModePtr)
-        if (!*editModePtr) {
+    if (editModePtr) {
+        if ((!*editModePtr) || (ImGui::IsKeyDown(GLFW_KEY_LEFT_SUPER)) || (ImGui::IsKeyDown(GLFW_KEY_RIGHT_SUPER))) {
 
             if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseDown(ImGui::GetIO().MousePos);
@@ -192,6 +213,7 @@ void UiObjectBase::draw()
             }
 
             if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                _propertiesWindow();
                 onMouseHover(ImGui::GetIO().MousePos);
             }
 
@@ -206,26 +228,32 @@ void UiObjectBase::draw()
             if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseDoubleClick(ImGui::GetIO().MousePos);
             }
+        } else {
+            // hover in edit mode
+            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                _propertiesWindow();
+                //                onMouseHover(ImGui::GetIO().MousePos);
+            }
+
+            // menu
+//            if (ImGui::BeginPopupContextItem("object_menu")) {
+//                _patchMenu.draw();
+//                ImGui::EndPopup();
+//            }
+
+            _patchMenu.draw();
+
+            if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                ImGui::OpenPopup("object_menu");
+            }
         }
+    }
 
     drawObjectContents();
 
     draw_list->ChannelsMerge();
 
     //
-    // properties window
-    /*
-    ImGui::BeginTooltip();
-    ImGui::Text("properties:");
-    ImGui::Separator();
-    for (auto n : properties.names())
-    {
-        ImGui::Text("%s",n.c_str());
-        ImGui::SameLine();
-        ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
-    }
-    ImGui::EndTooltip();
-    */
 
     ImGui::EndGroup();
     ImGui::PopID();

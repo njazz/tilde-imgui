@@ -20,6 +20,8 @@
 
 #include "UIObjectData.h"
 
+#include "PdPatchMenu.hpp"
+
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 
@@ -39,6 +41,9 @@ public:
 };
 
 class UiObjectBase : public IUView {
+private:
+    PdObjectMenu _patchMenu;
+
 protected:
     void _drawInlet(int idx);
     void _drawOutlet(int idx);
@@ -63,6 +68,7 @@ protected:
         });
     }
 
+    void _propertiesWindow();
 public:    
     PropertyList properties;
 

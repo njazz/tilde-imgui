@@ -7,6 +7,9 @@
 #include "UIToggle.h"
 #include "UIMessage.h"
 #include "UIFloat.h"
+#include "UISlider.h"
+#include "UIDSP.h"
+#include "UIMatrix.h"
 
 typedef UiObjectBase* (*objectBaseConstructor)();
 
@@ -33,6 +36,9 @@ public:
         registerClass<UIToggle>("ui.toggle");
         registerClass<UIMessage>("ui.msg");
         registerClass<UIFloat>("ui.float");
+        registerClass<UISlider>("ui.slider");
+        registerClass<UIDSP>("ui.dsp");
+        registerClass<UIMatrix>("ui.matrix");
 
     }
 

@@ -30,6 +30,8 @@
 
 #include "FileSaver.h"
 
+#include "IUAction.hpp"
+
 class PdPatchViewController : public IUViewController {
 
     //    std::vector<ObjectBase*> _objects;
@@ -127,6 +129,12 @@ public:
     IUAction arrangeBottomAction;
     IUAction arrangeDHAction;
     IUAction arrangeDVAction;
+
+    // -----
+
+    IU_ACTION(zoomIn);
+    IU_ACTION(zoomOut);
+    IU_ACTION(zoomOne);
 
     // ----------
 

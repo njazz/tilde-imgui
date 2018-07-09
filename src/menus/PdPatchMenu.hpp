@@ -3,6 +3,8 @@
 #include "IUMainMenuBase.hpp"
 #include "PdCommonMenus.hpp"
 
+#pragma once
+
 class PdPatchEditMenu : public IUMenuBase {
 public:
     virtual void shortcuts() override;
@@ -33,6 +35,11 @@ public:
     virtual void drawContents() override;
 
     static const int aFileNew = 1;
+
+    static const int aSlider = 30;
+    static const int aRadioButtons = 40;
+    static const int aArray = 50;
+
 };
 
 class PdPatchArrangeMenu : public IUMenuBase {
@@ -51,6 +58,10 @@ public:
     static const int aAlignBottom = 54;
     static const int aDistributeH = 55;
     static const int aDistributeV = 56;
+
+    static const int aZoomIn = 70;
+    static const int aZoomOut = 71;
+    static const int aZoomOne = 72;
 };
 
 class PdPatchMenu : public IUMainMenuBase {
@@ -68,4 +79,13 @@ public:
     //    PdCommonHelpMenu menuHelp;
 
     PdPatchMenu(PdCommonMenus* m);
+};
+
+class PdObjectMenu:public IUPopupMenu {
+
+public:
+    virtual void drawContents() override;
+
+    static const int aProperties = 10;
+    static const int aHelp = 11;
 };

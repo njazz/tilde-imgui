@@ -52,11 +52,37 @@ void PdConsoleViewController::draw()
     ImGui::Text("%i FPS", (int)ImGui::GetIO().Framerate);
     ImGui::SameLine();
 
+    _dspOn = pdProcess->dspState();
+
     if (ImGui::Checkbox("DSP", &_dspOn)) {
         pdProcess->dspSwitch(_dspOn);
     }
 
     ImGui::Separator();
+
+
+    ImGui::Text(";");ImGui::SameLine();
+    if(ImGui::InputText(" ",_buf,255, ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        std::string send = _buf;
+
+        std::string obj, msg;
+
+        auto pos =send.find(' ',0);
+
+
+        _buf[0] = '\0';
+        if (pdProcess && pos!=std::string::npos)
+        {
+            msg=send.substr(pos+1);
+            obj=send.substr(0,pos);
+            //pdProcess->post("out: "+obj+":"+msg+"\n");
+            pdProcess->sendMessage(obj, msg);
+        }
+    }
+
+    ImGui::Separator();
+
     ImGui::Text("ImGui:");
     ImGui::SameLine();
     ImGui::Checkbox("Metrics", &_demoWindow);
@@ -66,7 +92,11 @@ void PdConsoleViewController::draw()
     }
 
     ImGui::Separator();
+
     ImGui::Text("%s", _consoleText.c_str());
+
+
+
 
     ImGui::End();
 };

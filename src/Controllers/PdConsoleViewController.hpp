@@ -29,6 +29,7 @@ class PdConsoleViewController : public IUViewController {
 
     void _drawMenu();
 
+    char* _buf = new char[255];
 public:
     PdConsoleViewController(PdCommonMenus* m);
 

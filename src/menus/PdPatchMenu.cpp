@@ -54,6 +54,25 @@ void PdPatchPutMenu::drawContents()
     ImGui::MenuItem("Bang", "Cmd + Shift + B");
     ImGui::MenuItem("Toggle", "Cmd + Shift + T");
     ImGui::MenuItem("Number", "Cmd + 3");
+    ImGui::Separator();
+    item("Slider", aSlider, IUKey::Action()+IUKey::Shift()+IUKey::KeyV());
+    item("Knob");
+    item("Slider2D");
+    item("Range Slider");
+    item("Sliders");
+    item("Matrix Buttons");
+    item("Radio Buttons",aRadioButtons, IUKey::Action()+IUKey::Shift()+IUKey::KeyD());
+    ImGui::Separator();
+    item("Array", aArray, IUKey::Action()+IUKey::Shift()+IUKey::KeyA());
+    ImGui::Separator();
+    item("Keyboard");
+    item("Envelope");
+    item("Display");
+    ImGui::Separator();
+    item("Scope");
+    item("Spectroscope");
+    //ImGui::Separator();
+
 }
 
 void PdPatchArrangeMenu::shortcuts()
@@ -76,9 +95,9 @@ void PdPatchArrangeMenu::drawContents()
     ImGui::MenuItem("Align to grid");
     ImGui::MenuItem("Tidy up");
     ImGui::Separator();
-    ImGui::MenuItem("Zoom in");
-    ImGui::MenuItem("Zoom out");
-    ImGui::MenuItem("Zoom 100%");
+    item("Zoom In", aZoomIn, IUKey::Action() + IUKey::Equal());
+    item("Zoom Out", aZoomOut, IUKey::Action() + IUKey::Minus());
+    item("Zoom 100%", aZoomOne, IUKey::Action() + IUKey::Key0());
     ImGui::Separator();
     item("Align left", aAlignLeft);
     item("Align center", aAlignCenter);
@@ -114,4 +133,12 @@ PdPatchMenu::PdPatchMenu(PdCommonMenus* m)
     addMenu(&common->menuWindow, "Window");
     addMenu(&common->menuMedia, "Media");
     addMenu(&common->menuHelp, "Help");
+}
+
+void PdObjectMenu::drawContents()
+{
+    item("Properties", aProperties, IUKey::Action() + IUKey::Shift() + IUKey::KeyP());
+    ImGui::Separator();
+    item("Help", aHelp);
+
 }

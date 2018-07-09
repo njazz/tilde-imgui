@@ -20,7 +20,7 @@ void PdCommonFileMenu::drawContents()
     if (inPatch) {
         item("Save patch", aFileSave, IUKey::Action() + IUKey::KeyS());
         item("Save patch as ...", aFileSaveAs, IUKey::Action() + IUKey::Shift() + IUKey::KeyS());
-        item("Close patch window", aFileClose, IUKey::Action() +IUKey::KeyW());
+        item("Close patch window", aFileClose, IUKey::Action() + IUKey::KeyW());
     }
     ImGui::Separator();
     item("Quit", aFileQuit, IUKey::Action() + IUKey::KeyQ());
@@ -30,20 +30,21 @@ void PdCommonFileMenu::drawContents()
 
 void PdCommonWindowMenu::shortcuts()
 {
-    shortcut(aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL() );
+    shortcut(aSettings, IUKey::Action() + IUKey::Comma());
+    shortcut(aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL());
 }
 void PdCommonWindowMenu::drawContents()
 {
-    item("Settings ...", aSettings);
+    item("Settings ...", aSettings, IUKey::Action() + IUKey::Comma());
     item("Audio / MIDI setup...", aAudioMIDI);
     ImGui::Separator();
-    item("Clear console", aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL() );
+    item("Clear console", aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL());
 }
 
 void PdCommonMediaMenu::shortcuts()
 {
-    shortcut(aDSPOn,IUKey::Action() + IUKey::Slash());
-    shortcut(aDSPOff,IUKey::Action() + IUKey::Dot() );
+    shortcut(aDSPOn, IUKey::Action() + IUKey::Slash());
+    shortcut(aDSPOff, IUKey::Action() + IUKey::Period());
 }
 
 void PdCommonMediaMenu::drawContents()
@@ -54,7 +55,7 @@ void PdCommonMediaMenu::drawContents()
     else
         v = *dspOn;
     item("DSP On", aDSPOn, IUKey::Action() + IUKey::Slash(), v);
-    item("DSP Off", aDSPOff, IUKey::Action() + IUKey::Dot(), !v);
+    item("DSP Off", aDSPOff, IUKey::Action() + IUKey::Period(), !v);
 }
 
 void PdCommonHelpMenu::drawContents()

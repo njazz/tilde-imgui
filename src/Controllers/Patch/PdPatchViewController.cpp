@@ -66,6 +66,11 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
 
+
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
+
     //
     // contentSize = ImVec2(width, height);
 }
@@ -148,7 +153,7 @@ void PdPatchViewController::_drawSelectionFrame()
         _draggingObjects = _clickedObject;
 
         if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
-            printf("pos %f", ImGui::GetMousePos().y);
+            printf("pos %f\n", ImGui::GetMousePos().y);
 
             deselectAll();
             _multipleObjectsSelected = false;
@@ -212,6 +217,7 @@ void PdPatchViewController::draw()
 
     padding = 0;
     //contentSize = ImVec2(1024,1024);
+
     IUViewController::draw();
 
 
@@ -568,4 +574,34 @@ void PdPatchViewController::resizeToObjects()
 void PdPatchViewController::loadbang()
 {
     data.canvas->loadbang();
+}
+
+// -----
+
+void PdPatchViewController::_zoomIn()
+{
+    printf("zoom in\n");
+    ImGui::SetWindowFontScale(1.5);
+
+//    for (auto c:_components)
+//        c->zoomable = true;
+
+//    zoomable = true;
+}
+
+void PdPatchViewController::_zoomOut()
+{
+    printf("zoom out\n");
+    ImGui::SetWindowFontScale(0.5);
+
+//    for (auto c:_components)
+//        c->zoomable = true;
+
+//    zoomable = true;
+}
+
+void PdPatchViewController::_zoomOne()
+{
+    printf("zoom one\n");
+    ImGui::GetCurrentWindow()->FontWindowScale = 1.;
 }
