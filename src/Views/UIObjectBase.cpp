@@ -12,7 +12,7 @@
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
 
-#include "properties/PropertyList.h"
+#include "Properties/PropertyList.h"
 
 //int nameChanged(ImGuiTextEditCallbackData* o)
 //{
@@ -25,22 +25,21 @@
 
 UiObjectBase::UiObjectBase()
 {
-    observer.callback = [this](){
+    observer.callback = [this]() {
 
         std::string d;
         if (observer.data().size())
             d = observer.data().getStringAt(0);
 
-        for (int i=1; i<observer.data().size();i++)
+        for (int i = 1; i < observer.data().size(); i++)
             d += " + " + observer.data().getStringAt(i);
 
-        printf("callback: %s\n",d.c_str());
+        printf("callback: %s\n", d.c_str());
 
     };
 
     _createProperties();
 }
-
 
 int UiObjectBase::inletType(int idx)
 {
@@ -87,10 +86,12 @@ void UiObjectBase::_drawInlet(int idx)
     ImGui::SetCursorScreenPos(pos - ImVec2(6, 3));
     ImGui::InvisibleButton("##btn", ImVec2(12, 10));
 
-    if (ImGui::IsItemClicked()) {
-        data.inletClicked = idx;
-        updated(oInletClicked);
-    }
+    if (editModePtr)
+        if (*editModePtr)
+            if (ImGui::IsItemClicked()) {
+                data.inletClicked = idx;
+                updated(oInletClicked);
+            }
 
     ImU32 inletBorderColor = IM_COL32(192, 192, 192, 255);
     if (ImGui::IsItemHovered())
@@ -109,10 +110,12 @@ void UiObjectBase::_drawOutlet(int idx)
     ImGui::SetCursorScreenPos(pos - ImVec2(6, 3));
     ImGui::InvisibleButton("", ImVec2(12, 10));
 
-    if (ImGui::IsItemClicked()) {
-        data.outletClicked = idx;
-        updated(oOutletClicked);
-    }
+    if (editModePtr)
+        if (*editModePtr)
+            if (ImGui::IsItemClicked()) {
+                data.outletClicked = idx;
+                updated(oOutletClicked);
+            }
 
     ImU32 outletColor = IM_COL32(128, 128, 128, 0);
     if (outletType(idx))
@@ -176,7 +179,34 @@ void UiObjectBase::draw()
         _drawOutlet(slot_idx);
     }
 
+    // mouse handling
+    if (editModePtr)
+        if (!*editModePtr) {
 
+            if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseDown(ImGui::GetIO().MousePos);
+            }
+
+            if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseRightClick(ImGui::GetIO().MousePos);
+            }
+
+            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseHover(ImGui::GetIO().MousePos);
+            }
+
+            if (ImGui::IsMouseReleased(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseUp(ImGui::GetIO().MousePos);
+            }
+
+            if (ImGui::IsMouseDragging(0)) { // && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseDrag(ImGui::GetIO().MouseDelta);
+            }
+
+            if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseDoubleClick(ImGui::GetIO().MousePos);
+            }
+        }
 
     drawObjectContents();
 
@@ -196,7 +226,6 @@ void UiObjectBase::draw()
     }
     ImGui::EndTooltip();
     */
-
 
     ImGui::EndGroup();
     ImGui::PopID();

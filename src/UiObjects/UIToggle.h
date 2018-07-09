@@ -11,7 +11,6 @@ public:
 
     virtual void draw() override
     {
-
         width = 25;
         height = 25;
 
@@ -27,12 +26,14 @@ public:
             draw_list->AddLine(ImVec2(x + width, y), ImVec2(x, y + height), IM_COL32(0, 192, 255, 255), width / 20);
         }
 
-        if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-            _value = !_value;
-            if (pdObject)
-                pdObject->sendFloat(_value);
-        }
     };
+
+    virtual void onMouseDown(ImVec2 pos) override
+    {
+        _value = !_value;
+        if (pdObject)
+            pdObject->sendFloat(_value);
+    }
 };
 
 #endif // UIBANG_H

@@ -2,7 +2,7 @@
 // License: GPL3
 
 #include "ArrangeObjects.h"
-#include "UiObjects/UIObject.hpp"
+#include "UIObjects/UIObject.hpp"
 
 #include "math.h"
 

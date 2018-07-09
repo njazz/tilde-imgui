@@ -1,7 +1,27 @@
 #include "UIMessage.h"
 
+#include "IUWindowController.hpp"
+
+int messageEdited(ImGuiTextEditCallbackData* o)
+{
+//    UIObject* obj = (UIObject*)o->UserData;
+
+//    //obj->enteredText = std::string(o->BufTextLen, *o->Buf);
+//    obj->enteredText = obj->_editText;
+//    obj->updated(UIObject::oAutocomplete);
+
+    // todo: width
+
+    return 0;
+}
+
 UIMessage::UIMessage()
 {
+    _txtBuffer[0] = '\0';
+
+    observer.callback = [this](){
+        _contents = (observer.data().getStringAt(0));
+    };
 }
 
 void UIMessage::_drawBackground()
@@ -36,6 +56,46 @@ void UIMessage::_drawBackground()
     draw_list->AddPolyline(poly, 6, borderColor, true, 1 + _mouseDown);
 
     _mouseDown = (ImGui::IsMouseDown(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height)));
+}
+
+void UIMessage::drawObjectContents()
+{
+    ImGui::BeginGroup();
+    ImGui::SetCursorScreenPos(ImVec2(x + 4, y + 4));
+    if (_edit) {
+        windowController()->isEditingText = true;
 
 
+        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
+            ImGui::SetKeyboardFocusHere(0);
+
+
+        if (ImGui::InputText("##in", _txtBuffer, 255, ImGuiInputTextFlags_CallbackAlways | ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll, &messageEdited, (void*)this)) {
+            finishedEditingText();
+        }
+
+
+    } else {
+        ImGui::Text("%s", _contents.c_str());
+    }
+
+    ImGui::EndGroup();
+};
+
+void UIMessage::finishedEditingText()
+{
+    std::string str = "set "+std::string(_txtBuffer);
+
+    if (pdObject)
+        pdObject->sendStringAsList(str);
+
+    _edit = false;
+
+    windowController()->restoreContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ClearInputCharacters();
+    io.MouseDoubleClicked[0] = false;
+    for (int i = 0; i < 512; i++)
+        io.KeysDown[i] = false;
+    windowController()->isEditingText = false;
 }

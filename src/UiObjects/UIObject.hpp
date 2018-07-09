@@ -41,8 +41,6 @@ public:
 
     void finishedEditingText();
 
-
-
     //    static const int oSelected = 30;
 };
 

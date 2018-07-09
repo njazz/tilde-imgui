@@ -10,6 +10,8 @@ class UndoStack {
     int _undoListIndex;
 
 public:
+    UndoStack(){}
+
     void doAction(UICommand* c)
     {
         _stack.push_back(c);

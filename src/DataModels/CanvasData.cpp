@@ -1,7 +1,7 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
-#include "../UiObjects/UIObject.hpp"
+#include "../UIObjects/UIObject.hpp"
 
 #include "CanvasData.h"
 //#include "Preferences.h"

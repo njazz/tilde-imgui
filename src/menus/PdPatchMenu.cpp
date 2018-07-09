@@ -6,28 +6,36 @@ void PdPatchEditMenu::shortcuts()
 {
     shortcut(aEditMode, IUKey::Action() + IUKey::KeyE());
 
-    shortcut(aCut, IUKey::Action() + IUKey::KeyX());
-    shortcut(aCopy, IUKey::Action() + IUKey::KeyC());
-    shortcut(aPaste, IUKey::Action() + IUKey::KeyV());
+    if (editModeFlag)
+        if (*editModeFlag) {
+            shortcut(aCut, IUKey::Action() + IUKey::KeyX());
+            shortcut(aCopy, IUKey::Action() + IUKey::KeyC());
+            shortcut(aPaste, IUKey::Action() + IUKey::KeyV());
 
-    shortcut(aSelectAll, IUKey::Action() + IUKey::KeyA());
-    shortcut(aDelete, IUKey::Delete());
+            shortcut(aSelectAll, IUKey::Action() + IUKey::KeyA());
+
+            shortcut(aDelete, IUShortcut(IUKey::Delete()));
+            shortcut(aDelete, IUShortcut(IUKey::Backspace()));
+        }
 }
 
 void PdPatchEditMenu::drawContents()
 {
-    // todo: action names
-    item("Undo", aUndo, IUKey::Action() + IUKey::KeyZ());
-    item("Redo", aUndo, IUKey::Action() + IUKey::Shift() + IUKey::KeyZ());
-    ImGui::Separator();
-    item("Cut", aCut, IUKey::Action() + IUKey::KeyX());
-    item("Copy", aCopy, IUKey::Action() + IUKey::KeyC());
-    item("Paste", aPaste, IUKey::Action() + IUKey::KeyV());
-    ImGui::Separator();
-    item("Select all", aSelectAll, IUKey::Action() + IUKey::KeyA());
-    ImGui::Separator();
-    item("Delete selected", aDelete, IUKey::Delete());
-    ImGui::Separator();
+    if (editModeFlag)
+        if (*editModeFlag) {
+            // todo: action names
+            item("Undo", aUndo, IUKey::Action() + IUKey::KeyZ());
+            item("Redo", aUndo, IUKey::Action() + IUKey::Shift() + IUKey::KeyZ());
+            ImGui::Separator();
+            item("Cut", aCut, IUKey::Action() + IUKey::KeyX());
+            item("Copy", aCopy, IUKey::Action() + IUKey::KeyC());
+            item("Paste", aPaste, IUKey::Action() + IUKey::KeyV());
+            ImGui::Separator();
+            item("Select all", aSelectAll, IUKey::Action() + IUKey::KeyA());
+            ImGui::Separator();
+            item("Delete selected", aDelete, IUShortcut(IUKey::Delete()));
+            ImGui::Separator();
+        }
 
     bool e = (editModeFlag) ? *editModeFlag : false;
     item("Edit mode", aEditMode, IUKey::Action() + IUKey::KeyE(), e);
@@ -94,7 +102,7 @@ PdPatchMenu::PdPatchMenu(PdCommonMenus* m)
     common->menuWindow.copyActionsFrom(&m->menuWindow);
     common->menuHelp.copyActionsFrom(&m->menuHelp);
 
-//    m = common;
+    //    m = common;
 
     addMenu(&common->menuFile, "File");
     common->menuFile.inPatch = true;

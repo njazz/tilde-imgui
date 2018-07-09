@@ -41,6 +41,13 @@ public:
             //                pdObject->sendFloat(_value);
         }
     };
+
+    virtual void onMouseDrag(ImVec2 pos) override
+    {
+        _value -= pos.y / 10;
+        if (pdObject)
+            pdObject->sendFloat(_value);
+    }
 };
 
 #endif // UIBANG_H

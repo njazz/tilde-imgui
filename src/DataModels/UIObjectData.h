@@ -17,13 +17,13 @@ typedef enum {
 /// \brief Data model for UIObject
 class UIObjectData {
 
-    std::string _dataString;
+    std::string _dataString = "";
     PropertyList _properties;
 
-    ObjectSizeMode _objectSizeMode;
+    ObjectSizeMode _objectSizeMode = os_FixedHeight;
 
 public:
-    //explicit UIObjectData();
+    explicit UIObjectData(){};
     //~UIObjectData();
 
     std::string fullHelpName = "";
@@ -43,8 +43,8 @@ public:
 
     void setObjectSizeConstraints(int minW, int minH); ///> sets all size constraints
 
-    int minimumBoxWidth;
-    int minimumBoxHeight;
+    int minimumBoxWidth = 20;
+    int minimumBoxHeight = 10;
 
     ObjectSizeMode objectSizeMode();
 };

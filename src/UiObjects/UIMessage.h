@@ -12,6 +12,9 @@ class UIMessage : public UiObjectBase {
     virtual void _drawBackground() override;
 
     bool _mouseDown = false;
+
+    bool _edit = false;
+    char _txtBuffer[256];
 public:
     UIMessage();
 
@@ -24,21 +27,14 @@ public:
         UiObjectBase::draw();
     };
 
-    virtual void drawObjectContents() override
+    virtual void drawObjectContents() override;
+
+    virtual void onMouseDoubleClick(ImVec2 pos) override
     {
-        ImDrawList* draw_list = ImGui::GetWindowDrawList();
+        _edit = !_edit;
+    }
 
-        ImGui::BeginGroup();
-        ImGui::SetCursorScreenPos(ImVec2(x+4,y+4));
-        ImGui::Text("%s",_contents.c_str());
-        ImGui::EndGroup();
-
-        if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-//            _value = !_value;
-//            if (pdObject)
-//                pdObject->sendFloat(_value);
-        }
-    };
+    void finishedEditingText();
 };
 
 #endif // UIBANG_H

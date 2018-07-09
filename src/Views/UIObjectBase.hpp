@@ -99,6 +99,18 @@ public:
     void pdObjUpdatePosition();
 
     std::string asPdFileString();
+
+    //
+    bool* editModePtr = 0;
+
+    //
+    virtual void onMouseDown(ImVec2 pos) {};
+    virtual void onMouseHover(ImVec2 pos) {};
+    virtual void onMouseUp(ImVec2 pos) {};
+    virtual void onMouseDrag(ImVec2 pos) {};
+
+    virtual void onMouseDoubleClick(ImVec2 pos) {};
+    virtual void onMouseRightClick(ImVec2 pos) {};
 };
 
 #endif /* NodeObject_hpp */

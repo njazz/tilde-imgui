@@ -10,6 +10,7 @@ class UIBang : public UiObjectBase {
 public:
     UIBang();
 
+    // temporary fixed size:
     virtual void draw() override
     {
         width = 25;
@@ -19,6 +20,8 @@ public:
     };
 
     virtual void drawObjectContents() override;
+
+    virtual void onMouseDown(ImVec2 pos) override ;
 };
 
 #endif // UIBANG_H

@@ -283,6 +283,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
         return 0;
 
     UiObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
+    if (!n) return 0;
     n->objectText = text;
     n->x = (x);
     n->y = (y);
@@ -311,6 +312,8 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     data.pdProcess->post(info + "\n");
 
     addSubview(n);
+
+    n->editModePtr = &editMode;
 
     //    data.objects.push_back(n);
 
