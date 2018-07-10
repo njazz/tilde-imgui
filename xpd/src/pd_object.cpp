@@ -207,6 +207,15 @@ size_t PdObject::childrenCount() const
     return cpd_canvas_object_count((t_cpd_canvas*)obj_);
 }
 
+
+bool PdObject::isCanvas() {
+    //return cpd_object_
+    return false;
+}
+const bool PdObject::isCanvas() const {
+    return false;
+
+}
 //ObjectId PdObject::createObject(const std::string& name, int x, int y)
 //{
 //    if (!cpd_is_canvas(obj_))

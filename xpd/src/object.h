@@ -114,6 +114,10 @@ public:
     virtual Canvas* asCanvas();
     virtual const Canvas* asCanvas() const;
 
+    virtual bool isCanvas();
+    virtual const bool isCanvas() const;
+
+
 private:
     Object(const Object&);
     void operator=(const Object&);

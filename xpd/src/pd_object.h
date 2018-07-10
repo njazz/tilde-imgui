@@ -56,6 +56,9 @@ public:
 
     //virtual Canvas* asCanvas() const override;
     //virtual ObjectId createObject(const std::string& name, int x, int y) override;
+
+    virtual bool isCanvas() override;
+    virtual const bool isCanvas() const override;
 };
 
 } // namespace xpd

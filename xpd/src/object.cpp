@@ -162,4 +162,13 @@ const Canvas* Object::asCanvas() const
     return (type() == OBJ_TYPE_CANVAS) ? static_cast<const Canvas*>(this) : nullptr;
 }
 
+bool Object::isCanvas()
+{
+    return false;
+}
+const bool Object::isCanvas() const
+{
+    return false;
+}
+
 } // namespace xpd
