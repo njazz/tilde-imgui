@@ -36,6 +36,14 @@ public:
 
     static const int aFileNew = 1;
 
+    static const int aObject = 10;
+    static const int aMessage = 11;
+    static const int aComment = 12;
+
+    static const int aBang = 20;
+    static const int aToggle = 21;
+    static const int aNumber = 22;
+
     static const int aSlider = 30;
     static const int aRadioButtons = 40;
     static const int aArray = 50;
@@ -84,6 +92,8 @@ public:
 class PdObjectMenu:public IUPopupMenu {
 
 public:
+    bool propertiesWindow = false;
+
     virtual void drawContents() override;
 
     static const int aProperties = 10;

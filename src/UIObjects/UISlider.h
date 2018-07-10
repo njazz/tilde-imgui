@@ -4,35 +4,20 @@
 #include "UIObjectBase.hpp"
 
 class UISlider : public UiObjectBase {
-    int _bangFrameCounter = 0; // display when non-zero; decrement
-
-//    void _bang();
-
     float _value = 0.;
+
+    float _rangeMin = 0.;
+    float _rangeMax = 1.;
 public:
     UISlider();
 
     // temporary fixed size:
-    virtual void draw() override
-    {
-        width = 25;
-        height = 100;
-
-        UiObjectBase::draw();
-    };
+    virtual void draw() override;
 
     virtual void drawObjectContents() override;
 
-    virtual void onMouseDown(ImVec2 pos) override ;
-
-    virtual void onMouseDrag(ImVec2 pos) override
-    {
-        float prevValue = _value;
-        _value -= pos.y / 100.;
-        if (pdObject)
-            if (prevValue != _value)
-            pdObject->sendFloat(_value);
-    }
+    virtual void onMouseDown(ImVec2 pos) override;
+    virtual void onMouseDrag(ImVec2 pos) override;
 };
 
 #endif // UISlider_H

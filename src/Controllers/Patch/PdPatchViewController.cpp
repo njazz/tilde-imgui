@@ -57,21 +57,9 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
 
-    _patchMenu.menuArrange.showGrid = &data.showGrid;
-    _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
 
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
-
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
-
-    //
-    // contentSize = ImVec2(width, height);
+    _attachArrangeMenu();
+    _attachPutMenu();
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -616,3 +604,78 @@ void PdPatchViewController::_zoomOne()
     printf("zoom one\n");
     ImGui::GetCurrentWindow()->FontWindowScale = 1.;
 }
+
+// ---
+ void PdPatchViewController::_attachPutMenu()
+ {
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject,&putObject);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aMessage,&putMessage);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aComment,&putComment);
+
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aBang,&putBang);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aToggle,&putToggle);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aNumber,&putNumber);
+ }
+
+ void PdPatchViewController::_attachArrangeMenu()
+ {
+     _patchMenu.menuArrange.showGrid = &data.showGrid;
+     _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
+
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
+
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
+     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
+ }
+
+ // ---
+void PdPatchViewController::_editModeAction()
+{editMode = !editMode;}
+
+// ---
+
+void PdPatchViewController::_arrangeLeftAction()
+{
+    ArrangeObjects::alignLeft(&data.objects);
+}
+
+void PdPatchViewController::_arrangeCenterAction(){
+    ArrangeObjects::alignCenter(&data.objects);
+};
+
+void PdPatchViewController::_arrangeRightAction(){
+    ArrangeObjects::alignRight(&data.objects);
+};
+
+void PdPatchViewController::_arrangeTopAction() {
+    ArrangeObjects::alignTop(&data.objects);
+};
+
+void PdPatchViewController::_arrangeBottomAction(){
+    ArrangeObjects::alignBottom(&data.objects);
+};
+
+// ---
+
+void PdPatchViewController::_putObject()
+{}
+
+void PdPatchViewController::_putMessage()
+{}
+
+void PdPatchViewController::_putComment()
+{}
+
+void PdPatchViewController::_putBang()
+{}
+
+void PdPatchViewController::_putToggle()
+{}
+
+void PdPatchViewController::_putNumber()
+{}

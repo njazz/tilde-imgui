@@ -47,23 +47,23 @@ void PdPatchPutMenu::shortcuts()
 
 void PdPatchPutMenu::drawContents()
 {
-    ImGui::MenuItem("Object", "Cmd + 1");
-    ImGui::MenuItem("Message", "Cmd + 2");
-    ImGui::MenuItem("Comment", "Cmd + 5");
+    item("Object", aObject, IUKey::Action() + IUKey::Key1());
+    item("Message", aMessage, IUKey::Action() + IUKey::Key2());
+    item("Comment", aComment, IUKey::Action() + IUKey::Key5());
     ImGui::Separator();
-    ImGui::MenuItem("Bang", "Cmd + Shift + B");
-    ImGui::MenuItem("Toggle", "Cmd + Shift + T");
-    ImGui::MenuItem("Number", "Cmd + 3");
+    item("Bang", aBang, IUKey::Action() + IUKey::Shift() + IUKey::KeyB());
+    item("Toggle", aToggle, IUKey::Action() + IUKey::Shift() + IUKey::KeyT());
+    item("Number", aNumber, IUKey::Action() + IUKey::Key3());
     ImGui::Separator();
-    item("Slider", aSlider, IUKey::Action()+IUKey::Shift()+IUKey::KeyV());
+    item("Slider", aSlider, IUKey::Action() + IUKey::Shift() + IUKey::KeyV());
     item("Knob");
     item("Slider2D");
     item("Range Slider");
     item("Sliders");
     item("Matrix Buttons");
-    item("Radio Buttons",aRadioButtons, IUKey::Action()+IUKey::Shift()+IUKey::KeyD());
+    item("Radio Buttons", aRadioButtons, IUKey::Action() + IUKey::Shift() + IUKey::KeyD());
     ImGui::Separator();
-    item("Array", aArray, IUKey::Action()+IUKey::Shift()+IUKey::KeyA());
+    item("Array", aArray, IUKey::Action() + IUKey::Shift() + IUKey::KeyA());
     ImGui::Separator();
     item("Keyboard");
     item("Envelope");
@@ -72,7 +72,6 @@ void PdPatchPutMenu::drawContents()
     item("Scope");
     item("Spectroscope");
     //ImGui::Separator();
-
 }
 
 void PdPatchArrangeMenu::shortcuts()
@@ -83,11 +82,11 @@ void PdPatchArrangeMenu::drawContents()
     bool sh = (showGrid) ? *showGrid : false;
     bool sg = (snapToGrid) ? *snapToGrid : false;
 
-    if (item("Show grid", 0, IUShortcut::None(), sh)) {
+    if (item("Show grid", 0, IUKey::Action() + IUKey::Shift()+IUKey::KeyG(), sh)) {
         if (showGrid)
             *showGrid = !*showGrid;
     }
-    if (item("Snap to grid", 0, IUShortcut::None(), sg)) {
+    if (item("Snap to grid", 0, IUKey::Alt()+IUKey::KeyG(), sg)) {
         if (snapToGrid)
             *snapToGrid = !*snapToGrid;
     }
@@ -99,12 +98,12 @@ void PdPatchArrangeMenu::drawContents()
     item("Zoom Out", aZoomOut, IUKey::Action() + IUKey::Minus());
     item("Zoom 100%", aZoomOne, IUKey::Action() + IUKey::Key0());
     ImGui::Separator();
-    item("Align left", aAlignLeft);
+    item("Align left", aAlignLeft, IUKey::Action() + IUKey::Shift() + IUKey::Left());
     item("Align center", aAlignCenter);
-    item("Align right", aAlignRight);
+    item("Align right", aAlignRight, IUKey::Action() + IUKey::Shift() + IUKey::Right());
     ImGui::Separator();
-    item("Align to top", aAlignTop);
-    item("Align to botton", aAlignTop);
+    item("Align to top", aAlignTop, IUKey::Action() + IUKey::Shift() + IUKey::Up());
+    item("Align to botton", aAlignBottom, IUKey::Action() + IUKey::Shift() + IUKey::Down());
     ImGui::Separator();
     item("Distribute horizontally", aDistributeH);
     item("Distribute vertically", aDistributeV);
@@ -137,8 +136,7 @@ PdPatchMenu::PdPatchMenu(PdCommonMenus* m)
 
 void PdObjectMenu::drawContents()
 {
-    item("Properties", aProperties, IUKey::Action() + IUKey::Shift() + IUKey::KeyP());
+    item("Properties", aProperties, IUKey::Action() + IUKey::Shift() + IUKey::KeyP(), propertiesWindow);
     ImGui::Separator();
     item("Help", aHelp);
-
 }

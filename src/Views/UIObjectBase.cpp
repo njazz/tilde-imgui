@@ -23,23 +23,61 @@
 //    return 0;
 //}
 
+void UiObjectBase::_createProperties()
+{
+    auto p = properties.create("Position", "Box", "0.1", ImVec2(0, 0));
+    p->componentAt(0).bindFloat(&x);
+    p->componentAt(1).bindFloat(&y);
+    p->setAction([this, p]() {
+        x = (p->as<ImVec2>().x);
+        y = (p->as<ImVec2>().y);
+    });
+
+    p = properties.create("Size", "Box", "0.1", ImVec2(0, 0));
+    p->componentAt(0).bindFloat(&width);
+    p->componentAt(1).bindFloat(&height);
+    p->setAction([this, p]() {
+        width = p->as<ImVec2>().x;
+        height = p->as<ImVec2>().y;
+    });
+}
+
 void UiObjectBase::_propertiesWindow()
 {
     // properties window
 
-    ImGui::BeginTooltip();
-    ImGui::Text("properties:");
-    ImGui::Separator();
+    ImGui::PushID(ImGui::GetID((id() + "properties").c_str()));
+    ImGui::Begin("Properties", &_patchMenu.propertiesWindow, ImGuiWindowFlags_NoCollapse);
+
+
+    //ImGui::Text("properties:");
+    //ImGui::Separator();
+
     for (auto n : properties.names()) {
         ImGui::Text("%s", n.c_str());
         ImGui::SameLine();
         auto p = properties.get(n);
         if (p)
-            ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
+        {
+            if (p->type == ptString)
+                ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
+            if (p->type == ptVec2)
+            {
+                ImVec2 v = properties.get(n)->as<ImVec2>();
+                ImGui::InputFloat2("", (float*)&v);
+            }
+            if (p->type == ptFloat)
+            {
+                float f = properties.get(n)->as<float>();
+                ImGui::InputFloat("", &f);
+            }
+
+        }
         else
             ImGui::Text("ERR");
     }
-    ImGui::EndTooltip();
+    ImGui::End();
+    ImGui::PopID();
 }
 
 UiObjectBase::UiObjectBase()
@@ -60,6 +98,10 @@ UiObjectBase::UiObjectBase()
     _createProperties();
 
     _patchMenu.name = "object_menu";
+
+    _patchMenu.setAction(PdObjectMenu::aProperties,new IUAction([&](){
+        _patchMenu.propertiesWindow = !_patchMenu.propertiesWindow;
+    }));
 }
 
 int UiObjectBase::inletType(int idx)
@@ -117,8 +159,8 @@ void UiObjectBase::_drawInlet(int idx)
     ImU32 inletBorderColor = IM_COL32(192, 192, 192, 255);
     if (editModePtr)
         if (*editModePtr)
-    if (ImGui::IsItemHovered())
-        inletBorderColor = IM_COL32(0, 192, 255, 255);
+            if (ImGui::IsItemHovered())
+                inletBorderColor = IM_COL32(0, 192, 255, 255);
 
     draw_list->AddRectFilled(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), inletColor);
     draw_list->AddRect(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), inletBorderColor);
@@ -147,8 +189,8 @@ void UiObjectBase::_drawOutlet(int idx)
     ImU32 outletBorderColor = IM_COL32(192, 192, 192, 255);
     if (editModePtr)
         if (*editModePtr)
-    if (ImGui::IsItemHovered())
-        outletBorderColor = IM_COL32(0, 192, 255, 255);
+            if (ImGui::IsItemHovered())
+                outletBorderColor = IM_COL32(0, 192, 255, 255);
 
     draw_list->AddRectFilled(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), outletColor);
     draw_list->AddRect(pos - ImVec2(6, 0), pos - ImVec2(6, 0) + ImVec2(12, 4), outletBorderColor);
@@ -210,7 +252,7 @@ void UiObjectBase::draw()
 
             if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseDown(ImGui::GetIO().MousePos);
-                _mouseDownFlag   = true;
+                _mouseDownFlag = true;
             }
 
             if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
@@ -218,11 +260,11 @@ void UiObjectBase::draw()
             }
 
             if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-                _propertiesWindow();
+
                 onMouseHover(ImGui::GetIO().MousePos);
             }
 
-            if (ImGui::IsMouseReleased(0) && _mouseDownFlag){// && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+            if (ImGui::IsMouseReleased(0) && _mouseDownFlag) { // && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseUp(ImGui::GetIO().MousePos);
                 _mouseDownFlag = false;
             }
@@ -236,24 +278,31 @@ void UiObjectBase::draw()
             }
         } else {
             // hover in edit mode
-            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-                _propertiesWindow();
-                //                onMouseHover(ImGui::GetIO().MousePos);
-            }
+//            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+//                //_propertiesWindow();
+//                //                onMouseHover(ImGui::GetIO().MousePos);
+//            }
 
             // menu
-//            if (ImGui::BeginPopupContextItem("object_menu")) {
-//                _patchMenu.draw();
-//                ImGui::EndPopup();
-//            }
+            //            if (ImGui::BeginPopupContextItem("object_menu")) {
+            //                _patchMenu.draw();
+            //                ImGui::EndPopup();
+            //            }
 
             _patchMenu.draw();
 
             if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 ImGui::OpenPopup("object_menu");
             }
+
+            if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+                onMouseDoubleClickEdited(ImGui::GetIO().MousePos);
+            }
         }
     }
+
+    if (_patchMenu.propertiesWindow)
+        _propertiesWindow();
 
     drawObjectContents();
 

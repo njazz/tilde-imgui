@@ -8,6 +8,15 @@
 
 #include "AppController.hpp"
 
+int consoleInputCallback(ImGuiTextEditCallbackData *data)
+{
+    PdConsoleViewController* vc = (PdConsoleViewController*)data->UserData;
+    vc->windowController()->isEditingText = true;
+    //vc->windowController()->restoreContext();
+
+    return 0;
+}
+
 PdConsoleViewController::PdConsoleViewController(PdCommonMenus* m)
     : _menu(m)
 {
@@ -62,8 +71,11 @@ void PdConsoleViewController::draw()
 
 
     ImGui::Text(";");ImGui::SameLine();
-    if(ImGui::InputText(" ",_buf,255, ImGuiInputTextFlags_EnterReturnsTrue))
+    if(ImGui::InputText(" ",_buf,255, ImGuiInputTextFlags_EnterReturnsTrue, &consoleInputCallback,(void*)this))
     {
+        windowController()->isEditingText = false;
+        windowController()->restoreContext();
+
         std::string send = _buf;
 
         std::string obj, msg;

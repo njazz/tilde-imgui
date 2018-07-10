@@ -9,6 +9,8 @@
 #include <utility>
 #include <vector>
 
+#include <memory>
+
 #include "IUAction.hpp"
 
 #include <functional>
@@ -37,13 +39,13 @@ typedef enum {
 } UIPropertyType;
 
 class Variant {
-    int _intValue;
-    float _floatValue;
-    std::string _stringValue;
+    int _intValue = 0;
+    float _floatValue = 0;
+    std::string _stringValue = "";
 
-    int* _intPtr = &_intValue;
-    float* _floatPtr = &_floatValue;
-    std::string* _stringPtr = &_stringValue;
+    int* _intPtr = 0; //&_intValue;
+    float* _floatPtr = 0; //&_floatValue;
+    std::string* _stringPtr = 0; //&_stringValue;
 
 public:
     Variant(int v);
@@ -54,21 +56,67 @@ public:
     Variant(std::string s);
 
     template <typename T>
-    void set(T val)
-    {
-        // TODO
-    }
+    void set(T val);
 
     template <typename T>
-    T get()
-    {
-        // let's try lol
-        return (T)*_floatPtr;
-    };
+    T get();
 
-    void bindInt(int* p) { _intPtr = p; }
-    void bindFloat(float* p) { _floatPtr = p; }
-    void bindString(std::string* p) { _stringPtr = p; }
+    void bindInt(int* p)
+    {
+        _intPtr = p;
+        _floatPtr = 0;
+        _stringPtr = 0;
+    }
+    void bindFloat(float* p)
+    {
+        _floatPtr = p;
+        _intPtr = 0;
+        _stringPtr = 0;
+    }
+    void bindString(std::string* p)
+    {
+        _stringPtr = p;
+        _intPtr = 0;
+        _floatPtr = 0;
+    }
+};
+
+//template<>
+//std::string Variant::get()
+//{
+//    return _stringValue;
+//}
+
+//template<>
+//float Variant::get()
+//{
+//    return _floatValue;
+//}
+
+//template<>
+//int Variant::get()
+//{
+//    return _intValue;
+//}
+
+class PropertyData {
+};
+
+template <typename T, typename... Args>
+std::unique_ptr<T> make_unique(Args&&... args)
+{
+    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+}
+
+template <typename T>
+class PropertyDataT : public PropertyData {
+    std::unique_ptr<T> _value = make_unique<T>();
+
+public:
+    T& get() { return *_value; }
+    void set(T value) { *_value = value; }
+
+    void bindTo(T* v) { _value = std::unique_ptr<T>(v); }
 };
 
 ////
@@ -85,6 +133,8 @@ private:
     std::function<void(void)> _action = []() {};
 
     inline void _updated() { _action(); }
+
+    Variant _errorOut =Variant("ERR");
 public:
     explicit Property();
     Property(const Property& src);
@@ -113,10 +163,10 @@ public:
     void setAction(std::function<void(void)> action) { _action = action; }
 
     // -------
-    Variant componentAt(int idx)
+    Variant& componentAt(int idx)
     {
         if (idx >= _data.size())
-            return Variant(-1);
+            return _errorOut;//Variant(-1);
         return _data[idx];
     }
     // -------

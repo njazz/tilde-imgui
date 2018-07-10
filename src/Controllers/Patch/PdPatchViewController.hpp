@@ -60,6 +60,10 @@ class PdPatchViewController : public IUViewController {
     //
     UndoStack _undoStack;
 
+    //
+    void _attachArrangeMenu();
+    void _attachPutMenu();
+
 public:
     CanvasData data;
 
@@ -89,9 +93,8 @@ public:
     IU_ACTION(inletClicked)
 
 public:
-    IUAction editModeAction = IUAction([this]() {
-        editMode = !editMode;
-    });
+
+    IU_ACTION(editModeAction);
 
     // --------------------
 
@@ -122,19 +125,30 @@ public:
 
     // ----------
 
-    IUAction arrangeLeftAction;
-    IUAction arrangeCenterAction;
-    IUAction arrangeRightAction;
-    IUAction arrangeTopAction;
-    IUAction arrangeBottomAction;
     IUAction arrangeDHAction;
     IUAction arrangeDVAction;
+
+    IU_ACTION(arrangeLeftAction);
+    IU_ACTION(arrangeCenterAction);
+    IU_ACTION(arrangeRightAction);
+    IU_ACTION(arrangeTopAction);
+    IU_ACTION(arrangeBottomAction);
 
     // -----
 
     IU_ACTION(zoomIn);
     IU_ACTION(zoomOut);
     IU_ACTION(zoomOne);
+
+    // ----------
+
+    IU_ACTION(putObject);
+    IU_ACTION(putMessage);
+    IU_ACTION(putComment);
+
+    IU_ACTION(putBang);
+    IU_ACTION(putToggle);
+    IU_ACTION(putNumber);
 
     // ----------
 

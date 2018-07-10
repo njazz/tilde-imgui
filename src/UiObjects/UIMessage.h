@@ -29,7 +29,7 @@ public:
 
     virtual void drawObjectContents() override;
 
-    virtual void onMouseDoubleClick(ImVec2 pos) override
+    virtual void onMouseDoubleClickEdited(ImVec2 pos) override
     {
         _edit = !_edit;
     }

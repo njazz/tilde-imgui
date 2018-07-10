@@ -16,22 +16,85 @@ void Variant::set<std::string>(std::string val)
 template <>
 std::string Variant::get<std::string>()
 {
-    return _stringValue;//*_stringPtr;
+    if (_intPtr)
+        return std::to_string(*_intPtr);
+
+    if (_floatPtr)
+        return std::to_string(*_floatPtr);
+
+    if (_stringPtr)
+        return *_stringPtr;
+
+    return _stringValue;
 }
 
 template <>
 int Variant::get<int>()
 {
-    return *_intPtr;
+    if (_intPtr)
+        return *_intPtr;
+    if (_floatPtr)
+        return int(*_floatPtr);
+    if (_stringPtr)
+        return std::stoi(*_stringPtr);
 
+    //
+    return 0;
 }
 
 template <>
 float Variant::get<float>()
 {
-    return *_floatPtr;
+    if (_floatPtr)
+        return *_floatPtr;
+    if (_intPtr)
+        return float(*_intPtr);
+    if (_stringPtr)
+        return std::stof(*_stringPtr);
 
+    //
+    return 0;
 }
+
+// ---
+
+template <>
+void Variant::set(long f)
+{
+    _intValue = f;
+    _intPtr = &_intValue;
+    _floatPtr = 0;
+    _stringPtr = 0;
+}
+
+template <>
+void Variant::set(int f)
+{
+    _intValue = f;
+    _intPtr = &_intValue;
+    _floatPtr = 0;
+    _stringPtr = 0;
+}
+
+template <>
+void Variant::set(float f)
+{
+    _floatValue = f;
+    _floatPtr = &_floatValue;
+    _intPtr = 0;
+    _stringPtr = 0;
+}
+
+template <>
+void Variant::set(double f)
+{
+    _floatValue = f;
+    _floatPtr = &_floatValue;
+    _intPtr = 0;
+    _stringPtr = 0;
+}
+
+// ---
 
 Variant::Variant(int v)
 {
@@ -185,27 +248,34 @@ void Property::set<std::string>(std::string value)
     _updated();
 }
 
-
 // -------
 template <>
 std::string Property::as<std::string>()
 {
     std::string ret;
-    for (auto a : _data)
-    {
+    for (auto a : _data) {
         ret += a.get<std::string>() + " ";
     }
     return ret;
 }
 
-template<>
+template <>
 ImVec2 Property::as<ImVec2>()
 {
-    if (_data.size()<2) return ImVec2(-1,-1);
+    if (_data.size() < 2)
+        return ImVec2(-1, -1);
     ImVec2 ret;
     ret.x = _data.at(0).get<float>();
     ret.y = _data.at(1).get<float>();
     return ret;
+}
+
+template <>
+float Property::as<float>()
+{
+    if (_data.size() < 1)
+        return -1;
+    return _data.at(0).get<float>();
 }
 
 // --------

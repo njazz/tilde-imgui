@@ -52,26 +52,13 @@ protected:
 
     std::string id() { return std::to_string((long)this); };
 
-    void _createProperties(){
-        auto p = properties.create("Position","Box","0.1",ImVec2(0,0));
-        p->componentAt(0).bindFloat(&x);
-        p->componentAt(0).bindFloat(&y);
-        p->setAction([this,p](){
-            x = (p->as<ImVec2>().x);
-            y = (p->as<ImVec2>().y);
-        });
-
-        p = properties.create("Size","Box","0.1",ImVec2(0,0));
-        p->setAction([this,p](){
-            width = p->as<ImVec2>().x;
-            height = p->as<ImVec2>().y;
-        });
-    }
-
+    void _createProperties();
     void _propertiesWindow();
 
     // temporary?
     bool _mouseDownFlag = false;
+
+    bool _showPropertiesWindow = false;
 public:    
     PropertyList properties;
 
@@ -120,6 +107,8 @@ public:
 
     virtual void onMouseDoubleClick(ImVec2 pos) {};
     virtual void onMouseRightClick(ImVec2 pos) {};
+
+    virtual void onMouseDoubleClickEdited(ImVec2 pos) {};
 };
 
 #endif /* NodeObject_hpp */
