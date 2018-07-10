@@ -166,7 +166,7 @@ void UIObject::drawObjectContents()
         }
     } else {
 
-        // FIX THAT
+        // todo: FIX THAT
         int s = objectText.size();
         if (s < 0)
             s = 0;
@@ -174,13 +174,24 @@ void UIObject::drawObjectContents()
             s = 64;
         memcpy(_editText, objectText.c_str(), s);
 
-        if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
+        //if (ImGui::IsRootWindowOrAnyChildFocused() && !ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0))
             ImGui::SetKeyboardFocusHere(0);
 
+        enteredText = _editText;
+
+//        ImGui::SetCursorPos(ImVec2(x+5,y+height+5));
+//        ImGui::OpenPopup("_autocomplete");
+
         ImGui::PushItemWidth(width - 8);
-        if (ImGui::InputText("##in", _editText, 64, ImGuiInputTextFlags_CallbackAlways | ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll, &nameChanged, (void*)this)) {
+        if (ImGui::InputText("##in", _editText, 64,  ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AutoSelectAll, &nameChanged, (void*)this)) {
             finishedEditingText();
         }
+        updated(UIObject::oAutocomplete);
+
+        ImGui::SetTooltip("menu");
+
+        ((IUView*)_parent)->mouseEnabled = false;
+
     }
 
     ImGui::EndGroup();
@@ -189,6 +200,8 @@ void UIObject::drawObjectContents()
 void UIObject::finishedEditingText()
 {
     printf("edited\n");
+
+    ((IUView*)_parent)->mouseEnabled = true;
 
     // fix
     windowController()->restoreContext();

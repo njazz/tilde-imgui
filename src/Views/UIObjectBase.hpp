@@ -69,6 +69,9 @@ protected:
     }
 
     void _propertiesWindow();
+
+    // temporary?
+    bool _mouseDownFlag = false;
 public:    
     PropertyList properties;
 

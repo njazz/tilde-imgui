@@ -115,6 +115,8 @@ void UiObjectBase::_drawInlet(int idx)
             }
 
     ImU32 inletBorderColor = IM_COL32(192, 192, 192, 255);
+    if (editModePtr)
+        if (*editModePtr)
     if (ImGui::IsItemHovered())
         inletBorderColor = IM_COL32(0, 192, 255, 255);
 
@@ -143,6 +145,8 @@ void UiObjectBase::_drawOutlet(int idx)
         outletColor = IM_COL32(96, 128, 160, 255);
 
     ImU32 outletBorderColor = IM_COL32(192, 192, 192, 255);
+    if (editModePtr)
+        if (*editModePtr)
     if (ImGui::IsItemHovered())
         outletBorderColor = IM_COL32(0, 192, 255, 255);
 
@@ -206,6 +210,7 @@ void UiObjectBase::draw()
 
             if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseDown(ImGui::GetIO().MousePos);
+                _mouseDownFlag   = true;
             }
 
             if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
@@ -217,11 +222,12 @@ void UiObjectBase::draw()
                 onMouseHover(ImGui::GetIO().MousePos);
             }
 
-            if (ImGui::IsMouseReleased(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+            if (ImGui::IsMouseReleased(0) && _mouseDownFlag){// && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseUp(ImGui::GetIO().MousePos);
+                _mouseDownFlag = false;
             }
 
-            if (ImGui::IsMouseDragging(0)) { // && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+            if (ImGui::IsMouseDragging(0) && _mouseDownFlag) { // && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
                 onMouseDrag(ImGui::GetIO().MouseDelta);
             }
 

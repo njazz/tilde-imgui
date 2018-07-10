@@ -66,7 +66,6 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
 
-
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
@@ -118,7 +117,7 @@ void PdPatchViewController::_drawGrid()
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 scrolling;
 
-    ImGui::SetCursorPos(ImVec2(0,0));
+    ImGui::SetCursorPos(ImVec2(0, 0));
     ImGui::SetNextWindowBgAlpha(0);
     ImGui::BeginChild(ImGui::GetID("grid"));
     if (editMode && data.showGrid) {
@@ -135,11 +134,14 @@ void PdPatchViewController::_drawGrid()
             draw_list->AddLine(ImVec2(0.0f, y) + win_pos, ImVec2(contentSize.x, y) + win_pos, GRID_COLOR);
     }
     ImGui::EndChild();
-    ImGui::SetCursorPos(ImVec2(0,0));
+    ImGui::SetCursorPos(ImVec2(0, 0));
 }
 
 void PdPatchViewController::_drawSelectionFrame()
 {
+    // test
+    //     return;
+
     // selection frame
 
     if (ImGui::IsMouseClicked(0) && editMode) {
@@ -196,9 +198,8 @@ void PdPatchViewController::draw()
 {
     //ImGui::SetNextWindowSize(ImVec2(width, height - 20));
 
-
     // todo
-//    ImGui::GetIO().FontAllowUserScaling = true;
+    //    ImGui::GetIO().FontAllowUserScaling = true;
 
     // temporary!
     resizeToObjects();
@@ -206,7 +207,7 @@ void PdPatchViewController::draw()
     x = 0;
     y = 22;
 
-    height = windowController()->height/2-22;
+    height = windowController()->height / 2 - 22;
 
     bool w = true;
 
@@ -219,8 +220,6 @@ void PdPatchViewController::draw()
     //contentSize = ImVec2(1024,1024);
 
     IUViewController::draw();
-
-
 };
 
 void PdPatchViewController::drawLayerContents()
@@ -228,7 +227,7 @@ void PdPatchViewController::drawLayerContents()
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
     // todo: IULayer
-     ImGui::SetCursorPos(ImVec2(0, -22));
+    ImGui::SetCursorPos(ImVec2(0, -22));
 
     _drawGrid();
 
@@ -289,7 +288,8 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
         return 0;
 
     UiObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
-    if (!n) return 0;
+    if (!n)
+        return 0;
     n->objectText = text;
     n->x = (x);
     n->y = (y);
@@ -439,23 +439,33 @@ bool PdPatchViewController::selectObjects()
 inline void PdPatchViewController::_autocomplete()
 {
 
-    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
+    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y  + 10));
 
-    ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100));
 
-    UIObject* b = (UIObject*)autocomplete.sender;
+    //ImGui::BeginPopup()
+    if //(ImGui::BeginPopupEx(ImGui::GetCurrentContext()->CurrentWindow->GetID("_autocomplete"), ImGuiWindowFlags_NoCollapse & ImGuiWindowFlags_NoFocusOnAppearing)){
+       (ImGui::BeginChildFrame( ImGui::GetID("##autocomplete"), ImVec2(150, 100))){
+        UIObject* b = (UIObject*)autocomplete.sender;
 
-    for (auto s : data.canvas->availableObjects()) {
-        if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
-            if (ImGui::MenuItem(s.c_str())) {
-                //printf(">>>\n");
-                b->objectText = s;
-                b->finishedEditingText();
-                ImGui::EndChildFrame();
-                return;
-            }
+        for (auto s : data.canvas->availableObjects()) {
+            if (strncmp(b->enteredText.c_str(), s.c_str(), b->enteredText.size()) == 0)
+                if (ImGui::MenuItem(s.c_str())) {
+                    printf(">>> %s\n", s.c_str());
+                    b->objectText = s;
+                    auto t = b->_editText;
+                    b->_editText = const_cast<char*>(s.c_str());
+                    b->finishedEditingText();
+                    b->_editText = t;
+                    b->_editText[0] = '\0';
+                    ImGui::EndChildFrame();
+                    //ImGui::EndMenu();
+                    return;
+                }
+        }
+
+        //ImGui::EndPopup();
+        ImGui::EndChildFrame();
     }
-    ImGui::EndChildFrame();
 }
 
 inline void PdPatchViewController::_objectUpdated()
@@ -525,7 +535,8 @@ inline void PdPatchViewController::_inletHovered()
 inline void PdPatchViewController::_inletClicked()
 {
     UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
-    if (!_newPatchcord.outputObj) return;
+    if (!_newPatchcord.outputObj)
+        return;
     if (b == _newPatchcord.outputObj)
         return;
     connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);
@@ -583,10 +594,10 @@ void PdPatchViewController::_zoomIn()
     printf("zoom in\n");
     ImGui::SetWindowFontScale(1.5);
 
-//    for (auto c:_components)
-//        c->zoomable = true;
+    //    for (auto c:_components)
+    //        c->zoomable = true;
 
-//    zoomable = true;
+    //    zoomable = true;
 }
 
 void PdPatchViewController::_zoomOut()
@@ -594,10 +605,10 @@ void PdPatchViewController::_zoomOut()
     printf("zoom out\n");
     ImGui::SetWindowFontScale(0.5);
 
-//    for (auto c:_components)
-//        c->zoomable = true;
+    //    for (auto c:_components)
+    //        c->zoomable = true;
 
-//    zoomable = true;
+    //    zoomable = true;
 }
 
 void PdPatchViewController::_zoomOne()

@@ -17,37 +17,11 @@ class UIFloat : public UiObjectBase {
 public:
     UIFloat();
 
-    virtual void draw() override
-    {
-
-        width = 50;
-        height = 25;
-
-        UiObjectBase::draw();
-    };
-
-    virtual void drawObjectContents() override
-    {
-        //ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-        ImGui::BeginGroup();
-        ImGui::SetCursorScreenPos(ImVec2(x + 4, y + 4));
-        ImGui::Text("%f", _value);
-        ImGui::EndGroup();
-
-        if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-            //            _value = !_value;
-            //            if (pdObject)
-            //                pdObject->sendFloat(_value);
-        }
-    };
-
-    virtual void onMouseDrag(ImVec2 pos) override
-    {
-        _value -= pos.y / 10;
-        if (pdObject)
-            pdObject->sendFloat(_value);
-    }
+    // temporary: fixed size
+    virtual void draw() override;
+    virtual void drawObjectContents() override;
+    virtual void onMouseDrag(ImVec2 pos) override;
+    virtual void onMouseUp(ImVec2 pos) override;
 };
 
 #endif // UIBANG_H

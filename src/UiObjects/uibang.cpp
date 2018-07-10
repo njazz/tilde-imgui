@@ -35,3 +35,11 @@ void UIBang::_bang()
 {
     _bangFrameCounter = 5;
 }
+
+ void UIBang::draw()
+{
+    width = 25;
+    height = 25;
+
+    UiObjectBase::draw();
+};

@@ -11,16 +11,8 @@ public:
     UIBang();
 
     // temporary fixed size:
-    virtual void draw() override
-    {
-        width = 25;
-        height = 25;
-
-        UiObjectBase::draw();
-    };
-
+    virtual void draw() override;
     virtual void drawObjectContents() override;
-
     virtual void onMouseDown(ImVec2 pos) override ;
 };
 

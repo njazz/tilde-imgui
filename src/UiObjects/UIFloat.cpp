@@ -37,7 +37,46 @@ void UIFloat::_drawBackground()
     draw_list->AddConvexPolyFilled(poly, 5, IM_COL32(75, 75, 75, 255));
     draw_list->AddPolyline(poly, 5, borderColor, true, 1 + _mouseDown);
 
-    _mouseDown = (ImGui::IsMouseDown(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height)));
+//    _mouseDown = (ImGui::IsMouseDown(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height)));
 
 
 }
+
+ void UIFloat::drawObjectContents()
+{
+    //ImDrawList* draw_list = ImGui::GetWindowDrawList();
+
+    ImGui::BeginGroup();
+    ImGui::SetCursorScreenPos(ImVec2(x + 4, y + 4));
+    ImGui::Text("%0.2f", _value);
+    ImGui::EndGroup();
+
+    if (ImGui::IsMouseClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+        //            _value = !_value;
+        //            if (pdObject)
+        //                pdObject->sendFloat(_value);
+    }
+};
+
+  void UIFloat::draw()
+ {
+
+     width = 50;
+     height = 25;
+
+     UiObjectBase::draw();
+ };
+
+ void UIFloat::onMouseDrag(ImVec2 pos)
+ {
+     _value -= pos.y / 10;
+     if (pdObject)
+         pdObject->sendFloat(_value);
+
+     _mouseDown = true;
+ }
+
+ void UIFloat::onMouseUp(ImVec2 pos)
+ {
+     _mouseDown = false;
+ }
