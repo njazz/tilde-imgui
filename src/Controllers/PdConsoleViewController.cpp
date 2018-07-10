@@ -93,7 +93,7 @@ void PdConsoleViewController::draw()
         }
     }
 
-    ImGui::Separator();
+    ImGui::SameLine();
 
     ImGui::Text("ImGui:");
     ImGui::SameLine();

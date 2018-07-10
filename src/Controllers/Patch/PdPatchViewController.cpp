@@ -16,6 +16,15 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
 
 {
+    //
+    _grid.editModeFlag = &editMode;
+    _grid.gridStep = &data.gridStep;
+    _grid.showGrid = &data.showGrid;
+    addSubview(&_grid);
+
+//    _grid.width = 480;
+//    _grid.height = 480;
+
     menu = &_patchMenu;
 
     _emptyObject.addAction(UIObject::oObjectChanged, &objectCreated);
@@ -60,6 +69,8 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     _attachArrangeMenu();
     _attachPutMenu();
+
+
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -195,17 +206,22 @@ void PdPatchViewController::draw()
     x = 0;
     y = 22;
 
-    height = windowController()->height / 2 - 22;
+    width = windowController()->width/2;
+    height = windowController()->height / 2;// - 22;
 
     bool w = true;
 
     title = "patch";
-    flags = ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar;
+    flags = ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     manualLayout = true;
 
     padding = 0;
     //contentSize = ImVec2(1024,1024);
+
+    _grid.width = width;
+    _grid.height  = height;
+    _grid.contentSize = ImVec2(width,height);
 
     IUViewController::draw();
 };
@@ -217,7 +233,7 @@ void PdPatchViewController::drawLayerContents()
     // todo: IULayer
     ImGui::SetCursorPos(ImVec2(0, -22));
 
-    _drawGrid();
+    //_drawGrid();
 
     //ImGui::SetTooltip("content size %f %f",contentSize.x,contentSize.y);
 
@@ -568,6 +584,8 @@ void PdPatchViewController::resizeToObjects()
 
     contentSize.x = (width > w) ? width : w;
     contentSize.y = (height > h) ? height : h;
+
+    _grid.contentSize = contentSize;
 };
 
 void PdPatchViewController::loadbang()

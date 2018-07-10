@@ -5,6 +5,9 @@ UIToggle::UIToggle()
     observer.callback = [this]() {
         _value = std::stoi(observer.data().getStringAt(0));
     };
+
+    auto p = properties.create("Value","Slider","0.1",false);
+    p->componentAt(0).bindInt(&_value);
 }
 
 void UIToggle::draw()

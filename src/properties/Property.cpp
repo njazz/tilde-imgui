@@ -56,6 +56,20 @@ float Variant::get<float>()
     return 0;
 }
 
+template <>
+bool Variant::get<bool>()
+{
+    if (_floatPtr)
+        return *_floatPtr;
+    if (_intPtr)
+        return float(*_intPtr);
+    if (_stringPtr)
+        return std::stoi(*_stringPtr);
+
+    //
+    return false;
+}
+
 // ---
 
 template <>
@@ -93,6 +107,7 @@ void Variant::set(double f)
     _intPtr = 0;
     _stringPtr = 0;
 }
+
 
 // ---
 
@@ -276,6 +291,14 @@ float Property::as<float>()
     if (_data.size() < 1)
         return -1;
     return _data.at(0).get<float>();
+}
+
+template <>
+bool Property::as<bool>()
+{
+    if (_data.size() < 1)
+        return -1;
+    return _data.at(0).get<bool>();
 }
 
 // --------

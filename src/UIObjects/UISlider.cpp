@@ -17,6 +17,9 @@ UISlider::UISlider()
     p = properties.create("Range Max","Slider","0.1",1.);
     p->componentAt(0).bindFloat(&_rangeMax);
 
+    p = properties.create("Value","Slider","0.1",0.);
+    p->componentAt(0).bindFloat(&_value);
+
 }
 
  void UISlider::draw()

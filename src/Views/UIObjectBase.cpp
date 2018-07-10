@@ -61,6 +61,13 @@ void UiObjectBase::_propertiesWindow()
         {
             if (p->type == ptString)
                 ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
+
+            if(p->type == ptBool)
+            {
+                bool v = properties.get(n)->as<bool>();
+                if(ImGui::Checkbox("", &v))
+                    properties.set(n,v);
+            }
             if (p->type == ptVec2)
             {
                 ImVec2 v = properties.get(n)->as<ImVec2>();
@@ -69,7 +76,8 @@ void UiObjectBase::_propertiesWindow()
             if (p->type == ptFloat)
             {
                 float f = properties.get(n)->as<float>();
-                ImGui::InputFloat("", &f);
+                if(ImGui::InputFloat("", &f))
+                    properties.set(n,f);
             }
 
         }

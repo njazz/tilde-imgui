@@ -12,10 +12,18 @@
 #include "IUView.hpp"
 #include <stdio.h>
 
+#include "imgui_internal.h"
 
-class Grid : public IUView {
+class Grid : public IULayer {
 
+public:
+    bool *editModeFlag = 0;
+    bool *showGrid = 0;
+    int *gridStep = 0;
 
+    virtual void drawLayerContents() override;
+
+    Grid(){manualLayout = true;}
 };
 
 #endif /* NodeInlet_hpp */
