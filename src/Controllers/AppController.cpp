@@ -51,7 +51,23 @@ PdPatchViewController* AppController::createNewPatchWindow()
     p->setPdProcess(_serverProcess);
     p->data.clipboard = &_clipboard;
 
+    p->addAction(PdPatchViewController::oNewCanvasWindow, &newCanvasWindow);
+
     addWindow(new IUWindowController(p, "Patch", 300, 300, 640, 480));
+
+    return p;
+}
+
+PdPatchViewController* AppController::createPatchWindowForExistingCanvas(xpd::CanvasPtr cnv)
+{
+    PdPatchViewController* p = new PdPatchViewController(&_commonMenus);
+    p->pdServer = _server;
+    p->setPdProcess(_serverProcess, cnv);
+    p->data.clipboard = &_clipboard;
+
+    p->addAction(PdPatchViewController::oNewCanvasWindow, &newCanvasWindow);
+
+    addWindow(new IUWindowController(p, "<Subpatch>", 320, 320, 640, 480));
 
     return p;
 }

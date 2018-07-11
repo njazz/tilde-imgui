@@ -67,13 +67,14 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     mouseEnabled = true;
 }
 
-void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
+void PdPatchViewController::setPdProcess(xpd::ProcessPtr p, xpd::CanvasPtr cnv)
 {
     data.pdProcess = p;
 
-    if (data.pdProcess)
+    if (data.pdProcess && !cnv)
         data.canvas = data.pdProcess->createCanvas();
-
+    else
+        data.canvas = cnv;
     /*
     // test
     createObject("print", 300, 300);
@@ -329,6 +330,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     n->addAction(UiObjectBase::oInletClicked, &inletClicked);
     n->addAction(UiObjectBase::oInletHovered, &inletHovered);
     n->addAction(UiObjectBase::oOutletClicked, &outletClicked);
+    n->addAction(UiObjectBase::oOpenCanvas, &openCanvas);
 
     if (n->pdObject)
         n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
@@ -550,6 +552,21 @@ inline void PdPatchViewController::_inletClicked()
     connectObjects(_newPatchcord.outputObj, _newPatchcord.outputIdx, b, b->data.inletClicked);
 
     _newPatchcord.outputObj = 0;
+}
+
+inline void PdPatchViewController::_openCanvas()
+{
+    UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
+
+    auto cnv = b->pdObject->asPdCanvas();
+
+    setUserObjectForAction(oNewCanvasWindow,(void*)cnv);
+
+    printf("open abstraction: %lu\n",(long)cnv);
+
+    updated(oNewCanvasWindow);
+
+    windowController()->restoreContext();
 }
 
 // --------------

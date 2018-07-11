@@ -76,7 +76,7 @@ public:
     PdPatchViewController(PdCommonMenus* m);
 
     xpd::PdLocalServer* pdServer = 0;
-    void setPdProcess(xpd::ProcessPtr p);
+    void setPdProcess(xpd::ProcessPtr p, xpd::CanvasPtr cnv = 0);
 
     bool editMode = true;
 
@@ -88,6 +88,7 @@ public:
     void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
 
     // ===============
+    // object actions
 
     IU_ACTION(autocomplete)
     IU_ACTION(objectUpdated)
@@ -95,6 +96,7 @@ public:
     IU_ACTION(outletClicked)
     IU_ACTION(inletHovered)
     IU_ACTION(inletClicked)
+    IU_ACTION(openCanvas)
 
 public:
     IU_ACTION(editModeAction);
@@ -173,6 +175,9 @@ public:
     virtual void onMouseDrag(ImVec2 pos) override;
     virtual void onMouseUp(ImVec2 pos) override;
     virtual void onMouseHover(ImVec2 pos) override;
+
+    //
+    static const int oNewCanvasWindow = 100;
 };
 
 #endif /* AppController_hpp */

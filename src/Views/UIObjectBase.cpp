@@ -285,7 +285,10 @@ void UiObjectBase::draw()
             }
 
             if (ImGui::IsMouseDoubleClicked(0) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-                onMouseDoubleClick(ImGui::GetIO().MousePos);
+                if (data.isCanvas)
+                    updated(oOpenCanvas);
+                else
+                    onMouseDoubleClick(ImGui::GetIO().MousePos);
             }
         } else {
             // hover in edit mode
@@ -300,6 +303,7 @@ void UiObjectBase::draw()
             //                ImGui::EndPopup();
             //            }
 
+            _patchMenu.canvas = data.isCanvas;
             _patchMenu.draw();
 
             if (ImGui::IsMouseClicked(1) && ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {

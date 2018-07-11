@@ -90,6 +90,8 @@ public:
     static const int oInletClicked = 101;
     static const int oInletHovered = 102;
 
+    static const int oOpenCanvas = 200;
+
     //
     void updateFromPdObject();
     void pdObjUpdatePosition();
