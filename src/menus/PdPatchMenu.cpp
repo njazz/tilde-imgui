@@ -19,7 +19,7 @@ void PdPatchEditMenu::shortcuts()
         }
 }
 
-void PdPatchEditMenu::drawContents()
+void PdPatchEditMenu::_drawContents()
 {
     if (editModeFlag)
         if (*editModeFlag) {
@@ -45,7 +45,7 @@ void PdPatchPutMenu::shortcuts()
 {
 }
 
-void PdPatchPutMenu::drawContents()
+void PdPatchPutMenu::_drawContents()
 {
     item("Object", aObject, IUKey::Action() + IUKey::Key1());
     item("Message", aMessage, IUKey::Action() + IUKey::Key2());
@@ -77,7 +77,7 @@ void PdPatchPutMenu::drawContents()
 void PdPatchArrangeMenu::shortcuts()
 {
 }
-void PdPatchArrangeMenu::drawContents()
+void PdPatchArrangeMenu::_drawContents()
 {
     bool sh = (showGrid) ? *showGrid : false;
     bool sg = (snapToGrid) ? *snapToGrid : false;
@@ -134,7 +134,7 @@ PdPatchMenu::PdPatchMenu(PdCommonMenus* m)
     addMenu(&common->menuHelp, "Help");
 }
 
-void PdObjectMenu::drawContents()
+void PdObjectMenu::_drawContents()
 {
     item("Properties", aProperties, IUKey::Action() + IUKey::Shift() + IUKey::KeyP(), propertiesWindow);
     ImGui::Separator();

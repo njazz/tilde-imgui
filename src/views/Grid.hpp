@@ -14,16 +14,17 @@
 
 #include "imgui_internal.h"
 
-class Grid : public IULayer {
+class Grid : public IUView {
 
 public:
     bool *editModeFlag = 0;
     bool *showGrid = 0;
     int *gridStep = 0;
 
-    virtual void drawLayerContents() override;
+    virtual void _drawContents() override;
 
-    Grid(){manualLayout = true;}
+    Grid(){manualLayout = true;
+          mouseEnabled = false;}
 };
 
 #endif /* NodeInlet_hpp */

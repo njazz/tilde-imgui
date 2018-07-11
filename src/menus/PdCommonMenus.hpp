@@ -10,7 +10,7 @@ public:
     bool inPatch;
 
     virtual void shortcuts() override;
-    virtual void drawContents() override;
+    virtual void _drawContents() override;
 
     static const int aFileNew = 1;
     static const int aFileOpen = 2;
@@ -24,7 +24,7 @@ class PdCommonWindowMenu : public IUMenuBase {
 
 public:
     virtual void shortcuts() override;
-    virtual void drawContents() override;
+    virtual void _drawContents() override;
 
     static const int aSettings = 1;
     static const int aAudioMIDI = 2;
@@ -36,14 +36,14 @@ public:
     bool* dspOn = 0;
 
     virtual void shortcuts() override;
-    virtual void drawContents() override;
+    virtual void _drawContents() override;
 
     static const int aDSPOn = 1;
     static const int aDSPOff = 2;
 };
 
 class PdCommonHelpMenu : public IUMenuBase {
-    virtual void drawContents() override;
+    virtual void _drawContents() override;
 
     static const int aHelp = 1;
 };

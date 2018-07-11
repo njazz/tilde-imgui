@@ -100,13 +100,13 @@ public:
     bool* editModePtr = 0;
 
     //
-    virtual void onMouseDown(ImVec2 pos) {};
-    virtual void onMouseHover(ImVec2 pos) {};
-    virtual void onMouseUp(ImVec2 pos) {};
-    virtual void onMouseDrag(ImVec2 pos) {};
+    virtual void onMouseDown(ImVec2 pos) override{};
+    virtual void onMouseHover(ImVec2 pos) override{};
+    virtual void onMouseUp(ImVec2 pos) override {};
+    virtual void onMouseDrag(ImVec2 pos) override{};
 
-    virtual void onMouseDoubleClick(ImVec2 pos) {};
-    virtual void onMouseRightClick(ImVec2 pos) {};
+    virtual void onMouseDoubleClick(ImVec2 pos) override{};
+    virtual void onMouseRightClick(ImVec2 pos) override{};
 
     virtual void onMouseDoubleClickEdited(ImVec2 pos) {};
 };

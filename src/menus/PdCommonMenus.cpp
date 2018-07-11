@@ -12,7 +12,7 @@ void PdCommonFileMenu::shortcuts()
     shortcut(aFileQuit, IUKey::Action() + IUKey::KeyQ());
 }
 
-void PdCommonFileMenu::drawContents()
+void PdCommonFileMenu::_drawContents()
 {
     item("New patch window", aFileNew, IUKey::Action() + IUKey::KeyN());
     ImGui::Separator();
@@ -33,7 +33,7 @@ void PdCommonWindowMenu::shortcuts()
     shortcut(aSettings, IUKey::Action() + IUKey::Comma());
     shortcut(aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL());
 }
-void PdCommonWindowMenu::drawContents()
+void PdCommonWindowMenu::_drawContents()
 {
     item("Settings ...", aSettings, IUKey::Action() + IUKey::Comma());
     item("Audio / MIDI setup...", aAudioMIDI);
@@ -47,7 +47,7 @@ void PdCommonMediaMenu::shortcuts()
     shortcut(aDSPOff, IUKey::Action() + IUKey::Period());
 }
 
-void PdCommonMediaMenu::drawContents()
+void PdCommonMediaMenu::_drawContents()
 {
     bool v;
     if (!dspOn)
@@ -58,7 +58,7 @@ void PdCommonMediaMenu::drawContents()
     item("DSP Off", aDSPOff, IUKey::Action() + IUKey::Period(), !v);
 }
 
-void PdCommonHelpMenu::drawContents()
+void PdCommonHelpMenu::_drawContents()
 {
     item("Pd Help", aHelp);
 }

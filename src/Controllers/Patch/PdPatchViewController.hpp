@@ -81,7 +81,7 @@ public:
     bool editMode = true;
 
     virtual void draw() override;
-    virtual void drawLayerContents() override;
+    virtual void _drawContents() override;
 
     UiObjectBase* createObject(std::string text, int x, int y);
     void connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx);

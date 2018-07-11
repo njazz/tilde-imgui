@@ -226,7 +226,7 @@ void PdPatchViewController::draw()
     IUViewController::draw();
 };
 
-void PdPatchViewController::drawLayerContents()
+void PdPatchViewController::_drawContents()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
