@@ -3,11 +3,13 @@
 #include "IUMainMenuBase.hpp"
 #include "PdCommonMenus.hpp"
 
+#include "IUPopupMenu.hpp"
+
 #pragma once
 
 class PdPatchEditMenu : public IUMenuBase {
 public:
-    virtual void shortcuts() override;
+    virtual void _shortcutContents() override;
     virtual void _drawContents() override;
 
     bool* editModeFlag = 0;
@@ -31,7 +33,7 @@ public:
 
 class PdPatchPutMenu : public IUMenuBase {
 public:
-    virtual void shortcuts() override;
+    virtual void _shortcutContents() override;
     virtual void _drawContents() override;
 
     static const int aFileNew = 1;
@@ -55,7 +57,7 @@ public:
     bool *showGrid = 0;
     bool *snapToGrid = 0;
 
-    virtual void shortcuts() override;
+    virtual void _shortcutContents() override;
     virtual void _drawContents() override;
 
 

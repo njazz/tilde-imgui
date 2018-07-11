@@ -2,7 +2,7 @@
 
 #include "PdPatchMenu.hpp"
 
-void PdPatchEditMenu::shortcuts()
+void PdPatchEditMenu::_shortcutContents()
 {
     shortcut(aEditMode, IUKey::Action() + IUKey::KeyE());
 
@@ -41,7 +41,7 @@ void PdPatchEditMenu::_drawContents()
     item("Edit mode", aEditMode, IUKey::Action() + IUKey::KeyE(), e);
 }
 
-void PdPatchPutMenu::shortcuts()
+void PdPatchPutMenu::_shortcutContents()
 {
 }
 
@@ -74,7 +74,7 @@ void PdPatchPutMenu::_drawContents()
     //ImGui::Separator();
 }
 
-void PdPatchArrangeMenu::shortcuts()
+void PdPatchArrangeMenu::_shortcutContents()
 {
 }
 void PdPatchArrangeMenu::_drawContents()

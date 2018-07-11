@@ -1,7 +1,7 @@
 //
 
 #include "PdCommonMenus.hpp"
-void PdCommonFileMenu::shortcuts()
+void PdCommonFileMenu::_shortcutContents()
 {
     shortcut(aFileNew, IUKey::Action() + IUKey::KeyN());
     shortcut(aFileOpen, IUKey::Action() + IUKey::KeyO());
@@ -28,7 +28,7 @@ void PdCommonFileMenu::_drawContents()
 
 // ----------
 
-void PdCommonWindowMenu::shortcuts()
+void PdCommonWindowMenu::_shortcutContents()
 {
     shortcut(aSettings, IUKey::Action() + IUKey::Comma());
     shortcut(aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL());
@@ -41,7 +41,7 @@ void PdCommonWindowMenu::_drawContents()
     item("Clear console", aClearConsole, IUKey::Action() + IUKey::Shift() + IUKey::KeyL());
 }
 
-void PdCommonMediaMenu::shortcuts()
+void PdCommonMediaMenu::_shortcutContents()
 {
     shortcut(aDSPOn, IUKey::Action() + IUKey::Slash());
     shortcut(aDSPOff, IUKey::Action() + IUKey::Period());
