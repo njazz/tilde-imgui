@@ -17,16 +17,13 @@
 class Grid : public IUView {
 
 public:
-    bool *editModeFlag = 0;
-    bool *showGrid = 0;
-    int *gridStep = 0;
+    bool* editModeFlag = 0;
+    bool* showGrid = 0;
+    int* gridStep = 0;
 
     virtual void _drawContents() override;
 
-    Grid(){
-        manualLayout = true;
-          mouseEnabled = false;
-          }
+    Grid();
 };
 
 #endif /* NodeInlet_hpp */

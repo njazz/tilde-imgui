@@ -71,7 +71,7 @@ class PdPatchViewController : public IUViewController {
 public:
     CanvasData data;
 
-    ImVec2 contentSize;
+//    ImVec2 contentSize;
 
     PdPatchViewController(PdCommonMenus* m);
 

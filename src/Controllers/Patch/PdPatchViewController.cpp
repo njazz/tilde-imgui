@@ -7,9 +7,7 @@
 //
 
 #include "PdPatchViewController.hpp"
-
 #include "ArrangeObjects.h"
-
 #include "imgui_internal.h"
 
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
@@ -21,9 +19,6 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _grid.gridStep = &data.gridStep;
     _grid.showGrid = &data.showGrid;
     addSubview(&_grid);
-
-    //    _grid.width = 480;
-    //    _grid.height = 480;
 
     menu = &_patchMenu;
 
@@ -211,7 +206,7 @@ void PdPatchViewController::draw()
     bool w = true;
 
     title = "patch";
-    flags = ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus;
+    flags = flags | ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBringToFrontOnFocus;
 
     manualLayout = true;
 
@@ -236,7 +231,7 @@ void PdPatchViewController::_drawContents()
 
     //ImGui::SetTooltip("content size %f %f",contentSize.x,contentSize.y);
 
-//    ImGui::SetCursorPos(ImVec2(0, -22));
+    //    ImGui::SetCursorPos(ImVec2(0, -22));
     //for (auto s: _subviews)
     //    s->updateOffset();
 
@@ -687,26 +682,32 @@ void PdPatchViewController::_arrangeBottomAction()
 
 void PdPatchViewController::_putObject()
 {
+    createObject("", 150, 150);
 }
 
 void PdPatchViewController::_putMessage()
 {
+    createObject("ui.msg", 150, 150);
 }
 
 void PdPatchViewController::_putComment()
 {
+    // todo
 }
 
 void PdPatchViewController::_putBang()
 {
+    createObject("ui.bang", 150, 150);
 }
 
 void PdPatchViewController::_putToggle()
 {
+    createObject("ui.toggle", 150, 150);
 }
 
 void PdPatchViewController::_putNumber()
 {
+    createObject("ui.float", 150, 150);
 }
 
 // ---
