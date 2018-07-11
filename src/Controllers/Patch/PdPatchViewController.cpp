@@ -22,8 +22,8 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _grid.showGrid = &data.showGrid;
     addSubview(&_grid);
 
-//    _grid.width = 480;
-//    _grid.height = 480;
+    //    _grid.width = 480;
+    //    _grid.height = 480;
 
     menu = &_patchMenu;
 
@@ -66,11 +66,10 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
 
-
     _attachArrangeMenu();
     _attachPutMenu();
 
-
+    mouseEnabled = true;
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p)
@@ -206,8 +205,8 @@ void PdPatchViewController::draw()
     x = 0;
     y = 22;
 
-    width = windowController()->width/2;
-    height = windowController()->height / 2;// - 22;
+    width = windowController()->width / 2;
+    height = windowController()->height / 2; // - 22;
 
     bool w = true;
 
@@ -220,8 +219,8 @@ void PdPatchViewController::draw()
     //contentSize = ImVec2(1024,1024);
 
     _grid.width = width;
-    _grid.height  = height;
-    _grid.contentSize = ImVec2(width,height);
+    _grid.height = height;
+    _grid.contentSize = ImVec2(width, height);
 
     IUViewController::draw();
 };
@@ -237,20 +236,20 @@ void PdPatchViewController::_drawContents()
 
     //ImGui::SetTooltip("content size %f %f",contentSize.x,contentSize.y);
 
-    ImGui::SetCursorPos(ImVec2(0, -22));
+//    ImGui::SetCursorPos(ImVec2(0, -22));
     //for (auto s: _subviews)
     //    s->updateOffset();
 
-    _drawSelectionFrame();
+    //    _drawSelectionFrame();
 
-    if (ImGui::IsMouseDragging()) {
-        if (_draggingObjects) {
-            dragSelectedObjects(ImGui::GetIO().MouseDelta);
-        } else {
-            _selectionFrame &= true;
-            _selectionEnd = ImGui::GetMousePos();
-        }
-    }
+    //    if (ImGui::IsMouseDragging()) {
+    //        if (_draggingObjects) {
+    //            dragSelectedObjects(ImGui::GetIO().MouseDelta);
+    //        } else {
+    //            _selectionFrame &= true;
+    //            _selectionEnd = ImGui::GetMousePos();
+    //        }
+    //    }
 
     //
     //ImGui::SetCursorPos(ImVec2(0,0));
@@ -260,14 +259,15 @@ void PdPatchViewController::_drawContents()
         draw_list->AddRectFilled(_selectionStart, _selectionEnd, IM_COL32(0, 168, 192, 128));
     }
 
-    if (ImGui::IsMouseReleased(0)) {
-        //        printf("up\n");
-        _selectionFrame = false;
-        _draggingObjects = false;
-    }
+    //    if (ImGui::IsMouseReleased(0)) {
+    //        //        printf("up\n");
+    //        _selectionFrame = false;
+    //        _draggingObjects = false;
+    //    }
 
     //
     ImVec2 pos = ImGui::GetMousePos();
+
     _newPatchcord.inputX = pos.x;
     _newPatchcord.inputY = pos.y;
     //ImGui::SetTooltip("pos %f %f",pos.x,pos.y);
@@ -276,14 +276,14 @@ void PdPatchViewController::_drawContents()
 
     //ImGui::End();
 
-    _drawObjectMaker();
+    //    _drawObjectMaker();
 
-    // deselect patchcord
-    if (ImGui::IsMouseClicked(0)) {
-        if (!hitObject(ImGui::GetIO().MousePos)) {
-            _newPatchcord.outputObj = 0;
-        }
-    }
+    //    // deselect patchcord
+    //    if (ImGui::IsMouseClicked(0)) {
+    //        if (!hitObject(ImGui::GetIO().MousePos)) {
+    //            _newPatchcord.outputObj = 0;
+    //        }
+    //    }
 }
 
 UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y)
@@ -443,12 +443,11 @@ bool PdPatchViewController::selectObjects()
 inline void PdPatchViewController::_autocomplete()
 {
 
-    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y  + 10));
-
+    ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
 
     //ImGui::BeginPopup()
     if //(ImGui::BeginPopupEx(ImGui::GetCurrentContext()->CurrentWindow->GetID("_autocomplete"), ImGuiWindowFlags_NoCollapse & ImGuiWindowFlags_NoFocusOnAppearing)){
-       (ImGui::BeginChildFrame( ImGui::GetID("##autocomplete"), ImVec2(150, 100))){
+        (ImGui::BeginChildFrame(ImGui::GetID("##autocomplete"), ImVec2(150, 100))) {
         UIObject* b = (UIObject*)autocomplete.sender;
 
         for (auto s : data.canvas->availableObjects()) {
@@ -624,36 +623,38 @@ void PdPatchViewController::_zoomOne()
 }
 
 // ---
- void PdPatchViewController::_attachPutMenu()
- {
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject,&putObject);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aMessage,&putMessage);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aComment,&putComment);
+void PdPatchViewController::_attachPutMenu()
+{
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject, &putObject);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aMessage, &putMessage);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aComment, &putComment);
 
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aBang,&putBang);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aToggle,&putToggle);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aNumber,&putNumber);
- }
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aBang, &putBang);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aToggle, &putToggle);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aNumber, &putNumber);
+}
 
- void PdPatchViewController::_attachArrangeMenu()
- {
-     _patchMenu.menuArrange.showGrid = &data.showGrid;
-     _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
+void PdPatchViewController::_attachArrangeMenu()
+{
+    _patchMenu.menuArrange.showGrid = &data.showGrid;
+    _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
 
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
 
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
-     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
- }
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOne, &zoomOne);
+}
 
- // ---
+// ---
 void PdPatchViewController::_editModeAction()
-{editMode = !editMode;}
+{
+    editMode = !editMode;
+}
 
 // ---
 
@@ -662,38 +663,149 @@ void PdPatchViewController::_arrangeLeftAction()
     ArrangeObjects::alignLeft(&data.objects);
 }
 
-void PdPatchViewController::_arrangeCenterAction(){
+void PdPatchViewController::_arrangeCenterAction()
+{
     ArrangeObjects::alignCenter(&data.objects);
 };
 
-void PdPatchViewController::_arrangeRightAction(){
+void PdPatchViewController::_arrangeRightAction()
+{
     ArrangeObjects::alignRight(&data.objects);
 };
 
-void PdPatchViewController::_arrangeTopAction() {
+void PdPatchViewController::_arrangeTopAction()
+{
     ArrangeObjects::alignTop(&data.objects);
 };
 
-void PdPatchViewController::_arrangeBottomAction(){
+void PdPatchViewController::_arrangeBottomAction()
+{
     ArrangeObjects::alignBottom(&data.objects);
 };
 
 // ---
 
 void PdPatchViewController::_putObject()
-{}
+{
+}
 
 void PdPatchViewController::_putMessage()
-{}
+{
+}
 
 void PdPatchViewController::_putComment()
-{}
+{
+}
 
 void PdPatchViewController::_putBang()
-{}
+{
+}
 
 void PdPatchViewController::_putToggle()
-{}
+{
+}
 
 void PdPatchViewController::_putNumber()
-{}
+{
+}
+
+// ---
+
+void PdPatchViewController::onMouseDown(ImVec2 pos)
+{
+
+    //        printf("onMouseDown()\n");
+
+    // deselect patchcord
+    if (ImGui::IsMouseClicked(0)) {
+        if (!hitObject(ImGui::GetIO().MousePos)) {
+            _newPatchcord.outputObj = 0;
+        }
+    }
+
+    //if (ImGui::IsMouseClicked(0) && editMode)
+    if (editMode) {
+
+        _clickedObject = hitObject(ImGui::GetMousePos()); //&& !_selectionFrame;
+
+        if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects) {
+            selectSingleObject(ImGui::GetMousePos());
+            _draggingObjects = true;
+        }
+        _draggingObjects = _clickedObject;
+
+        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
+            //                printf("pos %f\n", ImGui::GetMousePos().y);
+
+            deselectAll();
+            _multipleObjectsSelected = false;
+            _draggingObjects = false;
+        }
+
+        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects) {
+
+            _selectionStart = _selectionEnd = ImGui::GetMousePos();
+            _selectionFrame = true;
+        }
+    }
+
+    if (_selectionFrame && !ImGui::IsMouseReleased(0)) {
+        bool b = selectObjects();
+        _multipleObjectsSelected = b;
+    }
+};
+
+void PdPatchViewController::onMouseDoubleClick(ImVec2 pos)
+{
+    //        if (ImGui::IsMouseDoubleClicked(0) && editMode) {
+    if (editMode) {
+        if (!hitObject(ImGui::GetIO().MousePos)) {
+            //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
+            _emptyObject.x = (ImGui::GetIO().MousePos.x);
+            _emptyObject.y = (ImGui::GetIO().MousePos.y);
+            _emptyObject.data.emptyBox = true;
+            _emptyObject.data.errorBox = true;
+            _emptyObject.pdObject = 0;
+            _emptyObject.pdObjectID = 0;
+            _emptyObject.objectText = "";
+            _emptyObject.hidden = false;
+            _emptyObject.clearEditText();
+        }
+    }
+};
+
+void PdPatchViewController::onMouseDrag(ImVec2 pos)
+{
+    if (!editMode)
+        return;
+
+    if (_draggingObjects) {
+        dragSelectedObjects(ImGui::GetIO().MouseDelta);
+    } else {
+        _selectionFrame &= true;
+        _selectionEnd = ImGui::GetMousePos();
+
+        //
+        //            if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects)
+
+        //if (_selectionFrame && !ImGui::IsMouseReleased(0))
+        //            {
+        bool b = selectObjects();
+        _multipleObjectsSelected = b;
+        //            }
+    }
+};
+
+void PdPatchViewController::onMouseUp(ImVec2 pos)
+{
+    _selectionFrame = false;
+    _draggingObjects = false;
+};
+
+void PdPatchViewController::onMouseHover(ImVec2 pos)
+{
+    if (!editMode)
+        return;
+    _newPatchcord.inputX = pos.x;
+    _newPatchcord.inputY = pos.y;
+};

@@ -110,6 +110,9 @@ bool CanvasData::selectObjectsInFrame(ImVec2 start, ImVec2 end)
         obj->data.selected &= (obj->y <= end.y);
 
         ret |= obj->data.selected;
+
+        if (obj->data.selected)
+            addUniqueObject(&selectedObjects, obj);
     }
     return ret;
 }

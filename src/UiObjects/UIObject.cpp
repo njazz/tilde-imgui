@@ -188,9 +188,9 @@ void UIObject::drawObjectContents()
         }
         updated(UIObject::oAutocomplete);
 
-        ImGui::SetTooltip("menu");
+//        ImGui::SetTooltip("menu");
 
-        ((IUView*)_parent)->mouseEnabled = false;
+        //((IUView*)_parent)->mouseEnabled = false;
 
     }
 
@@ -201,7 +201,7 @@ void UIObject::finishedEditingText()
 {
     printf("edited\n");
 
-    ((IUView*)_parent)->mouseEnabled = true;
+    //((IUView*)_parent)->mouseEnabled = true;
 
     // fix
     windowController()->restoreContext();

@@ -66,8 +66,8 @@ class PdPatchViewController : public IUViewController {
     void _attachArrangeMenu();
     void _attachPutMenu();
 
-
     Grid _grid;
+
 public:
     CanvasData data;
 
@@ -97,7 +97,6 @@ public:
     IU_ACTION(inletClicked)
 
 public:
-
     IU_ACTION(editModeAction);
 
     // --------------------
@@ -166,6 +165,14 @@ public:
 
     void resizeToObjects();
     void loadbang();
+
+    //
+
+    virtual void onMouseDown(ImVec2 pos) override;
+    virtual void onMouseDoubleClick(ImVec2 pos) override;
+    virtual void onMouseDrag(ImVec2 pos) override;
+    virtual void onMouseUp(ImVec2 pos) override;
+    virtual void onMouseHover(ImVec2 pos) override;
 };
 
 #endif /* AppController_hpp */

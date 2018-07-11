@@ -23,8 +23,10 @@ public:
 
     virtual void _drawContents() override;
 
-    Grid(){manualLayout = true;
-          mouseEnabled = false;}
+    Grid(){
+        manualLayout = true;
+          mouseEnabled = false;
+          }
 };
 
 #endif /* NodeInlet_hpp */
