@@ -31,6 +31,8 @@ public:
     bool errorBox = false;
     bool emptyBox = false;
     bool selected = false;
+    bool isCanvas = false;
+    bool isAbstraction = false;
 
     int outletClicked = -1;
     int inletClicked = -1;

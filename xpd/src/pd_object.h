@@ -59,6 +59,9 @@ public:
 
     virtual bool isCanvas() override;
     virtual const bool isCanvas() const override;
+
+    virtual bool isAbstraction() override;
+    virtual const bool isAbstraction() const override;
 };
 
 } // namespace xpd

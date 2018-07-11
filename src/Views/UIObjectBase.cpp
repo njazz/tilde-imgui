@@ -216,13 +216,16 @@ void UiObjectBase::_drawBackground()
         borderColor = IM_COL32(255, 0, 0, 255);
     if (data.emptyBox)
         borderColor = IM_COL32(0, 192, 255, 255);
+    float t = 1;
+    if (data.isCanvas)
+        t = 2;
 
     ImVec2 node_rect_min = ImVec2(this->x, this->y);
     ImVec2 node_rect_max = node_rect_min + ImVec2(width, height); //ImGui::GetItemRectMax();
 
     draw_list->ChannelsSetCurrent(0); // Background
     draw_list->AddRectFilled(node_rect_min, node_rect_max, IM_COL32(75, 75, 75, 255), 4.0f);
-    draw_list->AddRect(node_rect_min, node_rect_max, borderColor, 0.0f);
+    draw_list->AddRect(node_rect_min, node_rect_max, borderColor, 0.0f,0,t);
 }
 
 #pragma mark -
@@ -330,7 +333,7 @@ void UiObjectBase::updateFromPdObject()
     if (pdObject) {
         inletCount = pdObject->inletCount();
         outletCount = pdObject->outletCount();
-        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+//        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
     }
 }
 

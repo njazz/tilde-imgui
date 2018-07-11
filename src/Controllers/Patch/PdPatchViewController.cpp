@@ -333,6 +333,15 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     if (n->pdObject)
         n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
 
+    if (n->pdObject)
+        n->data.isAbstraction = n->pdObject->PdObject::isAbstraction();
+
+    if (n->pdObject)
+        n->data.isCanvas = n->pdObject->PdObject::isCanvas();
+
+    if (n->pdObject)
+    printf("new obj abs %i cnv %i\n",n->pdObject->PdObject::isAbstraction(),n->pdObject->PdObject::isCanvas() );
+
     return n;
 }
 
@@ -502,6 +511,7 @@ inline void PdPatchViewController::_objectCreated()
 {
     UIObject* o = (UIObject*)objectCreated.sender;
 
+    if (o)
     data.pdProcess->post(("created: " + o->objectText + "\n").c_str());
 
     // test

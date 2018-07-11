@@ -164,9 +164,20 @@ const Canvas* Object::asCanvas() const
 
 bool Object::isCanvas()
 {
+    printf("Object::isCanvas()\n");
     return false;
 }
 const bool Object::isCanvas() const
+{
+    return false;
+}
+
+bool Object::isAbstraction()
+{
+    printf("Object::isAbstraction()\n");
+    return false;
+}
+const bool Object::isAbstraction() const
 {
     return false;
 }

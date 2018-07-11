@@ -117,6 +117,9 @@ public:
     virtual bool isCanvas();
     virtual const bool isCanvas() const;
 
+    virtual bool isAbstraction();
+    virtual const bool isAbstraction() const;
+
 
 private:
     Object(const Object&);

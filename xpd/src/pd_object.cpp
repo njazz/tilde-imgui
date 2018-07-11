@@ -72,16 +72,16 @@ void PdObject::setY(int y)
 
 size_t PdObject::inletCount() const
 {
-//    if (cpd_is_canvas(obj_))
-//        return cpd_object_inlet_count(obj_);
+    //    if (cpd_is_canvas(obj_))
+    //        return cpd_object_inlet_count(obj_);
 
     return inlet_n_;
 }
 
 size_t PdObject::outletCount() const
 {
-//    if (cpd_is_canvas(obj_))
-//        return cpd_object_outlet_count(obj_);
+    //    if (cpd_is_canvas(obj_))
+    //        return cpd_object_outlet_count(obj_);
 
     return outlet_n_;
 }
@@ -207,15 +207,24 @@ size_t PdObject::childrenCount() const
     return cpd_canvas_object_count((t_cpd_canvas*)obj_);
 }
 
-
-bool PdObject::isCanvas() {
-    //return cpd_object_
-    return false;
+bool PdObject::isCanvas()
+{
+    return cpd_is_canvas(obj_);
 }
-const bool PdObject::isCanvas() const {
-    return false;
-
+const bool PdObject::isCanvas() const
+{
+    return cpd_is_canvas(obj_);
 }
+
+bool PdObject::isAbstraction()
+{
+    return cpd_is_abstraction(obj_);
+}
+const bool PdObject::isAbstraction() const
+{
+    return cpd_is_abstraction(obj_);
+}
+
 //ObjectId PdObject::createObject(const std::string& name, int x, int y)
 //{
 //    if (!cpd_is_canvas(obj_))
