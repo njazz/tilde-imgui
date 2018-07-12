@@ -17,6 +17,8 @@ Grid::Grid()
     manualLayout = true;
     mouseEnabled = false;
     flags = flags | ImGuiWindowFlags_HorizontalScrollbar;
+
+    alpha = 0;
 }
 
 void Grid::_drawContents()

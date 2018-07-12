@@ -18,6 +18,12 @@ UISlider::UISlider()
 //    p->componentAt(0).bindFloat(&_rangeMax);
 
     p = properties.create("Value","Slider","0.1",&_value);
+    p->setAction([&](){
+        if (_value < _rangeMin)
+            _value = _rangeMin;
+        if (_value > _rangeMax)
+            _value = _rangeMax;
+    });
 //    p->componentAt(0).bindFloat(&_value);
 
 }
@@ -35,7 +41,7 @@ void UISlider::drawObjectContents()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    draw_list->AddRectFilled(ImVec2(x, y + height), ImVec2(x + width, y + height * (1 - _value)), IM_COL32(0, 192, 255, 255));
+    draw_list->AddRectFilled(ImVec2(x, y + height), ImVec2(x + width, y + height * (_rangeMax - (_value-_rangeMin))/(_rangeMax-_rangeMin)), IM_COL32(0, 192, 255, 255));
 };
 
 void UISlider::onMouseDown(ImVec2 pos)

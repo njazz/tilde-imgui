@@ -15,6 +15,8 @@ UIPropertiesWindow::UIPropertiesWindow(PropertyList* p, bool* d)
 {
     _properties = p;
     _display = d;
+
+    idString = "PW"+std::to_string((long)this);
 }
 
 void UIPropertiesWindow::_drawContents()
@@ -23,7 +25,11 @@ void UIPropertiesWindow::_drawContents()
         return;
     // properties window
     ImGui::PushID(ImGui::GetID((idString + "properties").c_str()));
-    ImGui::Begin("Properties", _display, ImGuiWindowFlags_NoCollapse);
+
+    // todo
+    ImGui::SetNextWindowSize(ImVec2(320,320));
+    ImGui::SetNextWindowPos(ImVec2(x,y),ImGuiCond_Once);
+    ImGui::Begin(std::string("Properties ("+std::to_string((long)this)+")").c_str(), _display, ImGuiWindowFlags_NoCollapse);
     ImGui::Columns(2);
     ImGui::SetColumnWidth(0, 100);
     ImGui::SetColumnWidth(1, 200);
@@ -48,7 +54,7 @@ void UIPropertiesWindow::_drawContents()
                 if (ImGui::Checkbox("", &v))
                     _properties->set(n, v);
             }
-            if (p->typed<bool>()) { //type == ptBool) {
+            if (p->typed<bool*>()) { //type == ptBool) {
                 bool* v_p = _properties->get(n)->typed<bool*>()->get();
                 if (ImGui::Checkbox("", v_p))
                     _properties->set(n, v_p);

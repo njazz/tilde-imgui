@@ -19,16 +19,16 @@ void UiObjectBase::_createProperties()
     //    p->componentAt(0).bindFloat(&x);
     //    p->componentAt(1).bindFloat(&y);
     p->setAction([this, p]() {
-        x = (*p->typed<std::vector<float*>  >()->get()[0]);
-        y = (*p->typed<std::vector<float*>  >()->get()[1]);
+        x = (*p->typed<std::vector<float*> >()->get()[0]);
+        y = (*p->typed<std::vector<float*> >()->get()[1]);
     });
 
     p = properties.create("Size", "Box", "0.1", std::vector<float*>({ &width, &height })); //ImVec2(0, 0));
     //    p->componentAt(0).bindFloat(&width);
     //    p->componentAt(1).bindFloat(&height);
     p->setAction([this, p]() {
-        width = (*p->typed<std::vector<float*>  >()->get()[0]);
-        height = (*p->typed<std::vector<float*>  >()->get()[1]);
+        width = (*p->typed<std::vector<float*> >()->get()[0]);
+        height = (*p->typed<std::vector<float*> >()->get()[1]);
         //        width = p->as<ImVec2>().x;
         //        height = p->as<ImVec2>().y;
     });
@@ -264,6 +264,8 @@ void UiObjectBase::draw()
         }
     }
 
+    _propertiesWindow.y = y;
+    _propertiesWindow.x = x + width + 5;
     _propertiesWindow._drawContents();
 
     drawObjectContents();
