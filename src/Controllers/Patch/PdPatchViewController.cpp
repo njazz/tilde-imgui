@@ -619,7 +619,10 @@ void PdPatchViewController::loadbang()
 void PdPatchViewController::_zoomIn()
 {
     printf("zoom in\n");
-    ImGui::SetWindowFontScale(1.5);
+    //ImGui::SetWindowFontScale(1.5);
+
+//    zoomable = true;
+    scale = 1.5;
 
     //    for (auto c:_components)
     //        c->zoomable = true;
@@ -630,7 +633,10 @@ void PdPatchViewController::_zoomIn()
 void PdPatchViewController::_zoomOut()
 {
     printf("zoom out\n");
-    ImGui::SetWindowFontScale(0.5);
+//    ImGui::SetWindowFontScale(0.5);
+
+//    zoomable = true;
+//    _grid.setScale(0.5);
 
     //    for (auto c:_components)
     //        c->zoomable = true;
@@ -641,7 +647,10 @@ void PdPatchViewController::_zoomOut()
 void PdPatchViewController::_zoomOne()
 {
     printf("zoom one\n");
-    ImGui::GetCurrentWindow()->FontWindowScale = 1.;
+    //ImGui::GetCurrentWindow()->FontWindowScale = 1.;
+
+    //zoomable = false;
+//    _grid.setScale(1.);
 }
 
 // ---

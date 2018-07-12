@@ -12,9 +12,6 @@
 #include "AppController.hpp"
 #include "AppControllerBase.hpp"
 
-#include "PdConsoleViewController.hpp"
-#include "PdPatchViewController.hpp"
-
 #include "pd_localprocess.h"
 #include "pd_localserver.h"
 #include "pd_canvas.h"
@@ -28,6 +25,9 @@
 #include "FileParser.h"
 
 #include "Clipboard.h"
+
+class PdConsoleViewController;
+class PdPatchViewController;
 
 class AppConsoleObserver : public xpd::ConsoleObserver {
     PdConsoleViewController* _pdConsoleWindow = 0;
@@ -60,43 +60,20 @@ public:
     PdPatchViewController* createPatchWindowForExistingCanvas(xpd::CanvasPtr cnv);
 
     //
-    void openFile(std::string f)
-    {
-        _serverProcess->post("open file: " + f);
-        FileParser::open(f);
-    }
+    void openFile(std::string f);
 
     // ----------
 
-    IUAction menuNew = IUAction([this] {
+    IU_ACTION(menuNew);
+    IU_ACTION(menuOpen);
+    IU_ACTION(menuExit);
 
-        createNewPatchWindow();
+    // todo:
+    IU_ACTION(showConsoleWindow);
 
-    });
-
-    IUAction menuOpen = IUAction([this] {
-
-        nfdchar_t* f = new nfdchar_t[1024];
-        if (NFD_OpenDialog("pd", "~/", &f) == NFD_OKAY)
-            openFile(std::string(f));
-    });
-
-    IUAction menuExit = IUAction([this] {
-        for (auto w : _windowControllers) {
-            //glfwSetWindowShouldClose(w->glWindow, 1);
-            w->close();
-        }
-    });
-
-    IUAction showConsoleWindow = IUAction([&]() {});
+    IU_ACTION(newCanvasWindow);
 
     void post(std::string s) { _serverProcess->post(s + "\n"); }
-
-    IUAction newCanvasWindow = IUAction([&]() {
-
-        auto p = std::shared_ptr<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);//xpd::CanvasPtr(*(xpd::PdCanvas*)newCanvasWindow.userObject);//std::make_shared<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);
-        createPatchWindowForExistingCanvas(p);
-    });
 };
 
 #endif /* AppController_hpp */

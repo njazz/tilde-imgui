@@ -22,7 +22,7 @@
 class PdConsoleViewController : public IUViewController {
 
     std::string _consoleText = "";
-    bool _dspOn = false;
+    bool _dspState = false;
 
     // temporary
     bool _demoWindow = false;
@@ -46,19 +46,10 @@ public:
 
     // -------
 
-    IUAction clearConsole = IUAction([this]() {
-        _consoleText = "";
-    });
+    IU_ACTION(clearConsole);
+    IU_ACTION(dspOn);
+    IU_ACTION(dspOff);
 
-    IUAction dspOn = IUAction([this]() {
-        _dspOn = true;
-        pdProcess->dspSwitch(_dspOn);
-    });
-
-    IUAction dspOff = IUAction([this]() {
-        _dspOn = false;
-        pdProcess->dspSwitch(_dspOn);
-    });
 };
 
 #endif /* AppController_hpp */

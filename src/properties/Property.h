@@ -1,181 +1,135 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
-#ifndef CM_PROPERTY_H
-#define CM_PROPERTY_H
+#ifndef CM_NEW_PROPERTY_H
+#define CM_NEW_PROPERTY_H
 
 #include <math.h>
 #include <string>
 #include <utility>
 #include <vector>
 
+#include "IUAction.hpp"
+#include <functional>
 #include <memory>
 
-#include "IUAction.hpp"
+template <typename T>
+class PropertyT;
 
-#include <functional>
-
-typedef enum {
-    // empty
-    ptNull,
-    // basic
-    ptBool,
-    ptFloat,
-    ptInt,
-    ptSymbol,
-    ptString,
-    // arrays
-    ptList,
-    ptVector,
-    ptVec2,
-    ptColor,
-    ptStringList,
-    // specials
-    ptPath, ///> file or directory
-    ptPathList,
-    ptEnum, ///> index and option list
-    ptText ///< multiline text for comments, script
-
-} UIPropertyType;
-
-class Variant {
-    int _intValue = 0;
-    float _floatValue = 0;
-    std::string _stringValue = "";
-
-    int* _intPtr = 0; //&_intValue;
-    float* _floatPtr = 0; //&_floatValue;
-    std::string* _stringPtr = 0; //&_stringValue;
+class PropertyBase {
+    virtual void _abstractClass() = 0;
 
 public:
-    Variant(int v);
-    Variant(long v);
-    Variant(bool b);
-    Variant(float f);
-    Variant(double f);
-    Variant(std::string s);
-
     template <typename T>
-    void set(T val);
+    PropertyT<T>* typed();
 
-    template <typename T>
+    //
+    std::function<void(void)> _action = []() {};
+    inline void _updated() { _action(); }
+    void setAction(std::function<void(void)> action) { _action = action; }
+
+    virtual bool isDefault() { return true; }
+    virtual std::string asPdString() { return "(unsupported)"; }
+};
+
+template <typename T>
+class PropertyT : public PropertyBase {
+    virtual void _abstractClass() override{};
+    T* _data = 0;
+    T _defaultValue;
+    bool _internal = false;
+
+public:
+    PropertyT(T* ref = 0);
+
+    ~PropertyT();
+
+    void set(T d);
     T get();
 
-    void bindInt(int* p)
+    template <typename U>
+    bool is();
+
+    void setDefaultValue(T v);
+    void reset()
     {
-        _intPtr = p;
-        _floatPtr = 0;
-        _stringPtr = 0;
+        *_data = _defaultValue;
+        _updated();
     }
-    void bindFloat(float* p)
-    {
-        _floatPtr = p;
-        _intPtr = 0;
-        _stringPtr = 0;
-    }
-    void bindString(std::string* p)
-    {
-        _stringPtr = p;
-        _intPtr = 0;
-        _floatPtr = 0;
-    }
+    virtual bool isDefault() override { return *_data == _defaultValue; }
+
+    //
+    bool readOnly = false;
+    std::string group = "";
+    std::string version = "";
+
+    //
+    virtual std::string asPdString() override { return "(unsupported)"; }
+
+    //
 };
 
-//template<>
-//std::string Variant::get()
-//{
-//    return _stringValue;
-//}
+// ----------
 
-//template<>
-//float Variant::get()
-//{
-//    return _floatValue;
-//}
-
-//template<>
-//int Variant::get()
-//{
-//    return _intValue;
-//}
-
-class PropertyData {
-};
-
-template <typename T, typename... Args>
-std::unique_ptr<T> make_unique(Args&&... args)
+template <typename T>
+PropertyT<T>* PropertyBase::typed()
 {
-    return std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    return dynamic_cast<PropertyT<T>*>(this);
+}
+
+//
+
+template <typename T>
+PropertyT<T>::PropertyT(T* ref)
+{
+    if (!ref) {
+        _data = new T;
+        _internal = true;
+    } else {
+        _data = ref;
+    }
 }
 
 template <typename T>
-class PropertyDataT : public PropertyData {
-    std::unique_ptr<T> _value = make_unique<T>();
+PropertyT<T>::~PropertyT()
+{
+    if (_internal)
+        delete _data;
+}
 
-public:
-    T& get() { return *_value; }
-    void set(T value) { *_value = value; }
+template <typename T>
+void PropertyT<T>::set(T d)
+{
+    *_data = d;
+    _updated();
+}
 
-    void bindTo(T* v) { _value = std::unique_ptr<T>(v); }
+template <typename T>
+T PropertyT<T>::get() { return *_data; }
+
+template <typename T>
+template <typename U>
+bool PropertyT<T>::is() { return typeid(T) == typeid(U); }
+
+template <typename T>
+void PropertyT<T>::setDefaultValue(T v)
+{
+    _defaultValue = v;
+    *_data = v;
 };
 
-////
-/// \brief property handling class for ui object.
-/// \details this is different from CEAMMC library property handling library - later merge / unify that
-class Property {
+// ---
 
-private:
-    std::vector<Variant> _data;
-    std::vector<Variant> _defaultData;
+template <>
+std::string PropertyT<float>::asPdString();
 
-    bool _applyToPd; ///> true if property value should be passed to pd object
+template <>
+std::string PropertyT<float*>::asPdString();
 
-    std::function<void(void)> _action = []() {};
-    inline void _updated() { _action(); }
+template <>
+std::string PropertyT<int>::asPdString();
 
-    Variant _errorOut =Variant("ERR");
-public:
-    explicit Property();
-    Property(const Property& src);
-    Property(Property& src);
-
-    const Property operator=(const Property& rval);
-    Property operator=(Property& rval);
-
-    // -------
-
-    template <typename T>
-    void set(T val);
-
-    template <typename T>
-    T as();
-
-    template <typename T>
-    bool is();
-
-    template <typename T>
-    void operator=(T val) { set(val); };
-
-    void copyDataToDefault(); ///> copy current value to default value
-
-    // -------
-    void setAction(std::function<void(void)> action) { _action = action; }
-
-    // -------
-    Variant& componentAt(int idx)
-    {
-        if (idx >= _data.size())
-            return _errorOut;//Variant(-1);
-        return _data[idx];
-    }
-    // -------
-
-    UIPropertyType type;
-    bool readOnly;
-    std::string group;
-    std::string version;
-
-    std::string asPdSaveString();
-};
+template <>
+std::string PropertyT<int*>::asPdString();
 
 #endif // CM_PROPERTY_H

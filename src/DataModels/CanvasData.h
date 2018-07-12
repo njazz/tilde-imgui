@@ -44,7 +44,6 @@ public:
 
     Clipboard* clipboard = 0;
 
-
     objectVec objects;
     patchcordVec patchcords;
 

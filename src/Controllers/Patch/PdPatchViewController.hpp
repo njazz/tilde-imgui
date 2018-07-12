@@ -34,6 +34,7 @@
 
 #include "Grid.hpp"
 
+
 class PdPatchViewController : public IUViewController {
 
     //    std::vector<ObjectBase*> _objects;
@@ -67,6 +68,7 @@ class PdPatchViewController : public IUViewController {
     void _attachPutMenu();
 
     Grid _grid;
+
 
 public:
     CanvasData data;

@@ -124,11 +124,11 @@ target_link_libraries(tilde_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 target_link_libraries(tilde_imgui xpd_static)
 
 #####
-#add_subdirectory(../imgui/tests)
-
+add_subdirectory(tests)
+enable_testing()
 
 ########
-#enable_testing()
+
 
 #macro(add_unit_test target target_test)
 #    set(UNIT_TEST_TARGETS ${UNIT_TEST_TARGETS} ${target_test})

@@ -18,6 +18,44 @@ std::vector<std::string> PropertyList::names()
     return ret;
 }
 
+PropertyBase* PropertyList::operator[](std::string key)
+{
+    return _data[key];
+}
+
+// ----------
+
+
+PropertyBase* PropertyList::get(std::string key)
+{
+    if (_data.find(key)==_data.end()) return 0;
+    return _data[key];
+};
+
+
+UIPropertyData* PropertyList::fromGroup(std::string grpName)
+{
+    UIPropertyData* ret;
+    ret = this->_groups[grpName];
+    return ret;
+}
+
+std::string PropertyList::asPdFileString()
+{
+    std::string ret;
+
+    //UIPropertyDataIterator it;
+    for (auto it = this->_data.begin(); it != this->_data.end(); ++it) {
+        //save only modified values
+        if (it->second) //?
+            if (it->second->isDefault()) {
+                ret += " @" + it->first + " ";
+                ret += it->second->asPdString() + " ";
+            }
+    }
+
+    return ret;
+}
 /*
 namespace tilde {
 

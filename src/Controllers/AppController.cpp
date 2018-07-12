@@ -8,6 +8,9 @@
 
 #include "AppController.hpp"
 
+#include "PdConsoleViewController.hpp"
+#include "PdPatchViewController.hpp"
+
 void AppConsoleObserver::update()
 {
     if (_pdConsoleWindow) {
@@ -70,4 +73,44 @@ PdPatchViewController* AppController::createPatchWindowForExistingCanvas(xpd::Ca
     addWindow(new IUWindowController(p, "<Subpatch>", 320, 320, 640, 480));
 
     return p;
+}
+
+//
+
+void AppController::openFile(std::string f)
+{
+    _serverProcess->post("open file: " + f);
+    FileParser::open(f);
+}
+
+//
+void AppController::_menuNew()
+{
+    createNewPatchWindow();
+}
+
+void AppController::_menuOpen()
+{
+    nfdchar_t* f = new nfdchar_t[1024];
+    if (NFD_OpenDialog("pd", "~/", &f) == NFD_OKAY)
+        openFile(std::string(f));
+}
+
+void AppController::_menuExit()
+{
+    for (auto w : _windowControllers) {
+        //glfwSetWindowShouldClose(w->glWindow, 1);
+        w->close();
+    }
+}
+
+void AppController::_showConsoleWindow()
+{
+
+}
+
+void AppController::_newCanvasWindow()
+{
+    auto p = std::shared_ptr<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);//xpd::CanvasPtr(*(xpd::PdCanvas*)newCanvasWindow.userObject);//std::make_shared<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);
+    createPatchWindowForExistingCanvas(p);
 }
