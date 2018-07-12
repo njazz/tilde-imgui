@@ -39,27 +39,48 @@ void UIPropertiesWindow::_drawContents()
         ImGui::PushID(ImGui::GetID((idString + "p" + n).c_str()));
 
         if (p) {
-            if (p->type == ptString)
-                ImGui::Text(": %s", _properties->get(n)->as<std::string>().c_str());
+            if (p->typed<std::string>()) { //p->type == ptString)
+                ImGui::Text(": %s", _properties->get(n)->typed<std::string>()->get().c_str());
+            }
 
-            if (p->type == ptBool) {
-                bool v = _properties->get(n)->as<bool>();
+            if (p->typed<bool>()) { //type == ptBool) {
+                bool v = _properties->get(n)->typed<bool>()->get();
                 if (ImGui::Checkbox("", &v))
                     _properties->set(n, v);
             }
-            if (p->type == ptVec2) {
-                ImVec2 v = _properties->get(n)->as<ImVec2>();
-                if(ImGui::DragFloat2("", (float*)&v))
-                    _properties->set(n, v);
+            if (p->typed<bool>()) { //type == ptBool) {
+                bool* v_p = _properties->get(n)->typed<bool*>()->get();
+                if (ImGui::Checkbox("", v_p))
+                    _properties->set(n, v_p);
             }
-            if (p->type == ptFloat) {
-                float f = _properties->get(n)->as<float>();
+            if (p->typed<std::vector<float*> >()) { //>type == ptVec2) {
+                auto vec = _properties->get(n)->typed<std::vector<float*> >()->get();
+                if (vec.size()<2) return;
+                ImVec2 v = ImVec2(*vec[0], *vec[1]);
+                if (ImGui::DragFloat2("", (float*)&v)) {
+                    *vec[0] = v.x;
+                    *vec[1] = v.y;
+                    _properties->set(n, vec);
+                }
+            }
+            if (p->typed<float>()) { //type == ptFloat) {
+                float f = _properties->get(n)->typed<float>()->get();
 
-                f = _properties->get(n)->as<float>();
+                //f = _properties->get(n)->as<float>();
 
-                if (ImGui::DragFloat("", &f))
-                {
+                if (ImGui::DragFloat("", &f)) {
                     _properties->set(n, f);
+                }
+            }
+            if (p->typed<float*>()) { //type == ptFloat) {
+                float* f_p = _properties->get(n)->typed<float*>()->get();
+
+                //f = _properties->get(n)->as<float>();
+
+                if (ImGui::DragFloat("", f_p)) {
+
+
+                    _properties->set(n, f_p);
                 }
             }
 

@@ -4,7 +4,7 @@
 #include "UIObjectBase.hpp"
 
 class UIToggle : public UiObjectBase {
-    int _value = 0;
+    bool _value = 0;
 
 public:
     UIToggle();

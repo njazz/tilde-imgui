@@ -11,14 +11,14 @@ UISlider::UISlider()
             _value = _rangeMax;
     };
 
-    Property* p = properties.create("Range Min","Slider","0.1",0.);
-    p->componentAt(0).bindFloat(&_rangeMin);
+    auto p = properties.create("Range Min","Slider","0.1",&_rangeMin);
+//    p->componentAt(0).bindFloat(&_rangeMin);
 
-    p = properties.create("Range Max","Slider","0.1",1.);
-    p->componentAt(0).bindFloat(&_rangeMax);
+    p = properties.create("Range Max","Slider","0.1",&_rangeMax);
+//    p->componentAt(0).bindFloat(&_rangeMax);
 
-    p = properties.create("Value","Slider","0.1",0.);
-    p->componentAt(0).bindFloat(&_value);
+    p = properties.create("Value","Slider","0.1",&_value);
+//    p->componentAt(0).bindFloat(&_value);
 
 }
 
@@ -40,9 +40,6 @@ void UISlider::drawObjectContents()
 
 void UISlider::onMouseDown(ImVec2 pos)
 {
-//    if (pdObject)
-//        pdObject->sendBang();
-
     _value = 1- ((pos.y-y) / 100.);
     if (pdObject)
         pdObject->sendFloat(_value);
@@ -57,7 +54,3 @@ void UISlider::onMouseDown(ImVec2 pos)
         pdObject->sendFloat(_value);
 }
 
-//void UISlider::_bang()
-//{
-//    _bangFrameCounter = 5;
-//}

@@ -6,12 +6,16 @@
 
 #include "Property.h"
 
+#include "NewProperty.h"
+
 #include <map>
 
 class UIObject;
 
-typedef std::map<std::string, Property*> UIPropertyData;
+typedef std::map<std::string, PropertyBase*> UIPropertyData;
 typedef std::map<std::string, UIPropertyData*> UIPropertyGroups;
+
+//typedef std::map<std::string, PropertyBase*> UIPropertyData__;
 
 ////
 /// \brief Property handling class for ui object - property list
@@ -28,13 +32,22 @@ public:
     UIPropertyData* fromGroup(std::string grpName);
 
     template <typename T>
-    Property* create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
+    PropertyBase* create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
     {
-        Property* newP = new Property;
+        auto newP = new PropertyT<T>;
+
+//        auto* np = new PropertyT<T>;
 
         newP->version = (pVersion);
+        newP->setDefaultValue(defaultData);
         newP->set(defaultData);
-        newP->copyDataToDefault();
+
+//        newP->set(defaultData);
+//        newP->copyDataToDefault();
+
+//        np->version = pVersion;
+//        np->setDefaultValue(defaultData);
+
 
         _data[pName] = newP;
         //fix
@@ -45,6 +58,8 @@ public:
         (*grp)[pName] = newP;
         _groups[pGroup] = grp;
 
+
+
         return newP;
     }
 
@@ -54,22 +69,24 @@ public:
     void set(std::string pName, T value)
     {
         if (_data[pName]) {
-            _data[pName]->set(value);
+            auto p_ = _data[pName]->typed<T>();
+            if (p_)
+                p_->template set(value);
         }
     };
 
 
     // ----------
 
-    Property& operator[](std::string key)
+    PropertyBase* operator[](std::string key)
     {
-        return *_data[key];
+        return _data[key];
     }
 
     // ----------
 
 
-    Property* get(std::string key)
+    PropertyBase* get(std::string key)
     {
         if (_data.find(key)==_data.end()) return 0;
         return _data[key];

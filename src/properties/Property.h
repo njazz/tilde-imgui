@@ -131,7 +131,6 @@ private:
     bool _applyToPd; ///> true if property value should be passed to pd object
 
     std::function<void(void)> _action = []() {};
-
     inline void _updated() { _action(); }
 
     Variant _errorOut =Variant("ERR");
