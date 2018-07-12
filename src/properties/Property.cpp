@@ -108,7 +108,6 @@ void Variant::set(double f)
     _stringPtr = 0;
 }
 
-
 // ---
 
 Variant::Variant(int v)
@@ -205,6 +204,15 @@ void Property::set<ImVec2>(ImVec2 value)
     _data.push_back(Variant(value.x));
     _data.push_back(Variant(value.y));
 
+    if (_data.size() != 2) {
+        _data.clear();
+        _data.push_back(Variant(value.x));
+        _data.push_back(Variant(value.y));
+    } else {
+        _data[0].set<float>(value.x);
+        _data[1].set<float>(value.y);
+    }
+
     type = (ptVec2);
     _updated();
 }
@@ -214,8 +222,11 @@ void Property::set<ImVec2>(ImVec2 value)
 template <>
 void Property::set<float>(float value)
 {
-    _data.clear();
-    _data.push_back(Variant(value));
+    if (_data.size() != 1) {
+        _data.clear();
+        _data.push_back(Variant(value));
+    } else
+        _data[0].set<float>(value);
 
     type = (ptFloat);
     _updated();

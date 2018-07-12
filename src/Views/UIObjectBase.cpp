@@ -11,17 +11,8 @@
 
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
-
 #include "Properties/PropertyList.h"
 
-//int nameChanged(ImGuiTextEditCallbackData* o)
-//{
-//    NodeObject* obj = (NodeObject*)o->UserData;
-
-//    obj->updated(NodeObject::oAutocomplete);
-
-//    return 0;
-//}
 
 void UiObjectBase::_createProperties()
 {
@@ -42,53 +33,9 @@ void UiObjectBase::_createProperties()
     });
 }
 
-void UiObjectBase::_propertiesWindow()
-{
-    // properties window
-
-    ImGui::PushID(ImGui::GetID((id() + "properties").c_str()));
-    ImGui::Begin("Properties", &_patchMenu.propertiesWindow, ImGuiWindowFlags_NoCollapse);
-
-
-    //ImGui::Text("properties:");
-    //ImGui::Separator();
-
-    for (auto n : properties.names()) {
-        ImGui::Text("%s", n.c_str());
-        ImGui::SameLine();
-        auto p = properties.get(n);
-        if (p)
-        {
-            if (p->type == ptString)
-                ImGui::Text(": %s", properties.get(n)->as<std::string>().c_str());
-
-            if(p->type == ptBool)
-            {
-                bool v = properties.get(n)->as<bool>();
-                if(ImGui::Checkbox("", &v))
-                    properties.set(n,v);
-            }
-            if (p->type == ptVec2)
-            {
-                ImVec2 v = properties.get(n)->as<ImVec2>();
-                ImGui::InputFloat2("", (float*)&v);
-            }
-            if (p->type == ptFloat)
-            {
-                float f = properties.get(n)->as<float>();
-                if(ImGui::InputFloat("", &f))
-                    properties.set(n,f);
-            }
-
-        }
-        else
-            ImGui::Text("ERR");
-    }
-    ImGui::End();
-    ImGui::PopID();
-}
 
 UiObjectBase::UiObjectBase()
+    : _propertiesWindow(&properties, &_patchMenu.propertiesWindow)
 {
     observer.callback = [this]() {
 
@@ -107,9 +54,12 @@ UiObjectBase::UiObjectBase()
 
     _patchMenu.name = "object_menu";
 
-    _patchMenu.setAction(PdObjectMenu::aProperties,new IUAction([&](){
+    _patchMenu.setAction(PdObjectMenu::aProperties, new IUAction([&]() {
         _patchMenu.propertiesWindow = !_patchMenu.propertiesWindow;
     }));
+
+    // todo:
+    // addComponent(&_propertiesWindow);
 }
 
 int UiObjectBase::inletType(int idx)
@@ -225,7 +175,7 @@ void UiObjectBase::_drawBackground()
 
     draw_list->ChannelsSetCurrent(0); // Background
     draw_list->AddRectFilled(node_rect_min, node_rect_max, IM_COL32(75, 75, 75, 255), 4.0f);
-    draw_list->AddRect(node_rect_min, node_rect_max, borderColor, 0.0f,0,t);
+    draw_list->AddRect(node_rect_min, node_rect_max, borderColor, 0.0f, 0, t);
 }
 
 #pragma mark -
@@ -243,7 +193,6 @@ void UiObjectBase::draw()
     //background
     draw_list->ChannelsSplit(2);
 
-    //updateOffset();
 
     _drawBackground();
 
@@ -292,10 +241,10 @@ void UiObjectBase::draw()
             }
         } else {
             // hover in edit mode
-//            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
-//                //_propertiesWindow();
-//                //                onMouseHover(ImGui::GetIO().MousePos);
-//            }
+            //            if (ImGui::IsMouseHoveringRect(ImVec2(x, y), ImVec2(x + width, y + height))) {
+            //                //_propertiesWindow();
+            //                //                onMouseHover(ImGui::GetIO().MousePos);
+            //            }
 
             // menu
             //            if (ImGui::BeginPopupContextItem("object_menu")) {
@@ -316,14 +265,11 @@ void UiObjectBase::draw()
         }
     }
 
-    if (_patchMenu.propertiesWindow)
-        _propertiesWindow();
+    _propertiesWindow._drawContents();
 
     drawObjectContents();
 
     draw_list->ChannelsMerge();
-
-    //
 
     ImGui::EndGroup();
     ImGui::PopID();
@@ -337,7 +283,7 @@ void UiObjectBase::updateFromPdObject()
     if (pdObject) {
         inletCount = pdObject->inletCount();
         outletCount = pdObject->outletCount();
-//        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+        //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
     }
 }
 

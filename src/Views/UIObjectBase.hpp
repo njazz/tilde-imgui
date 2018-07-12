@@ -22,6 +22,8 @@
 
 #include "PdPatchMenu.hpp"
 
+#include "UIPropertiesWindow.hpp"
+
 static inline ImVec2 operator+(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x + rhs.x, lhs.y + rhs.y); }
 static inline ImVec2 operator-(const ImVec2& lhs, const ImVec2& rhs) { return ImVec2(lhs.x - rhs.x, lhs.y - rhs.y); }
 
@@ -43,6 +45,7 @@ public:
 class UiObjectBase : public IUView {
 private:
     PdObjectMenu _patchMenu;
+    UIPropertiesWindow _propertiesWindow;
 
 protected:
     void _drawInlet(int idx);
@@ -53,7 +56,6 @@ protected:
     std::string id() { return std::to_string((long)this); };
 
     void _createProperties();
-    void _propertiesWindow();
 
     // temporary?
     bool _mouseDownFlag = false;
