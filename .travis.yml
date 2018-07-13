@@ -8,7 +8,7 @@ notifications:
 addons:
   apt:
     sources:
-#       - ubuntu-toolchain-r-test
+      - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-3.9 
     packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev', 'libboost-dev', 
     'gcc-4.9', 'g++-4.9',
