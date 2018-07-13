@@ -234,6 +234,27 @@ void PropertyT<std::string*>::dataFromJSON(json j)
         **_data = j;
 };
 
+
+template <>
+json PropertyT<std::vector<std::string> >::dataToJSON()
+{
+    json j;
+    j = *_data;
+    return j;
+};
+
+template <>
+void PropertyT<std::vector<std::string> >::dataFromJSON(json j)
+{
+    if (j.is_array())
+    {
+        (_data)->clear();
+        for (auto s: j)
+            (_data)->push_back(s);
+    }
+
+};
+
 // TODO:
 //template <>
 //json PropertyT<char const*>::dataToJSON()

@@ -264,16 +264,20 @@ void UiObjectBase::draw()
         }
     }
 
-    _propertiesWindow.y = y;
-    _propertiesWindow.x = x + width + 5;
-    _propertiesWindow._drawContents();
+
 
     drawObjectContents();
 
     draw_list->ChannelsMerge();
 
     ImGui::EndGroup();
+
     ImGui::PopID();
+
+    _propertiesWindow.y = y;
+    _propertiesWindow.x = x + width + 5;
+    _propertiesWindow._drawContents();
+
 }
 
 //

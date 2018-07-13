@@ -11,6 +11,9 @@
 #include "PdConsoleViewController.hpp"
 #include "PdPatchViewController.hpp"
 
+Preferences AppController::_preferences;
+Preferences* AppController::preferences() { return &_preferences; };
+
 void AppConsoleObserver::update()
 {
     if (_pdConsoleWindow) {
@@ -106,11 +109,10 @@ void AppController::_menuExit()
 
 void AppController::_showConsoleWindow()
 {
-
 }
 
 void AppController::_newCanvasWindow()
 {
-    auto p = std::shared_ptr<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);//xpd::CanvasPtr(*(xpd::PdCanvas*)newCanvasWindow.userObject);//std::make_shared<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);
+    auto p = std::shared_ptr<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject); //xpd::CanvasPtr(*(xpd::PdCanvas*)newCanvasWindow.userObject);//std::make_shared<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);
     createPatchWindowForExistingCanvas(p);
 }

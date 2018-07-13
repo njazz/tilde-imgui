@@ -34,6 +34,7 @@
 
 #include "Grid.hpp"
 
+#include "Preferences.h"
 
 class PdPatchViewController : public IUViewController {
 
@@ -69,11 +70,11 @@ class PdPatchViewController : public IUViewController {
 
     Grid _grid;
 
-
+    UIPropertiesWindow _preferencesWindow ;
 public:
     CanvasData data;
 
-//    ImVec2 contentSize;
+    bool displayPreferences = false;
 
     PdPatchViewController(PdCommonMenus* m);
 
@@ -129,6 +130,11 @@ public:
     IUAction menuDeleteObjectAction = IUAction([this]() {
         data.deleteSelectedObjects();
     });
+
+
+    // ---
+
+    IU_ACTION(menuPreferences);
 
     // ----------
 

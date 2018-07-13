@@ -26,6 +26,8 @@
 
 #include "Clipboard.h"
 
+#include "Preferences.h"
+
 class PdConsoleViewController;
 class PdPatchViewController;
 
@@ -53,6 +55,8 @@ class AppController : public AppControllerBase {
 
     Clipboard _clipboard;
 
+    static Preferences _preferences;
+
 public:
     AppController();
 
@@ -74,6 +78,8 @@ public:
     IU_ACTION(newCanvasWindow);
 
     void post(std::string s) { _serverProcess->post(s + "\n"); }
+
+    static Preferences* preferences();
 };
 
 #endif /* AppController_hpp */

@@ -80,15 +80,16 @@ public:
 template <typename T>
 PropertyBase* PropertyList::create(std::string pName, std::string pGroup, std::string pVersion, T defaultData)
 {
-    auto newP = new PropertyT<T>;
+
+    auto newP = new PropertyT<T>();
 
     newP->version = (pVersion);
     newP->setDefaultValue(defaultData);
     newP->set(defaultData);
 
     _data[pName] = newP;
-    //fix
 
+    //fix
     UIPropertyData* grp = _groups[pGroup];
     if (!grp)
         grp = new UIPropertyData();

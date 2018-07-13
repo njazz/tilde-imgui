@@ -104,8 +104,9 @@ PropertyT<T>::PropertyT(T* ref)
 {
     if(std::is_pointer<T>::value && !ref)
     {
-        throw("ERROR: pointer typed property should not use default constructor()");
-        assert(0);
+        printf("WARNING: pointer typed property should not use default constructor()");
+        //throw("ERROR: pointer typed property should not use default constructor()");
+        //assert(0);
     }
 
     if (!ref) {

@@ -9,9 +9,11 @@
 #include "PdPatchViewController.hpp"
 #include "ArrangeObjects.h"
 #include "imgui_internal.h"
+#include "AppController.hpp"
 
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
+    , _preferencesWindow(AppController::preferences(), &displayPreferences)
 
 {
     //
@@ -42,6 +44,9 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _patchMenu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
 
     //
+    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings, &menuPreferences);
+
+    //
 
     arrangeLeftAction = IUAction([this]() {
         ArrangeObjects::alignLeft(&data.objects);
@@ -65,6 +70,8 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _attachPutMenu();
 
     mouseEnabled = true;
+
+//    addComponent(&_preferencesWindow);
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p, xpd::CanvasPtr cnv)
@@ -219,6 +226,8 @@ void PdPatchViewController::draw()
     _grid.contentSize = ImVec2(width, height);
 
     IUViewController::draw();
+
+    _preferencesWindow._drawContents();
 };
 
 void PdPatchViewController::_drawContents()
@@ -342,7 +351,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
         n->data.isCanvas = n->pdObject->PdObject::isCanvas();
 
     if (n->pdObject)
-    printf("new obj abs %i cnv %i\n",n->pdObject->PdObject::isAbstraction(),n->pdObject->PdObject::isCanvas() );
+        printf("new obj abs %i cnv %i\n", n->pdObject->PdObject::isAbstraction(), n->pdObject->PdObject::isCanvas());
 
     return n;
 }
@@ -514,7 +523,7 @@ inline void PdPatchViewController::_objectCreated()
     UIObject* o = (UIObject*)objectCreated.sender;
 
     if (o)
-    data.pdProcess->post(("created: " + o->objectText + "\n").c_str());
+        data.pdProcess->post(("created: " + o->objectText + "\n").c_str());
 
     // test
     if (o)
@@ -560,9 +569,9 @@ inline void PdPatchViewController::_openCanvas()
 
     auto cnv = b->pdObject->asPdCanvas();
 
-    setUserObjectForAction(oNewCanvasWindow,(void*)cnv);
+    setUserObjectForAction(oNewCanvasWindow, (void*)cnv);
 
-    printf("open abstraction: %lu\n",(long)cnv);
+    printf("open abstraction: %lu\n", (long)cnv);
 
     updated(oNewCanvasWindow);
 
@@ -621,7 +630,7 @@ void PdPatchViewController::_zoomIn()
     printf("zoom in\n");
     //ImGui::SetWindowFontScale(1.5);
 
-//    zoomable = true;
+    //    zoomable = true;
     scale = 1.5;
 
     //    for (auto c:_components)
@@ -633,10 +642,10 @@ void PdPatchViewController::_zoomIn()
 void PdPatchViewController::_zoomOut()
 {
     printf("zoom out\n");
-//    ImGui::SetWindowFontScale(0.5);
+    //    ImGui::SetWindowFontScale(0.5);
 
-//    zoomable = true;
-//    _grid.setScale(0.5);
+    //    zoomable = true;
+    //    _grid.setScale(0.5);
 
     //    for (auto c:_components)
     //        c->zoomable = true;
@@ -650,7 +659,7 @@ void PdPatchViewController::_zoomOne()
     //ImGui::GetCurrentWindow()->FontWindowScale = 1.;
 
     //zoomable = false;
-//    _grid.setScale(1.);
+    //    _grid.setScale(1.);
 }
 
 // ---
@@ -846,3 +855,10 @@ void PdPatchViewController::onMouseHover(ImVec2 pos)
     _newPatchcord.inputX = pos.x;
     _newPatchcord.inputY = pos.y;
 };
+
+// ---
+
+void PdPatchViewController::_menuPreferences()
+{
+    displayPreferences = true;
+}

@@ -57,20 +57,39 @@ void UIPropertiesWindow::_drawContents()
 
             if (p) {
                 if (p->typed<std::string>()) { //p->type == ptString)
-                    ImGui::Text(": %s", _properties->get(n)->typed<std::string>()->get().c_str());
+                    if (p->readOnly)
+                        ImGui::Text("%s", _properties->get(n)->typed<std::string>()->get().c_str());
+                    else
+
+                    {
+                        // todo:
+//                        auto str =_properties->get(n)->typed<std::string>()->get();
+//                        ImGui::InputText("", str.c_str(), str.length());
+                         ImGui::Text("edit: %s", _properties->get(n)->typed<std::string>()->get().c_str());
+                    }
                 }
 
-                if (p->typed<bool>()) { //type == ptBool) {
+                else if (p->typed<std::vector<std::string> >()) {
+                    auto arr = _properties->get(n)->typed<std::vector<std::string> >()->get();
+
+                    for (auto s:arr)
+                    {
+                        ImGui::Text("%s",s.c_str());
+                    }
+                    ImGui::Button("+");
+                }
+
+                else if (p->typed<bool>()) { //type == ptBool) {
                     bool v = _properties->get(n)->typed<bool>()->get();
                     if (ImGui::Checkbox("", &v))
                         _properties->set(n, v);
                 }
-                if (p->typed<bool*>()) { //type == ptBool) {
+                else if (p->typed<bool*>()) { //type == ptBool) {
                     bool* v_p = _properties->get(n)->typed<bool*>()->get();
                     if (ImGui::Checkbox("", v_p))
                         _properties->set(n, v_p);
                 }
-                if (p->typed<std::vector<float*> >()) { //>type == ptVec2) {
+                else if (p->typed<std::vector<float*> >()) { //>type == ptVec2) {
                     auto vec = _properties->get(n)->typed<std::vector<float*> >()->get();
                     if (vec.size() < 2)
                         return;
@@ -81,7 +100,7 @@ void UIPropertiesWindow::_drawContents()
                         _properties->set(n, vec);
                     }
                 }
-                if (p->typed<float>()) { //type == ptFloat) {
+                else if (p->typed<float>()) { //type == ptFloat) {
                     float f = _properties->get(n)->typed<float>()->get();
 
                     //f = _properties->get(n)->as<float>();
@@ -90,7 +109,7 @@ void UIPropertiesWindow::_drawContents()
                         _properties->set(n, f);
                     }
                 }
-                if (p->typed<float*>()) { //type == ptFloat) {
+                else if (p->typed<float*>()) { //type == ptFloat) {
                     float* f_p = _properties->get(n)->typed<float*>()->get();
 
                     //f = _properties->get(n)->as<float>();
@@ -101,14 +120,17 @@ void UIPropertiesWindow::_drawContents()
                     }
                 }
 
-            } else
-                ImGui::Text("ERR");
+                else
+                                ImGui::Text("ERR");
+            }
+
             ImGui::PopID();
 
             ImGui::NextColumn();
         }
 
         //        ImGui::EndChildFrame();
+        ImGui::Separator();
     }
     ImGui::End();
     ImGui::PopID();
