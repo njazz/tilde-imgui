@@ -1,6 +1,6 @@
 language: cpp
 dist: trusty
-sudo: false
+sudo: required
 
 notifications:
   email: false
@@ -13,7 +13,7 @@ addons:
     packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev', 'libboost-dev', 
 #     'gcc-4.9', 'g++-4.9',
 'clang-3.9','libc++-dev','libc++abi-dev',
- 'libglfw3', 'libglfw3-dev'
+#  'libglfw3', 'libglfw3-dev'
 ]
 
 matrix:
@@ -39,6 +39,6 @@ before_install:
   - if [[ $CXX = clang++ ]]; then export CXX="clang++-3.9" CC="clang-3.9"; fi
   - chmod +x ./config/script.sh
   - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git /home/travis/build/njazz/imgui
-  
+  - git clone https://github.com/glfw/glfw && mkdir build && cd build && cmake ../glfw && make -j4 && sudo make install
 script:
   - ./config/script.sh
