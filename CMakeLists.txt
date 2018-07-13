@@ -145,7 +145,8 @@ set_target_properties(tilde_imgui
 if (APPLE)
     target_link_libraries(tilde_imgui glfw)
 else()
-   target_link_libraries(tilde_imgui glfw3)
+    # linux
+   target_link_libraries(tilde_imgui glfw3 pthread dl GLU GL rt Xrandr Xxf86vm Xi Xinerama X11)
 endif(APPLE)
 
 target_link_libraries(tilde_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
