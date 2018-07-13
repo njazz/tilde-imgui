@@ -2,12 +2,9 @@
 
 mkdir -p build && cd build
 
-pwd
-ls ../
-ls ../../
-ls ../../imgui/
-ls ../../imgui/nfd/
-ls ../../imgui/nfd/src
+ls ../xpd/pd/
+ls ../src/Properties/
+
 echo "'cmake ..'"
 
 if [ -n "$COVERAGE" ]
