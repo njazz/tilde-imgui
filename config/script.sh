@@ -18,6 +18,12 @@ echo "'build'"
 
 cmake --build .
 
+if [ $? -ne 0 ]; then
+    error "Compile error!"
+	# Terminate script and outputs 3
+    exit 3
+fi
+
 export CTEST_OUTPUT_ON_FAILURE=1
 make test
 
