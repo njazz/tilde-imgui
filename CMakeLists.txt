@@ -24,12 +24,12 @@ set_source_files_properties(${APP_ICON} PROPERTIES
        MACOSX_PACKAGE_LOCATION "Resources/")
 
 file (GLOB SRC_IMGUI
-    "../imgui/lib/*.cpp"
-    "../imgui/main/*.cpp"
-    "../imgui/GL/*.c"
-    "../imgui/imgui/*.c*"
+    "${PROJECT_SOURCE_DIR}/../imgui/lib/*.cpp"
+    "${PROJECT_SOURCE_DIR}/../imgui/main/*.cpp"
+    "${PROJECT_SOURCE_DIR}/../imgui/GL/*.c"
+    "${PROJECT_SOURCE_DIR}/../imgui/imgui/*.c*"
 
-    "../imgui/addons/imguidock/*.c*"
+    "${PROJECT_SOURCE_DIR}/../imgui/addons/imguidock/*.c*"
     )
 
 #todo : x-platform
@@ -40,13 +40,13 @@ set (SRC_IMGUI
     "../imgui/nfd/src/nfd_cocoa.m"
     )
 
-include_directories(../imgui/lib)
-include_directories(../imgui/imgui)
-include_directories(../imgui/GL)
-include_directories(../imgui/GLFW)
-include_directories(../imgui/lib)
-include_directories(../imgui/nfd/src)
-include_directories(../imgui/nfd/src/include)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/imgui)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/GL)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/GLFW)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src/include)
 
 include_directories(../imgui/addons/imguidock)
 
