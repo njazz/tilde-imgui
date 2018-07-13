@@ -28,7 +28,6 @@ private:
 public:
     PropertyList(){};
 
-
     template <typename T>
     PropertyBase* create(std::string pName, std::string pGroup, std::string pVersion, T defaultData);
 
@@ -38,35 +37,42 @@ public:
     PropertyBase* get(std::string key);
     PropertyBase* operator[](std::string key);
 
-    // ------------
-    UIPropertyData* fromGroup(std::string grpName);
-
-
-    // ------------
-
-    ////
-    /// \brief returns string for saving in file
-    std::string asPdFileString();
+    // -------------
 
     ////
     /// \brief list of all property names
     /// \return
-    std::vector<std::string> names();
+    std::vector<std::string> allNames();
+
+    UIPropertyData* fromGroup(std::string grpName);
 
     ////
     /// \brief list of all property names for specific propertyData
-    /// \detais todo normal classes
-    std::vector<std::string> names(UIPropertyData* data1);
+    /// \detais todo: normal classes?
+    std::vector<std::string> namesInGroup(UIPropertyData* d);
 
     ////
     /// \brief list of all group names
     std::vector<std::string> groupNames();
 
+    // --------------
+
     ////
-    /// \brief extract properties from string in pd file
+    /// \brief extract properties from object string in pd file
     /// \details returns first part of the string before the first property
     /// \return
     std::string extractFromPdFileString(std::string input);
+
+    ////
+    /// \brief returns string for saving in file
+    std::string asPdFileString();
+
+    // -----
+
+    json toJSON();
+    void fromJSON(json j);  // loads from JSON into existing properties
+    std::string toJSONString();
+    void fromJSONString(std::string s);
 };
 
 // ----------

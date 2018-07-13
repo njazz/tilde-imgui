@@ -13,6 +13,12 @@
 #include <functional>
 #include <memory>
 
+#include "json_fwd.hpp"
+
+#include <cassert>
+
+using json = nlohmann::json;
+
 template <typename T>
 class PropertyT;
 
@@ -20,6 +26,12 @@ class PropertyBase {
     virtual void _abstractClass() = 0;
 
 public:
+    //
+    bool readOnly = false;
+    std::string group = "";
+    std::string version = "";
+
+    //
     template <typename T>
     PropertyT<T>* typed();
 
@@ -30,6 +42,18 @@ public:
 
     virtual bool isDefault() { return true; }
     virtual std::string asPdString() { return "(unsupported)"; }
+
+    //
+    json toJSON();
+    void fromJSON(json j);
+    std::string toJSONString();
+    void fromJSONString(std::string s);
+
+    virtual json dataToJSON();
+    virtual void dataFromJSON(json j);
+
+    //
+    PropertyBase* createFromJSON(json j);
 };
 
 template <typename T>
@@ -59,14 +83,10 @@ public:
     virtual bool isDefault() override { return *_data == _defaultValue; }
 
     //
-    bool readOnly = false;
-    std::string group = "";
-    std::string version = "";
-
-    //
     virtual std::string asPdString() override { return "(unsupported)"; }
 
-    //
+    virtual json dataToJSON() override;
+    virtual void dataFromJSON(json j) override;
 };
 
 // ----------
@@ -82,6 +102,12 @@ PropertyT<T>* PropertyBase::typed()
 template <typename T>
 PropertyT<T>::PropertyT(T* ref)
 {
+    if(std::is_pointer<T>::value && !ref)
+    {
+        throw("ERROR: pointer typed property should not use default constructor()");
+        assert(0);
+    }
+
     if (!ref) {
         _data = new T;
         _internal = true;
@@ -131,5 +157,7 @@ std::string PropertyT<int>::asPdString();
 
 template <>
 std::string PropertyT<int*>::asPdString();
+
+// ---
 
 #endif // CM_PROPERTY_H

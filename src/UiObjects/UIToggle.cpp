@@ -6,7 +6,7 @@ UIToggle::UIToggle()
         _value = std::stoi(observer.data().getStringAt(0));
     };
 
-    auto p = properties.create("Value","Slider","0.1",&_value);
+    auto p = properties.create("Value","Toggle","0.1",&_value);
 //    p->componentAt(0).bindInt(&_value);
 }
 

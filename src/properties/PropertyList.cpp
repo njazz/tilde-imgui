@@ -1,22 +1,9 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
-
 #include "PropertyList.h"
 
-
-std::vector<std::string> PropertyList::names()
-{
-    std::vector<std::string> ret;
-
-
-    for (auto it : _data) {
-        //save only modified values
-        ret.push_back(it.first);
-    }
-
-    return ret;
-}
+#include "json.hpp"
 
 PropertyBase* PropertyList::operator[](std::string key)
 {
@@ -25,18 +12,39 @@ PropertyBase* PropertyList::operator[](std::string key)
 
 // ----------
 
-
 PropertyBase* PropertyList::get(std::string key)
 {
-    if (_data.find(key)==_data.end()) return 0;
+    if (_data.find(key) == _data.end())
+        return 0;
     return _data[key];
 };
 
+std::vector<std::string> PropertyList::namesInGroup(UIPropertyData* d)
+{
+    std::vector<std::string> ret;
+
+    for (auto it : *d) {
+        ret.push_back(it.first);
+    }
+
+    return ret;
+}
 
 UIPropertyData* PropertyList::fromGroup(std::string grpName)
 {
     UIPropertyData* ret;
     ret = this->_groups[grpName];
+    return ret;
+}
+
+std::vector<std::string> PropertyList::groupNames()
+{
+    std::vector<std::string> ret;
+
+    for (auto it = this->_groups.begin(); it != this->_groups.end(); ++it) {
+        ret.push_back(it->first.c_str());
+    }
+
     return ret;
 }
 
@@ -56,6 +64,62 @@ std::string PropertyList::asPdFileString()
 
     return ret;
 }
+
+// ----------
+
+json PropertyList::toJSON()
+{
+    json j;
+
+    json dataObject = json::object();
+
+    for (auto k : _data)
+        dataObject[k.first] = _data[k.first]->toJSON();
+
+    j["data"] = dataObject;
+
+    // todo:
+//    json groupsObject = json::object();
+
+//    for (auto k : _groups)
+//        groupsObject[k.first] = _groups[k.first]->toJSON();
+//    j["groups"] = groupsObject;
+
+    return j;
+};
+void PropertyList::fromJSON(json j)
+{
+    try {
+        json dataObject = j["data"];
+
+        for (auto k:_data)
+        {
+            if (_data.find(k.first) != _data.end())
+                _data[k.first]->fromJSON(dataObject[k.first]);
+
+            // todo in another method:
+            //_data[k.first] = PropertyBase::createFromJSON(dataObject[k.first]);
+        }
+        //        _data = j["data"];
+        //        _groups = j["groups"];
+    } catch (std::exception& e) {
+        printf("ERROR: bad JSON data (%s)\n", e.what());
+    }
+};
+std::string PropertyList::toJSONString()
+{
+    return toJSON().dump();
+};
+void PropertyList::fromJSONString(std::string s)
+{
+    try {
+        json j = json::parse(s);
+        fromJSON(j);
+    } catch (std::exception& e) {
+        printf("ERROR: bad JSON string (%s)\n", e.what());
+    }
+};
+
 /*
 namespace tilde {
 
@@ -113,31 +177,6 @@ std::string PropertyList::asPdFileString()
 
 
 
-QStringList PropertyList::names(UIPropertyData* data1)
-{
-    QStringList ret;
-
-    UIPropertyDataIterator it;
-    for (it = data1->begin(); it != data1->end(); ++it) {
-        //save only modified values
-        ret.push_back(it->first.c_str());
-    }
-
-    return ret;
-}
-
-QStringList PropertyList::groupNames()
-{
-    QStringList ret;
-
-    UIPropertyGroupIterator it;
-    for (it = this->_groups.begin(); it != this->_groups.end(); ++it) {
-        //save only modified values
-        ret.push_back(it->first.c_str());
-    }
-
-    return ret;
-}
 
 QString PropertyList::extractFromPdFileString(QString input)
 {
