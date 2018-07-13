@@ -2,6 +2,8 @@
 
 Development repository, early prototype.
 
+[![Build Status](https://travis-ci.org/njazz/tilde-imgui.svg?branch=master)](https://travis-ci.org/njazz/tilde-imgui)
+
 tilde~ is a new integrated GUI for Puredata.
 
 Meanwhile check out this Pd library and build:
