@@ -1,0 +1,20 @@
+language: cpp
+dist: trusty
+sudo: required
+
+notifications:
+	email: false
+
+addons:
+  apt:
+    packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev']
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      env:
+        - COVERAGE=1
+        - DOXYGEN
+    - os: linux
+      compiler: clang
