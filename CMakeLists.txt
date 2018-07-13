@@ -1,10 +1,12 @@
 cmake_minimum_required (VERSION 2.8)
 #set (CMAKE_OSX_DEPLOYMENT_TARGET "10.10")
 if(NOT CMAKE_VERSION VERSION_LESS 3.1)
-    set(CMAKE_CXX_STANDARD 11)
+    set(CMAKE_CXX_STANDARD 11)  
 else()
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 endif()
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 if (APPLE)
 	set(CMAKE_MACOSX_RPATH FALSE)
@@ -121,6 +123,7 @@ add_executable(tilde_imgui
     ${R_FONTS} ${APP_ICON}
     )
 set_target_properties(tilde_imgui PROPERTIES DEPENDS xpd)
+
 set_property(TARGET tilde_imgui PROPERTY CXX_STANDARD 11)
 
 set_target_properties(
