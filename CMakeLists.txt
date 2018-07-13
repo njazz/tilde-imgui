@@ -18,10 +18,22 @@ set (MACOSX_BUNDLE_LONG_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_SHORT_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_BUNDLE_VERSION "${MY_APP_VERSION}")
 
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/imgui)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/GL)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/GLFW)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src)
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src/include)
+
+include_directories(${PROJECT_SOURCE_DIR}/../imgui/addons/imguidock)
+
 
 set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/icons/tilde~.icns)
 set_source_files_properties(${APP_ICON} PROPERTIES
        MACOSX_PACKAGE_LOCATION "Resources/")
+
+
 
 file (GLOB SRC_IMGUI
     "${PROJECT_SOURCE_DIR}/../imgui/lib/*.cpp"
@@ -45,15 +57,7 @@ if(APPLE)
 )
 endif(APPLE)
 
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/imgui)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/GL)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/GLFW)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src)
-include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src/include)
 
-include_directories(${PROJECT_SOURCE_DIR}../imgui/addons/imguidock)
 
 FILE(GLOB R_FONTS "${PROJECT_SOURCE_DIR}../imgui/fonts/Arial*.ttf")
 set_property(
