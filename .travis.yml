@@ -7,7 +7,11 @@ notifications:
 
 addons:
   apt:
-    packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev', 'libboost-dev']
+    sources:
+      - ubuntu-toolchain-r-test
+      - llvm-toolchain-precise-3.5 # not sure why we needed this
+    packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev', 'libboost-dev', 'gcc-4.9', 'g++-4.9',
+'clang-3.5']
 
 matrix:
   include:
@@ -20,6 +24,10 @@ matrix:
       compiler: clang
 
 before_install:
+# /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
+  - if [[ $CXX = g++ ]]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
+# /usr/bin/clang has a conflict with gcc, so use clang-X.Y.
+  - if [[ $CXX = clang++ ]]; then export CXX="clang++-3.5" CC="clang-3.5"; fi
   - chmod +x ./config/script.sh
   - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git /home/travis/build/njazz/imgui
   
