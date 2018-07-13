@@ -226,11 +226,11 @@ const bool PdObject::isAbstraction() const
 }
 
 //
-std::string helpDir()
+std::string PdObject::helpDir()
 {
     return cpd_object_help_dir(obj_);
 }
-std::string helpFilename()
+std::string PdObject::helpFilename()
 {
     cpd_object_help_name(obj_);
 }
