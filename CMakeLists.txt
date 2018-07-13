@@ -61,8 +61,10 @@ set(EXTERNAL_INCLUDE_DIRS ${EXTERNAL_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
 set(EXTERNAL_LIBRARIES ${EXTERNAL_LIBRARIES} ${OPENGL_LIBRARIES})
 
 #todo: x-platform
+if(APPLE)
 find_library(FOUNDATION Foundation REQUIRED)
 find_library(COCOA Cocoa REQUIRED)
+endif(APPLE)
 
 #######
 file(GLOB SRC_tilde_imgui
