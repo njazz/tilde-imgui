@@ -13,6 +13,38 @@
 #include "PdPatchViewController.hpp"
 #include "Properties/PropertyList.h"
 
+UiObjectBase::UiObjectBase()
+    : _propertiesWindow(&properties, &_patchMenu.propertiesWindow)
+{
+    observer.callback = [this]() {
+
+        std::string d;
+        if (observer.data().size())
+            d = observer.data().getStringAt(0);
+
+        for (int i = 1; i < observer.data().size(); i++)
+            d += " + " + observer.data().getStringAt(i);
+
+        printf("callback: %s\n", d.c_str());
+
+    };
+
+    _createProperties();
+
+    _patchMenu.name = "object_menu";
+
+    _patchMenu.setAction(PdObjectMenu::aProperties, new IUAction([&]() {
+        _patchMenu.propertiesWindow = !_patchMenu.propertiesWindow;
+    }));
+
+    _patchMenu.setAction(PdObjectMenu::aHelp, new IUAction([&](){
+        updated(oOpenHelp);
+    }));
+
+    // todo:
+    // addComponent(&_propertiesWindow);
+}
+
 void UiObjectBase::_createProperties()
 {
     auto p = properties.create("Position", "Box", "0.1", std::vector<float*>({ &x, &y })); //ImVec2(0, 0));
