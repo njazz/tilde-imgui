@@ -62,8 +62,11 @@ set (SRC_IMGUI
 if(APPLE)
     set (SRC_IMGUI
         ${SRC_IMGUI}
-        "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m"
-)
+        "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m")
+else()
+    set (SRC_IMGUI
+        ${SRC_IMGUI}
+        "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_gtk.c")
 endif(APPLE)
 
 
