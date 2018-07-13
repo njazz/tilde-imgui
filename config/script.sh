@@ -2,20 +2,12 @@
 
 mkdir -p build && cd build
 
-ls ../xpd/pd/
-ls ../src/Properties/
-
-echo "'cmake ..'"
-
 if [ -n "$COVERAGE" ]
 then
     cmake -DWITH_COVERAGE=On -DCMAKE_BUILD_TYPE=Debug ..
 else
     cmake -DCMAKE_BUILD_TYPE=Debug ..
 fi
-
-echo "'build'"
-
 cmake --build . 
 
 if [ $? -ne 0 ]; then
