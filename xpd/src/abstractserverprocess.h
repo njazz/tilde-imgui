@@ -134,6 +134,10 @@ public:
 
     /// @brief Abstract. Send message to a named object (symbol)
     virtual void sendMessage(const std::string& object, const std::string& text) = 0;
+
+    // new - audio
+    virtual std::vector<std::string> audioOutputDeviceList() {return {}; };
+    virtual std::vector<std::string> audioInputDeviceList() {return {}; };
 };
 }
 

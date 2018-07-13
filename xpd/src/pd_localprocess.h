@@ -18,12 +18,15 @@ class PdObjectObserver;
 class PdLocalProcess : public AbstractServerProcess {
     t_receiver* receiver_;
 
+    t_cpd_audio_devlist* inputDeviceList_ = 0;
+    t_cpd_audio_devlist* outputDeviceList_ = 0;
+
 public:
     PdLocalProcess(const AbstractServer* parent, const ServerProcessSettings& s);
     ~PdLocalProcess();
 
     void dspSwitch(bool value) override;
-    int dspState() override {return cpd_dsp_get_state();}
+    int dspState() override { return cpd_dsp_get_state(); }
 
     /**
      * @brief Creates PdCanvas
@@ -58,6 +61,26 @@ public:
     {
         cpd_send_brodcast_message(cpd_symbol(object.c_str()), cpd_list_new_from_string(text.c_str()));
     };
+
+    virtual std::vector<std::string> audioInputDeviceList() override
+    {
+
+        std::vector<std::string> ret;
+        for (int i = 0; i < cpd_audio_input_devices_num(inputDeviceList_); i++) {
+            ret.push_back(cpd_audio_input_device_name(inputDeviceList_, i));
+        }
+        return ret;
+    }
+    virtual std::vector<std::string> audioOutputDeviceList() override
+    {
+
+        std::vector<std::string> ret;
+        for (int i = 0; i < cpd_audio_output_devices_num(outputDeviceList_); i++) {
+            ret.push_back(cpd_audio_output_device_name(outputDeviceList_, i));
+        }
+
+        return ret;
+    }
 };
 
 } // namespace xpd

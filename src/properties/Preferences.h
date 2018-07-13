@@ -26,4 +26,5 @@ public:
     void saveToJSONFile(){};
 
 };
+
 #endif // CM_PREFERENCES_H

@@ -24,10 +24,18 @@ PdLocalProcess::PdLocalProcess(const AbstractServer* parent, const ServerProcess
     receiver_ = reinterpret_cast<t_receiver*>(cpd_receiver_new());
     cpd_receiver_set_callback(receiver_, &PdLocalProcess::receiverCallback);
     cpd_bind_object(reinterpret_cast<t_cpd_object*>(receiver_), cpd_symbol("xpd_receiver"));
+
+    // audio device list
+    inputDeviceList_ =  cpd_audio_devlist_new();
+    outputDeviceList_ =  cpd_audio_devlist_new();
 }
 
 PdLocalProcess::~PdLocalProcess()
 {
+    // audio device list
+    cpd_audio_devlist_free(inputDeviceList_);
+    cpd_audio_devlist_free(outputDeviceList_);
+
     cpd_unbind_object(reinterpret_cast<t_cpd_object*>(receiver_), cpd_symbol("xpd_receiver"));
     cpd_receiver_free(receiver_);
     cpd_stop();

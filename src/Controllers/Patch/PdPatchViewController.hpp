@@ -71,10 +71,12 @@ class PdPatchViewController : public IUViewController {
     Grid _grid;
 
     UIPropertiesWindow _preferencesWindow ;
+    UIPropertiesWindow _audioSettingsWindow;
 public:
     CanvasData data;
 
     bool displayPreferences = false;
+    bool displayAudioSettings = false;
 
     PdPatchViewController(PdCommonMenus* m);
 
@@ -135,6 +137,7 @@ public:
     // ---
 
     IU_ACTION(menuPreferences);
+    IU_ACTION(menuAudioSettings);
 
     // ----------
 

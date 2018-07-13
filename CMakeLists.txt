@@ -72,6 +72,7 @@ file(GLOB SRC_tilde_imgui
     "src/Views/*.cpp"
     "src/UIObjects/*.cpp"
     "src/Properties/*.cpp"
+    "src/Properties/*.h*"
     "src/Menus/*.cpp"
     "src/Undo/*.cpp"
     "src/DataModels/*.cpp"

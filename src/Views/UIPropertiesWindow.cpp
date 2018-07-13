@@ -42,6 +42,7 @@ void UIPropertiesWindow::_drawContents()
         ImGui::NextColumn();
         ImGui::Text("%s", g.c_str());
         ImGui::NextColumn();
+        ImGui::Separator();
 
         //        ImGui::BeginChildFrame(ImGui::GetID(_id.c_str()), ImVec2(0, 0));
 

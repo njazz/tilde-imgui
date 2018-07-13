@@ -14,6 +14,7 @@
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
     , _preferencesWindow(AppController::preferences(), &displayPreferences)
+    ,_audioSettingsWindow(AppController::audioMIDISettings(), &displayAudioSettings)
 
 {
     //
@@ -45,7 +46,7 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     //
     _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings, &menuPreferences);
-
+    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aAudioMIDI, &menuAudioSettings);
     //
 
     arrangeLeftAction = IUAction([this]() {
@@ -228,6 +229,7 @@ void PdPatchViewController::draw()
     IUViewController::draw();
 
     _preferencesWindow._drawContents();
+    _audioSettingsWindow._drawContents();
 };
 
 void PdPatchViewController::_drawContents()
@@ -861,4 +863,9 @@ void PdPatchViewController::onMouseHover(ImVec2 pos)
 void PdPatchViewController::_menuPreferences()
 {
     displayPreferences = true;
+}
+
+void PdPatchViewController::_menuAudioSettings()
+{
+    displayAudioSettings = true;
 }

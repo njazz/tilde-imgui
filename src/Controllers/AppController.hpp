@@ -27,6 +27,7 @@
 #include "Clipboard.h"
 
 #include "Preferences.h"
+#include "AudioMIDISettings.h"
 
 class PdConsoleViewController;
 class PdPatchViewController;
@@ -56,6 +57,7 @@ class AppController : public AppControllerBase {
     Clipboard _clipboard;
 
     static Preferences _preferences;
+    static AudioMIDISettings* _audioMIDISettings;;
 
 public:
     AppController();
@@ -80,6 +82,7 @@ public:
     void post(std::string s) { _serverProcess->post(s + "\n"); }
 
     static Preferences* preferences();
+    static AudioMIDISettings* audioMIDISettings();
 };
 
 #endif /* AppController_hpp */

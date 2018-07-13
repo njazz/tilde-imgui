@@ -14,6 +14,9 @@
 Preferences AppController::_preferences;
 Preferences* AppController::preferences() { return &_preferences; };
 
+AudioMIDISettings* AppController::_audioMIDISettings = 0;
+AudioMIDISettings* AppController::audioMIDISettings() { return _audioMIDISettings; };
+
 void AppConsoleObserver::update()
 {
     if (_pdConsoleWindow) {
@@ -31,6 +34,8 @@ AppController::AppController()
     _serverProcess = _server->createProcess();
     _serverProcess->registerConsoleObserver(xpd::ConsoleObserverPtr(&_consoleObserver));
 
+    _audioMIDISettings = new AudioMIDISettings(_serverProcess);
+
     _pdConsoleViewController = new PdConsoleViewController(&_commonMenus);
     _pdConsoleViewController->pdServer = _server;
     _pdConsoleViewController->pdProcess = _serverProcess;
@@ -46,6 +51,8 @@ AppController::AppController()
 
     _serverProcess->addSearchPath("/Users/njazz/Documents/tilde~/Libraries/");
     _serverProcess->loadLibrary("tilde~_imgui");
+
+
 
     FileParser::setAppController(this);
 }
