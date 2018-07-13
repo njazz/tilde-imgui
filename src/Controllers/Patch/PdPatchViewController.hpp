@@ -70,14 +70,13 @@ class PdPatchViewController : public IUViewController {
 
     Grid _grid;
 
-    UIPropertiesWindow _preferencesWindow ;
+    UIPropertiesWindow _preferencesWindow;
     UIPropertiesWindow _audioSettingsWindow;
     bool displayPreferences = false;
     bool displayAudioSettings = false;
+
 public:
     CanvasData data;
-
-
 
     PdPatchViewController(PdCommonMenus* m);
 
@@ -114,26 +113,11 @@ public:
 
     // ----------
 
-    IUAction menuCutAction = IUAction([this]() {
-        data.cut();
-    });
-
-    IUAction menuCopyAction = IUAction([this]() {
-        data.copy();
-    });
-
-    IUAction menuPasteAction = IUAction([this]() {
-        data.paste();
-    });
-
-    IUAction menuSelectAllAction = IUAction([this]() {
-        data.selectAllObjects();
-    });
-
-    IUAction menuDeleteObjectAction = IUAction([this]() {
-        data.deleteSelectedObjects();
-    });
-
+    IU_ACTION(menuCutAction);
+    IU_ACTION(menuCopyAction);
+    IU_ACTION(menuPasteAction);
+    IU_ACTION(menuSelectAllAction);
+    IU_ACTION(menuDeleteObjectAction);
 
     // ---
 

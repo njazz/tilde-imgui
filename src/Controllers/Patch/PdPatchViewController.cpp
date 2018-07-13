@@ -7,14 +7,14 @@
 //
 
 #include "PdPatchViewController.hpp"
+#include "AppController.hpp"
 #include "ArrangeObjects.h"
 #include "imgui_internal.h"
-#include "AppController.hpp"
 
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
     , _preferencesWindow(AppController::preferences(), &displayPreferences)
-    ,_audioSettingsWindow(AppController::audioMIDISettings(), &displayAudioSettings)
+    , _audioSettingsWindow(AppController::audioMIDISettings(), &displayAudioSettings)
 
 {
     //
@@ -72,7 +72,7 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
 
     mouseEnabled = true;
 
-//    addComponent(&_preferencesWindow);
+    //    addComponent(&_preferencesWindow);
 }
 
 void PdPatchViewController::setPdProcess(xpd::ProcessPtr p, xpd::CanvasPtr cnv)
@@ -698,6 +698,31 @@ void PdPatchViewController::_editModeAction()
     editMode = !editMode;
 }
 
+// ---
+void PdPatchViewController::_menuCutAction()
+{
+    data.cut();
+}
+
+void PdPatchViewController::_menuCopyAction()
+{
+    data.copy();
+}
+
+void PdPatchViewController::_menuPasteAction()
+{
+    data.paste();
+}
+
+void PdPatchViewController::_menuSelectAllAction()
+{
+    data.selectAllObjects();
+}
+
+void PdPatchViewController::_menuDeleteObjectAction()
+{
+    data.deleteSelectedObjects();
+}
 // ---
 
 void PdPatchViewController::_arrangeLeftAction()

@@ -37,7 +37,7 @@ UiObjectBase::UiObjectBase()
         _patchMenu.propertiesWindow = !_patchMenu.propertiesWindow;
     }));
 
-    _patchMenu.setAction(PdObjectMenu::aHelp, new IUAction([&](){
+    _patchMenu.setAction(PdObjectMenu::aHelp, new IUAction([&]() {
         updated(oOpenHelp);
     }));
 
@@ -64,34 +64,6 @@ void UiObjectBase::_createProperties()
         //        width = p->as<ImVec2>().x;
         //        height = p->as<ImVec2>().y;
     });
-}
-
-UiObjectBase::UiObjectBase()
-    : _propertiesWindow(&properties, &_patchMenu.propertiesWindow)
-{
-    observer.callback = [this]() {
-
-        std::string d;
-        if (observer.data().size())
-            d = observer.data().getStringAt(0);
-
-        for (int i = 1; i < observer.data().size(); i++)
-            d += " + " + observer.data().getStringAt(i);
-
-        printf("callback: %s\n", d.c_str());
-
-    };
-
-    _createProperties();
-
-    _patchMenu.name = "object_menu";
-
-    _patchMenu.setAction(PdObjectMenu::aProperties, new IUAction([&]() {
-        _patchMenu.propertiesWindow = !_patchMenu.propertiesWindow;
-    }));
-
-    // todo:
-    // addComponent(&_propertiesWindow);
 }
 
 int UiObjectBase::inletType(int idx)
@@ -296,8 +268,6 @@ void UiObjectBase::draw()
         }
     }
 
-
-
     drawObjectContents();
 
     draw_list->ChannelsMerge();
@@ -309,7 +279,6 @@ void UiObjectBase::draw()
     _propertiesWindow.y = y;
     _propertiesWindow.x = x + width + 5;
     _propertiesWindow._drawContents();
-
 }
 
 //

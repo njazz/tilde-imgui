@@ -94,6 +94,8 @@ public:
 
     static const int oOpenCanvas = 200;
 
+    static const int oOpenHelp = 300;
+
     //
     void updateFromPdObject();
     void pdObjUpdatePosition();
