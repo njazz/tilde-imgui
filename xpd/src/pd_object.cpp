@@ -232,7 +232,7 @@ std::string PdObject::helpDir()
 }
 std::string PdObject::helpFilename()
 {
-    cpd_object_help_name(obj_);
+    return cpd_object_help_name(obj_);
 }
 
 //ObjectId PdObject::createObject(const std::string& name, int x, int y)
