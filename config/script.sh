@@ -2,6 +2,7 @@
 
 mkdir -p build && cd build
 
+ls ../../imgui/nfd/src
 echo "'cmake ..'"
 
 if [ -n "$COVERAGE" ]
