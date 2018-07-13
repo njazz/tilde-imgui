@@ -16,7 +16,7 @@ fi
 
 echo "'build'"
 
-cmake --build . --std=c++0x
+cmake --build . 
 
 if [ $? -ne 0 ]; then
     error "Compile error!"
