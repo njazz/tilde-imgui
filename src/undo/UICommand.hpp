@@ -24,6 +24,8 @@ public:
   void undo(){
       _undo();
   }
+
+  std::string& actionName(){return _actionName;};
 };
 
 #endif

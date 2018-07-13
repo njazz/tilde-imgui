@@ -35,6 +35,9 @@ class PdConsoleViewController : public IUViewController {
 
     UIPropertiesWindow _preferencesWindow ;
     bool _displayPreferences = false;
+
+    UIPropertiesWindow _audioSettingsWindow;
+    bool _displayAudioSettings = false;
 public:
     PdConsoleViewController(PdCommonMenus* m);
 
@@ -56,6 +59,7 @@ public:
     IU_ACTION(dspOff);
 
     IU_ACTION(menuPreferences);
+    IU_ACTION(menuAudioSettings);
 
 };
 

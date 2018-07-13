@@ -44,7 +44,7 @@ public:
 
     //    static const int oSelected = 30;
 
-    virtual void onMouseDoubleClick(ImVec2 pos) override
+    virtual void onMouseDoubleClickEdited(ImVec2 pos) override
 
     {
         //                assert(windowController());

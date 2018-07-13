@@ -38,5 +38,15 @@ public:
         (*_stack[_undoListIndex])();
         _undoListIndex++;
     }
+
+    std::vector<std::string> undoActionsList()
+    {
+        std::vector<std::string> ret;
+
+        for (auto o: _stack)
+            ret.push_back(o->actionName());
+
+        return ret;
+    }
 };
 #endif
