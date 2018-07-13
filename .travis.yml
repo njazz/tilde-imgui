@@ -42,7 +42,7 @@ before_install:
   - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git /home/travis/build/njazz/imgui
   - mkdir glfw && cd glfw
   - git clone https://github.com/glfw/glfw && mkdir build && cd build  
-  - git cmake ../glfw && make -j4 
+  - cmake ../glfw && make -j4 
   - sudo make install
   - cd ../..
 script:
