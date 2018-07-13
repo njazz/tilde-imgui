@@ -20,9 +20,8 @@ matrix:
       compiler: clang
 
 before_install:
-  - mkdir imgui
   - chmod +x ./config/script.sh
-  - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git njazz/imgui
+  - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git /home/travis/build/njazz/imgui
   
 script:
   - ./config/script.sh
