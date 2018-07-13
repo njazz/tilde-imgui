@@ -19,19 +19,19 @@ addons:
 
 matrix:
   include:
-#     - os: linux
-#       compiler: gcc
-#       env:
-#         - COVERAGE=1
-#         - DOXYGEN
-#         - EXTRA_FLAGS="-stdlib=libc++"
     - os: linux
-      compiler: clang
+      compiler: gcc
       env:
         - COVERAGE=1
         - DOXYGEN
         - EXTRA_FLAGS="-stdlib=libc++"
-        - LIBCXX=On
+    - os: linux
+      compiler: clang
+      env:
+#         - COVERAGE=1
+#         - DOXYGEN
+        - EXTRA_FLAGS="-stdlib=libc++"
+#         - LIBCXX=On
 
 before_install:
 # /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
