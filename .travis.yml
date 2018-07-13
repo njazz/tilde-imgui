@@ -20,8 +20,11 @@ matrix:
       env:
         - COVERAGE=1
         - DOXYGEN
+        - EXTRA_FLAGS="-stdlib=libc++"
     - os: linux
       compiler: clang
+      env:
+        - EXTRA_FLAGS="-stdlib=libc++"
 
 before_install:
 # /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
