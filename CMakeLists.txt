@@ -121,6 +121,7 @@ add_executable(tilde_imgui
     ${R_FONTS} ${APP_ICON}
     )
 set_target_properties(tilde_imgui PROPERTIES DEPENDS xpd)
+set_property(TARGET tilde_imgui PROPERTY CXX_STANDARD 11)
 
 set_target_properties(
      tilde_imgui
