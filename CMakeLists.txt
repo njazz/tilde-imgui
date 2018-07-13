@@ -4,7 +4,7 @@ set (CMAKE_CXX_STANDARD 11)
 
 if (APPLE)
 	set(CMAKE_MACOSX_RPATH FALSE)
-endif()
+endif(APPLE)
 
 project(tilde_imgui)
 
@@ -32,13 +32,18 @@ file (GLOB SRC_IMGUI
     "${PROJECT_SOURCE_DIR}/../imgui/addons/imguidock/*.c*"
     )
 
-#todo : x-platform
 set (SRC_IMGUI
     ${SRC_IMGUI}
 
     "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_common.c"
-    "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m"
-    )
+)
+
+if(APPLE)
+    set (SRC_IMGUI
+        ${SRC_IMGUI}
+        "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m"
+)
+endif(APPLE)
 
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/imgui)

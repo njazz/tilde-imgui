@@ -1,7 +1,5 @@
 include_directories(Catch/single_include)
 include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/pd)
-include_directories(${PROJECT_SOURCE_DIR}/distrib/variant/include)
 include_directories(${CMAKE_BINARY_DIR}) # for config.h
 add_definitions("-DTEST_DATA_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}\"")
 
@@ -49,8 +47,8 @@ add_library(test_catch_main_lib_tilde STATIC tests_catch_main.cpp)
 
 
 tilde_add_test(properties tilde_properties)
-target_sources(test_tilde_properties PUBLIC "../src/Properties/Property.cpp")
-target_sources(test_tilde_properties PUBLIC "../src/Properties/PropertyList.cpp")
+target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
+target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyList.cpp")
 
 
 
