@@ -19,5 +19,8 @@ matrix:
     - os: linux
       compiler: clang
 
+before_install:
+  - chmod +x ./config/script.sh
+  
 script:
   - ./config/script.sh
