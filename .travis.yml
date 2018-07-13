@@ -1,6 +1,6 @@
 language: cpp
 dist: trusty
-sudo: required
+sudo: false
 
 notifications:
   email: false
@@ -28,6 +28,7 @@ matrix:
         - COVERAGE=1
         - DOXYGEN
         - EXTRA_FLAGS="-stdlib=libc++"
+        - LIBCXX=On
 
 before_install:
 # /usr/bin/gcc is 4.6 always, but gcc-X.Y is available.
