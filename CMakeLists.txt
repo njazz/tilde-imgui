@@ -142,7 +142,12 @@ set_target_properties(tilde_imgui
      PROPERTIES
      MACOSX_BUNDLE_ICON_FILE tilde~.icns)
 
-target_link_libraries(tilde_imgui glfw)
+if (APPLE)
+    target_link_libraries(tilde_imgui glfw)
+else()
+   target_link_libraries(tilde_imgui glfw3)
+endif(APPLE)
+
 target_link_libraries(tilde_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 
 target_link_libraries(tilde_imgui xpd_static)
