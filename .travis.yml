@@ -11,7 +11,7 @@ addons:
 #       - ubuntu-toolchain-r-test
       - llvm-toolchain-trusty-3.9 
     packages: ['portaudio19-dev', 'libfftw3-dev', 'libasound2-dev', 'libjack-dev', 'libboost-dev', 
-#     'gcc-4.9', 'g++-4.9',
+    'gcc-4.9', 'g++-4.9',
 'clang-3.9','libc++-dev','libc++abi-dev',
 #  'libglfw3', 'libglfw3-dev'
 'xorg-dev'
