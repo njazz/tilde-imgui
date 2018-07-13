@@ -2,6 +2,7 @@
 
 mkdir -p build && cd build
 
+pwd
 ls ../
 ls ../../
 ls ../../imgui/
