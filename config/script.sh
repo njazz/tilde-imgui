@@ -2,6 +2,10 @@
 
 mkdir -p build && cd build
 
+ls ../
+ls ../../
+ls ../../imgui/
+ls ../../imgui/nfd/
 ls ../../imgui/nfd/src
 echo "'cmake ..'"
 
