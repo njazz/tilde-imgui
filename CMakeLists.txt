@@ -36,8 +36,8 @@ file (GLOB SRC_IMGUI
 set (SRC_IMGUI
     ${SRC_IMGUI}
 
-    "../imgui/nfd/src/nfd_common.c"
-    "../imgui/nfd/src/nfd_cocoa.m"
+    "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_common.c"
+    "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m"
     )
 
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
@@ -48,9 +48,9 @@ include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src)
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/nfd/src/include)
 
-include_directories(../imgui/addons/imguidock)
+include_directories(${PROJECT_SOURCE_DIR}../imgui/addons/imguidock)
 
-FILE(GLOB R_FONTS "../imgui/fonts/Arial*.ttf")
+FILE(GLOB R_FONTS "${PROJECT_SOURCE_DIR}../imgui/fonts/Arial*.ttf")
 set_property(
     SOURCE ${R_FONTS}
     PROPERTY MACOSX_PACKAGE_LOCATION "Resources/fonts"
