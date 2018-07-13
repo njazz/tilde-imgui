@@ -342,6 +342,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     n->addAction(UiObjectBase::oInletHovered, &inletHovered);
     n->addAction(UiObjectBase::oOutletClicked, &outletClicked);
     n->addAction(UiObjectBase::oOpenCanvas, &openCanvas);
+    n->addAction(UiObjectBase::oOpenCanvas, &openCanvas);
 
     if (n->pdObject)
         n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
@@ -578,6 +579,16 @@ inline void PdPatchViewController::_openCanvas()
     updated(oNewCanvasWindow);
 
     windowController()->restoreContext();
+}
+
+void PdPatchViewController::_showHelpPatch()
+{
+    UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
+
+    auto d = b->pdObject->helpDir();
+    auto f = b->pdObject->helpFilename();
+
+    printf("help file: %s/%s",d.c_str(),f.c_str());
 }
 
 // --------------

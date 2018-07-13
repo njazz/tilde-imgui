@@ -225,6 +225,16 @@ const bool PdObject::isAbstraction() const
     return cpd_is_abstraction(obj_);
 }
 
+//
+std::string helpDir()
+{
+    return cpd_object_help_dir(obj_);
+}
+std::string helpFilename()
+{
+    cpd_object_help_name(obj_);
+}
+
 //ObjectId PdObject::createObject(const std::string& name, int x, int y)
 //{
 //    if (!cpd_is_canvas(obj_))

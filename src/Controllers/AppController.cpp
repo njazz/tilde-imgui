@@ -123,3 +123,10 @@ void AppController::_newCanvasWindow()
     auto p = std::shared_ptr<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject); //xpd::CanvasPtr(*(xpd::PdCanvas*)newCanvasWindow.userObject);//std::make_shared<xpd::PdCanvas>((xpd::PdCanvas*)newCanvasWindow.userObject);
     createPatchWindowForExistingCanvas(p);
 }
+
+void AppController::_openHelpPatch()
+{
+    //todo: filename
+    std::string fName;
+    openFile(fName);
+}

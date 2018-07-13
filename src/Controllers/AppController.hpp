@@ -79,6 +79,8 @@ public:
 
     IU_ACTION(newCanvasWindow);
 
+    IU_ACTION(openHelpPatch);
+
     void post(std::string s) { _serverProcess->post(s + "\n"); }
 
     static Preferences* preferences();

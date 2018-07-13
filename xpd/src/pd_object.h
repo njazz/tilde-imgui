@@ -62,6 +62,9 @@ public:
 
     virtual bool isAbstraction() override;
     virtual const bool isAbstraction() const override;
+
+    std::string helpDir();
+    std::string helpFilename();
 };
 
 } // namespace xpd

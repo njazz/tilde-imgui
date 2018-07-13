@@ -2,6 +2,7 @@
 #define FILEPARSERCONVERTER_H
 
 #include <string>
+#include <vector>
 
 ////
 /// \brief Escape/unescape functions for FileParser. moved here for easier testing

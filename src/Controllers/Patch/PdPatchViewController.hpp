@@ -101,8 +101,9 @@ public:
     IU_ACTION(outletClicked)
     IU_ACTION(inletHovered)
     IU_ACTION(inletClicked)
-    IU_ACTION(openCanvas)
 
+    IU_ACTION(openCanvas)
+    IU_ACTION(showHelpPatch);
 public:
     IU_ACTION(editModeAction);
 
@@ -174,6 +175,7 @@ public:
 
     //
     static const int oNewCanvasWindow = 100;
+    static const int oOpenHelpPatch = 200;
 };
 
 #endif /* AppController_hpp */
