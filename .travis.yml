@@ -21,6 +21,7 @@ matrix:
 
 before_install:
   - chmod +x ./config/script.sh
+  - git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git njazz/imgui
   
 script:
   - ./config/script.sh
