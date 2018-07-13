@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "object.h"
 #include "canvas.h"
 #include "objectlist.h"
