@@ -19,6 +19,8 @@
 
 #include "PdConsoleMenu.hpp"
 
+#include "UIPropertiesWindow.hpp"
+
 class PdConsoleViewController : public IUViewController {
 
     std::string _consoleText = "";
@@ -30,6 +32,9 @@ class PdConsoleViewController : public IUViewController {
     void _drawMenu();
 
     char* _buf = new char[255];
+
+    UIPropertiesWindow _preferencesWindow ;
+    bool _displayPreferences = false;
 public:
     PdConsoleViewController(PdCommonMenus* m);
 
@@ -49,6 +54,8 @@ public:
     IU_ACTION(clearConsole);
     IU_ACTION(dspOn);
     IU_ACTION(dspOff);
+
+    IU_ACTION(menuPreferences);
 
 };
 

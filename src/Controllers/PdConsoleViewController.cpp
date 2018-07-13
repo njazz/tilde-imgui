@@ -20,12 +20,14 @@ int consoleInputCallback(ImGuiTextEditCallbackData* data)
 }
 
 PdConsoleViewController::PdConsoleViewController(PdCommonMenus* m)
-    : _menu(m)
+    : _menu(m), _preferencesWindow(AppController::preferences(), &_displayPreferences)
 {
     _menu.common->menuWindow.setAction(PdCommonWindowMenu::aClearConsole, &clearConsole);
     _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOn, &dspOn);
     _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOff, &dspOff);
     _menu.common->menuMedia.dspOn = &_dspState;
+
+    _menu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings,&menuPreferences);
 }
 
 void PdConsoleViewController::_drawMenu()
@@ -108,6 +110,8 @@ void PdConsoleViewController::draw()
     ImGui::Text("%s", _consoleText.c_str());
 
     ImGui::End();
+
+    _preferencesWindow._drawContents();
 };
 
 void PdConsoleViewController::post(std::string line)
@@ -139,3 +143,8 @@ void PdConsoleViewController::_dspOff()
     _dspState = false;
     pdProcess->dspSwitch(_dspState);
 };
+
+void PdConsoleViewController::_menuPreferences()
+{
+    _displayPreferences = true;
+}
