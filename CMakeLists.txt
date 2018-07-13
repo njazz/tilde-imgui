@@ -67,6 +67,8 @@ else()
     set (SRC_IMGUI
         ${SRC_IMGUI}
         "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_gtk.c")
+    INCLUDE_DIRECTORIES(${GTK3_INCLUDE_DIRS})
+    LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 endif(APPLE)
 
 
