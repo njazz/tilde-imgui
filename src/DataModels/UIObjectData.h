@@ -37,13 +37,18 @@ public:
     int outletClicked = -1;
     int inletClicked = -1;
 
-    std::string toString();
-    PropertyList* properties();
+//    PropertyList properties;
 
-    void setData(std::string inputData); ///> set both properties and Pd object string
+    int inletCount = 0;
+    int outletCount = 0;
+
+    std::string toString();
+    PropertyList* properties() {return &_properties;};
+
+    void setData(std::string inputData); ///< set both properties and Pd object string
     std::string data();
 
-    void setObjectSizeConstraints(int minW, int minH); ///> sets all size constraints
+    void setObjectSizeConstraints(int minW, int minH); ///< sets all size constraints
 
     int minimumBoxWidth = 20;
     int minimumBoxHeight = 10;

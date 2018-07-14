@@ -745,7 +745,7 @@ void FileParser::open(std::string fname)
             //            _pdParserWindowController->mainWindow()->setFileName(fname);
             //            _pdParserWindowController->mainWindow()->canvasView()->setEditMode(em_Locked);
 
-            _pdParserWindowController->resizeToObjects(); //mainWindow()->canvasView()->resizeToObjects();
+            _pdParserWindowController->resizeContentsToObjects(); //mainWindow()->canvasView()->resizeToObjects();
             //_pdParserWindowController->mainWindow()->show();
 
             _pdParserWindowController->loadbang();

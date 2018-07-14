@@ -30,43 +30,8 @@ PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     _emptyObject.hidden = true;
     addSubview(&_emptyObject);
 
-    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
-    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
-
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
-    _patchMenu.menuEdit.editModeFlag = &editMode;
-
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCut, &menuCutAction);
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
-
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aSelectAll, &menuSelectAllAction);
-
-    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
-
     //
-    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings, &menuPreferences);
-    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aAudioMIDI, &menuAudioSettings);
-    //
-
-    arrangeLeftAction = IUAction([this]() {
-        ArrangeObjects::alignLeft(&data.objects);
-    });
-    arrangeCenterAction = IUAction([this]() {
-        ArrangeObjects::alignCenter(&data.objects);
-    });
-    arrangeRightAction = IUAction([this]() {
-        ArrangeObjects::alignRight(&data.objects);
-    });
-    arrangeTopAction = IUAction([this]() {
-        ArrangeObjects::alignTop(&data.objects);
-    });
-    arrangeBottomAction = IUAction([this]() {
-        ArrangeObjects::alignBottom(&data.objects);
-    });
-
-    //
-
+    _attachPatchMenu();
     _attachArrangeMenu();
     _attachPutMenu();
 
@@ -141,14 +106,11 @@ void PdPatchViewController::_drawGrid()
 
 void PdPatchViewController::_drawSelectionFrame()
 {
-    // test
-    //     return;
-
     // selection frame
 
     if (ImGui::IsMouseClicked(0) && editMode) {
 
-        _clickedObject = hitObject(ImGui::GetMousePos()); //&& !_selectionFrame;
+        _clickedObject = objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
 
         if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects) {
             selectSingleObject(ImGui::GetMousePos());
@@ -156,7 +118,7 @@ void PdPatchViewController::_drawSelectionFrame()
         }
         _draggingObjects = _clickedObject;
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
+        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
             printf("pos %f\n", ImGui::GetMousePos().y);
 
             deselectAll();
@@ -164,7 +126,7 @@ void PdPatchViewController::_drawSelectionFrame()
             _draggingObjects = false;
         }
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects) {
+        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
 
             _selectionStart = _selectionEnd = ImGui::GetMousePos();
             _selectionFrame = true;
@@ -181,7 +143,7 @@ void PdPatchViewController::_drawObjectMaker()
 {
     // new empty object
     if (ImGui::IsMouseDoubleClicked(0) && editMode) {
-        if (!hitObject(ImGui::GetIO().MousePos)) {
+        if (!objectAtPos(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = (ImGui::GetIO().MousePos.x);
             _emptyObject.y = (ImGui::GetIO().MousePos.y);
@@ -204,7 +166,7 @@ void PdPatchViewController::draw()
     //    ImGui::GetIO().FontAllowUserScaling = true;
 
     // temporary!
-    resizeToObjects();
+    resizeContentsToObjects();
 
     x = 0;
     y = 22;
@@ -325,7 +287,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     //
     n->updateFromPdObject();
 
-    std::string info = text + " ins: " + std::to_string(n->inletCount) + " outs:" + std::to_string(n->outletCount);
+    std::string info = text + " ins: " + std::to_string(n->data.inletCount) + " outs:" + std::to_string(n->data.outletCount);
     data.pdProcess->post(info + "\n");
 
     addSubview(n);
@@ -384,9 +346,9 @@ void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx
     }
 
     // todo: correct error object connections handling
-    if (outletIdx >= obj1->outletCount)
+    if (outletIdx >= obj1->data.outletCount)
         return;
-    if (inletIdx >= obj2->inletCount)
+    if (inletIdx >= obj2->data.inletCount)
         return;
 
     if (!obj1->data.errorBox && !obj2->data.errorBox) {
@@ -434,7 +396,7 @@ void PdPatchViewController::selectSingleObject(ImVec2 pos)
     //        return ret;
 }
 
-bool PdPatchViewController::hitObject(ImVec2 pos)
+bool PdPatchViewController::objectAtPos(ImVec2 pos)
 {
     bool ret = false;
     for (auto o : data.objects) {
@@ -510,7 +472,7 @@ inline void PdPatchViewController::_objectUpdated()
         //                o->outletCount = o->pdObject->outletCount();
         //                std::string info = o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount);
         //                }
-        data.pdProcess->post(o->objectText + " ins: " + std::to_string(o->inletCount) + " outs:" + std::to_string(o->outletCount));
+        data.pdProcess->post(o->objectText + " ins: " + std::to_string(o->data.inletCount) + " outs:" + std::to_string(o->data.outletCount));
     }
 
     // todo replace
@@ -615,7 +577,7 @@ void PdPatchViewController::_menuSaveAsAction()
 
 // --------------
 
-void PdPatchViewController::resizeToObjects()
+void PdPatchViewController::resizeContentsToObjects()
 {
     int w = 0;
     int h = 0;
@@ -678,6 +640,28 @@ void PdPatchViewController::_zoomOne()
 }
 
 // ---
+
+void PdPatchViewController::_attachPatchMenu()
+{
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
+
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
+    _patchMenu.menuEdit.editModeFlag = &editMode;
+
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCut, &menuCutAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aCopy, &menuCopyAction);
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aPaste, &menuPasteAction);
+
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aSelectAll, &menuSelectAllAction);
+
+    _patchMenu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
+
+    //
+    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings, &menuPreferences);
+    _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aAudioMIDI, &menuAudioSettings);
+}
+
 void PdPatchViewController::_attachPutMenu()
 {
     _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject, &putObject);
@@ -763,6 +747,12 @@ void PdPatchViewController::_arrangeBottomAction()
     ArrangeObjects::alignBottom(&data.objects);
 };
 
+void PdPatchViewController::_arrangeDHAction()
+{}
+
+void PdPatchViewController::_arrangeDVAction()
+{}
+
 // ---
 
 void PdPatchViewController::_putObject()
@@ -806,7 +796,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
 
     // deselect patchcord
     if (ImGui::IsMouseClicked(0)) {
-        if (!hitObject(ImGui::GetIO().MousePos)) {
+        if (!objectAtPos(ImGui::GetIO().MousePos)) {
             _newPatchcord.outputObj = 0;
         }
     }
@@ -814,7 +804,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
     //if (ImGui::IsMouseClicked(0) && editMode)
     if (editMode) {
 
-        _clickedObject = hitObject(ImGui::GetMousePos()); //&& !_selectionFrame;
+        _clickedObject = objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
 
         if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects) {
             selectSingleObject(ImGui::GetMousePos());
@@ -822,7 +812,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
         }
         _draggingObjects = _clickedObject;
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
+        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
             //                printf("pos %f\n", ImGui::GetMousePos().y);
 
             deselectAll();
@@ -830,7 +820,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
             _draggingObjects = false;
         }
 
-        if (!hitObject(ImGui::GetMousePos()) && !_draggingObjects) {
+        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
 
             _selectionStart = _selectionEnd = ImGui::GetMousePos();
             _selectionFrame = true;
@@ -847,7 +837,7 @@ void PdPatchViewController::onMouseDoubleClick(ImVec2 pos)
 {
     //        if (ImGui::IsMouseDoubleClicked(0) && editMode) {
     if (editMode) {
-        if (!hitObject(ImGui::GetIO().MousePos)) {
+        if (!objectAtPos(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = (ImGui::GetIO().MousePos.x);
             _emptyObject.y = (ImGui::GetIO().MousePos.y);

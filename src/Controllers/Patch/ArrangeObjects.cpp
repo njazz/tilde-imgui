@@ -139,3 +139,7 @@ void ArrangeObjects::distributeVertical(objectVec* v)
         i++;
     }
 }
+
+// new
+void ArrangeObjects::alignToGrid(objectVec* v, int gridSize){}
+void ArrangeObjects::tidyUp(objectVec* v){}

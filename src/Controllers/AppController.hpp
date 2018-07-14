@@ -49,10 +49,9 @@ class AppController : public AppControllerBase {
     xpd::ProcessPtr _serverProcess;
 
     AppConsoleObserver _consoleObserver;
+    PdConsoleViewController* _pdConsoleViewController = 0;
 
     PdCommonMenus _commonMenus;
-
-    PdConsoleViewController* _pdConsoleViewController = 0;
 
     Clipboard _clipboard;
 

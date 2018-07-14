@@ -14,7 +14,7 @@
 #include "Properties/PropertyList.h"
 
 UiObjectBase::UiObjectBase()
-    : _propertiesWindow(&properties, &_patchMenu.propertiesWindow)
+    : _propertiesWindow(data.properties(), &_patchMenu.propertiesWindow)
 {
     observer.callback = [this]() {
 
@@ -47,7 +47,7 @@ UiObjectBase::UiObjectBase()
 
 void UiObjectBase::_createProperties()
 {
-    auto p = properties.create("Position", "Box", "0.1", std::vector<float*>({ &x, &y })); //ImVec2(0, 0));
+    auto p = data.properties()->create("Position", "Box", "0.1", std::vector<float*>({ &x, &y })); //ImVec2(0, 0));
     //    p->componentAt(0).bindFloat(&x);
     //    p->componentAt(1).bindFloat(&y);
     p->setAction([this, p]() {
@@ -55,7 +55,7 @@ void UiObjectBase::_createProperties()
         y = (*p->typed<std::vector<float*> >()->get()[1]);
     });
 
-    p = properties.create("Size", "Box", "0.1", std::vector<float*>({ &width, &height })); //ImVec2(0, 0));
+    p = data.properties()->create("Size", "Box", "0.1", std::vector<float*>({ &width, &height })); //ImVec2(0, 0));
     //    p->componentAt(0).bindFloat(&width);
     //    p->componentAt(1).bindFloat(&height);
     p->setAction([this, p]() {
@@ -82,16 +82,16 @@ int UiObjectBase::outletType(int idx)
 
 ImVec2 UiObjectBase::inletPos(int idx)
 {
-    float d = ((width - 12) / (inletCount - 1.0)) * idx;
-    if (inletCount <= 1)
+    float d = ((width - 12) / (data.inletCount - 1.0)) * idx;
+    if (data.inletCount <= 1)
         d = 0;
     return ImVec2(x, y) + ImVec2(0 + d, 0) + ImVec2(6, 0);
 }
 
 ImVec2 UiObjectBase::outletPos(int idx)
 {
-    float d = ((width - 12) / (outletCount - 1.0)) * idx;
-    if (outletCount <= 1)
+    float d = ((width - 12) / (data.outletCount - 1.0)) * idx;
+    if (data.outletCount <= 1)
         d = 0;
     return ImVec2(x, y) + ImVec2(0 + d, height - 4) + ImVec2(6, 0);
 }
@@ -200,12 +200,12 @@ void UiObjectBase::draw()
     _drawBackground();
 
     // inlets
-    for (int slot_idx = 0; slot_idx < inletCount; slot_idx++) {
+    for (int slot_idx = 0; slot_idx < data.inletCount; slot_idx++) {
         _drawInlet(slot_idx);
     }
 
     // outlets
-    for (int slot_idx = 0; slot_idx < outletCount; slot_idx++) {
+    for (int slot_idx = 0; slot_idx < data.outletCount; slot_idx++) {
         _drawOutlet(slot_idx);
     }
 
@@ -287,8 +287,8 @@ void UiObjectBase::updateFromPdObject()
     data.errorBox = (pdObject == 0);
 
     if (pdObject) {
-        inletCount = pdObject->inletCount();
-        outletCount = pdObject->outletCount();
+        data.inletCount = pdObject->inletCount();
+        data.outletCount = pdObject->outletCount();
         //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
     }
 }

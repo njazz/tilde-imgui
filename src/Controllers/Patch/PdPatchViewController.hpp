@@ -65,6 +65,7 @@ class PdPatchViewController : public IUViewController {
     UndoStack _undoStack;
 
     //
+    void _attachPatchMenu();
     void _attachArrangeMenu();
     void _attachPutMenu();
 
@@ -128,8 +129,8 @@ public:
 
     // ----------
 
-    IUAction arrangeDHAction;
-    IUAction arrangeDVAction;
+    IU_ACTION(arrangeDHAction);
+    IU_ACTION(arrangeDVAction);
 
     IU_ACTION(arrangeLeftAction);
     IU_ACTION(arrangeCenterAction);
@@ -155,7 +156,7 @@ public:
 
     // ----------
 
-    bool hitObject(ImVec2 pos);
+    bool objectAtPos(ImVec2 pos);
 
     void selectSingleObject(ImVec2 pos);
     bool selectObjects();
@@ -163,7 +164,7 @@ public:
 
     void dragSelectedObjects(ImVec2 delta);
 
-    void resizeToObjects();
+    void resizeContentsToObjects();
     void loadbang();
 
     //

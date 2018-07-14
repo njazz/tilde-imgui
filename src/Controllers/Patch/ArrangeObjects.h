@@ -24,6 +24,11 @@ public:
 
     static void distributeHorizontal(objectVec* v);
     static void distributeVertical(objectVec* v);
+
+    // new
+    static void alignToGrid(objectVec* v, int gridSize);
+    static void tidyUp(objectVec* v);
+
 };
 
 #endif // ARRANGEOBJECTS_H

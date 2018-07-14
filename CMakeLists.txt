@@ -170,7 +170,6 @@ add_subdirectory(tests)
 
 ########
 
-
 #macro(add_unit_test target target_test)
 #    set(UNIT_TEST_TARGETS ${UNIT_TEST_TARGETS} ${target_test})
 #    add_test(target ${CMAKE_BINARY_DIR}/tests/${target_test})

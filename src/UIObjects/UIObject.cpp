@@ -33,7 +33,7 @@ void UIObject::draw()
     width = 75;
     height = 25;
 
-    int mc = (inletCount > outletCount) ? inletCount : outletCount;
+    int mc = (data.inletCount > data.outletCount) ? data.inletCount : data.outletCount;
     width = 25 * mc;
 
     float text_w = ImGui::CalcTextSize(objectText.c_str()).x + 8;

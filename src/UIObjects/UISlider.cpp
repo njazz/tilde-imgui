@@ -11,11 +11,11 @@ UISlider::UISlider()
             _value = _rangeMax;
     };
 
-    auto p = properties.create("Range Min","Slider","0.1",(float*)&_rangeMin);
+    auto p = data.properties()->create("Range Min","Slider","0.1",(float*)&_rangeMin);
 
-    p = properties.create("Range Max","Slider","0.1",(float*)&_rangeMax);
+    p = data.properties()->create("Range Max","Slider","0.1",(float*)&_rangeMax);
 
-    p = properties.create("Value","Slider","0.1",(float*)&_value);
+    p = data.properties()->create("Value","Slider","0.1",(float*)&_value);
     p->setAction([&](){
         if (_value < _rangeMin)
             _value = _rangeMin;

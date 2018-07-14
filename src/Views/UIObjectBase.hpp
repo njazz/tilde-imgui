@@ -21,6 +21,7 @@
 #include "UIObjectData.h"
 
 #include "PdPatchMenu.hpp"
+#include "PdObjectMenu.hpp"
 
 #include "UIPropertiesWindow.hpp"
 
@@ -62,10 +63,12 @@ protected:
 
     bool _showPropertiesWindow = false;
 public:    
-    PropertyList properties;
+    UIObjectData data = UIObjectData();
 
-    int inletCount = 0;
-    int outletCount = 0;
+//    PropertyList properties;
+
+//    int inletCount = 0;
+//    int outletCount = 0;
 
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
@@ -84,10 +87,9 @@ public:
     int inletType(int idx);
     int outletType(int idx);
 
-    UIObjectData data;
-
     std::string objectText = "object";
 
+    //
     static const int oOutletClicked = 100;
     static const int oInletClicked = 101;
     static const int oInletHovered = 102;
