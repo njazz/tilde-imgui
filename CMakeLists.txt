@@ -27,6 +27,8 @@ set (MACOSX_BUNDLE_LONG_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_SHORT_VERSION_STRING "${MY_APP_VERSION}")
 set (MACOSX_BUNDLE_BUNDLE_VERSION "${MY_APP_VERSION}")
 
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
+
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/lib)
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/imgui)
 include_directories(${PROJECT_SOURCE_DIR}/../imgui/GL)
