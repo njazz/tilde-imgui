@@ -41,7 +41,9 @@ macro(xpd_add_test title name)
     add_executable("test_${name}" "test_${name}.cpp")
     target_link_libraries("test_${name}" test_catch_main_lib xpd_static pd_core_static)
     set(_exec_cmd "test_${name}")
-
+    if (LCOV AND GCOV)
+        target_link_libraries("test_${name}" gcov )
+    endif()
     add_test(NAME ${title} COMMAND ${_exec_cmd})
 endmacro()
 

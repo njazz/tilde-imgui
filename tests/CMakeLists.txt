@@ -23,7 +23,6 @@ if(WITH_COVERAGE)
                 --output-file coverage.info
             COMMAND ${LCOV}
                 --extract coverage.info
-                    "${CMAKE_SOURCE_DIR}/pd/cpd/*"
                     "${CMAKE_SOURCE_DIR}/src/*" 
                 --output-file coverage.info
             COMMAND ${LCOV}
@@ -38,6 +37,9 @@ endif()
 macro(tilde_add_test title name)
     add_executable("test_${name}" "test_${name}.cpp")
     target_link_libraries("test_${name}" test_catch_main_lib_tilde xpd_static pd_core_static )
+    if (LCOV AND GCOV)
+        target_link_libraries("test_${name}" gcov )
+    endif()
     set(_exec_cmd "test_${name}")
 
     add_test(NAME ${title} COMMAND ${_exec_cmd})
