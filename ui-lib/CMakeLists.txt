@@ -82,6 +82,7 @@ include_directories(../xpd/pd/pure-data/src/)
 
 add_library(tilde~_imgui SHARED ${CEAMMC_LIB_SOURCES} ${SOURCES} )
 target_link_libraries(tilde~_imgui "-undefined dynamic_lookup")
+set(CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -undefined dynamic_lookup")
 SET_TARGET_PROPERTIES(tilde~_imgui PROPERTIES PREFIX "")
 set_target_properties(tilde~_imgui PROPERTIES SUFFIX ".pd_darwin")
 
