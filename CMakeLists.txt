@@ -65,7 +65,7 @@ if(APPLE)
         "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m")
 else()
 #    find_package(GTK2 2.6 COMPONENTS gtk)
-    find_package(GTK3 2.6 COMPONENTS gtk)
+    find_package(GTK3 3.0 COMPONENTS gtk)
     set (SRC_IMGUI
         ${SRC_IMGUI}
         "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_gtk.c")
