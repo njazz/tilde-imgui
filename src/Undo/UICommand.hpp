@@ -5,27 +5,26 @@
 #include <string>
 
 #include <vector>
-class UICommand{
+
+#include <memory>
+
+class UICommand;
+
+typedef std::shared_ptr<UICommand> UICommandPtr;
+
+class UICommand {
     std::function<void(void)> _do;
     std::function<void(void)> _undo;
     std::string _actionName;
+
 public:
-  UICommand(std::string name , std::function<void(void)> doAction, std::function<void(void)> undoAction)
-  {
-        _do = doAction;
-        _undo = undoAction;
-        _actionName = name;
-  }
+    UICommand(std::string name, std::function<void(void)> doAction, std::function<void(void)> undoAction);
 
-  void operator()(){
-      _do();
-  }
+    void operator()();
+    void undo();
 
-  void undo(){
-      _undo();
-  }
-
-  std::string& actionName(){return _actionName;};
+    std::string& actionName();
+    static UICommandPtr makePtr(std::string name, std::function<void(void)> doAction, std::function<void(void)> undoAction);
 };
 
 #endif

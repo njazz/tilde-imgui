@@ -50,6 +50,8 @@ tilde_add_test(properties tilde_properties)
 target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
 target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyList.cpp")
 tilde_add_test(undo tilde_undo)
+target_sources(test_tilde_undo PUBLIC "${PROJECT_SOURCE_DIR}/src/Undo/UICommand.cpp")
+target_sources(test_tilde_undo PUBLIC "${PROJECT_SOURCE_DIR}/src/Undo/UndoStack.cpp")
 
 
 

@@ -6,47 +6,26 @@
 #include <vector>
 class UndoStack {
 
-    std::vector<UICommand*> _stack;
-    int _undoListIndex;
+    std::vector<UICommandPtr> _stack;
+    int _undoListIndex =-1;
 
 public:
-    UndoStack(){}
+    UndoStack();
 
-    void doAction(UICommand* c)
-    {
-        _stack.push_back(c);
-        (*c)();
-        _undoListIndex = _stack.size() - 1;
-        // todo: limit undo size
-    }
+    void doAction(UICommandPtr c);
 
-    void undoLastAction()
-    {
-        if (_undoListIndex < -1)
-            return;
-        if (_undoListIndex > (_stack.size() - 1))
-            return;
-        _stack[_undoListIndex]->undo();
-        _undoListIndex--;
-    }
-    void redoLastAction()
-    {
-        if (_undoListIndex < -1)
-            return;
-        if (_undoListIndex > (_stack.size() - 1))
-            return;
-        (*_stack[_undoListIndex])();
-        _undoListIndex++;
-    }
+    void undoLastAction();
+    void redoLastAction();
 
-    std::vector<std::string> undoActionsList()
-    {
-        std::vector<std::string> ret;
+    std::vector<std::string> undoActionsList();
 
-        for (auto o: _stack)
-            ret.push_back(o->actionName());
+    int undoActionCount();
 
-        return ret;
-    }
+    bool canRedo();
+    bool canUndo();
+
+    std::string undoActionName();
+    std::string redoActionName();
+
 };
 #endif
