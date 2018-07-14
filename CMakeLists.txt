@@ -64,11 +64,12 @@ if(APPLE)
         ${SRC_IMGUI}
         "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_cocoa.m")
 else()
+    find_package(GTK2 2.6 REQUIRED gtk)
     set (SRC_IMGUI
         ${SRC_IMGUI}
         "${PROJECT_SOURCE_DIR}/../imgui/nfd/src/nfd_gtk.c")
-    INCLUDE_DIRECTORIES(${GTK3_INCLUDE_DIRS})
-    LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
+    INCLUDE_DIRECTORIES(${GTK2_INCLUDE_DIRS})
+    LINK_DIRECTORIES(${GTK2_LIBRARY_DIRS})
 endif(APPLE)
 
 
