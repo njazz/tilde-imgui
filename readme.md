@@ -12,11 +12,19 @@ https://github.com/uliss/pure-data
 
 Build:
 
+
+
 mkdir tilde_imgui && cd tilde_imgui
+
 mkdir imgui && cd imgui
+
 git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git
+
 cd ..
+
 mkdir tilde && cd tilde
+
 git clone --depth=50 --branch=master https://github.com/njazz/tilde-imgui.git
+
 mkdir build && cd build && cmake ..
 
