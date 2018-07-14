@@ -54,7 +54,7 @@ class PdPatchViewController : public IUViewController {
     PdPatchMenu _patchMenu;
 
     UIObject _emptyObject;
-    UIObject* _movingObject = 0;
+    UiObjectBase* _movingObject = 0;
 
     //
     inline void _drawGrid();
@@ -104,9 +104,8 @@ public:
 
     IU_ACTION(openCanvas)
     IU_ACTION(showHelpPatch);
-public:
-    IU_ACTION(editModeAction);
 
+public:
     // --------------------
 
     IU_ACTION(menuSaveAction)
@@ -119,6 +118,8 @@ public:
     IU_ACTION(menuPasteAction);
     IU_ACTION(menuSelectAllAction);
     IU_ACTION(menuDeleteObjectAction);
+
+    IU_ACTION(editModeAction);
 
     // ---
 

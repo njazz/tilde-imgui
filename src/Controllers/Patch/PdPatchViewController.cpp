@@ -588,7 +588,7 @@ void PdPatchViewController::_showHelpPatch()
     auto d = b->pdObject->helpDir();
     auto f = b->pdObject->helpFilename();
 
-    printf("help file: %s/%s",d.c_str(),f.c_str());
+    printf("help file: %s/%s", d.c_str(), f.c_str());
 
     updated(oOpenHelpPatch);
 }
@@ -767,12 +767,12 @@ void PdPatchViewController::_arrangeBottomAction()
 
 void PdPatchViewController::_putObject()
 {
-    createObject("", 150, 150);
+    _movingObject = createObject("", 150, 150);
 }
 
 void PdPatchViewController::_putMessage()
 {
-    createObject("ui.msg", 150, 150);
+    _movingObject = createObject("ui.msg", 150, 150);
 }
 
 void PdPatchViewController::_putComment()
@@ -782,23 +782,25 @@ void PdPatchViewController::_putComment()
 
 void PdPatchViewController::_putBang()
 {
-    createObject("ui.bang", 150, 150);
+    _movingObject = createObject("ui.bang", 150, 150);
 }
 
 void PdPatchViewController::_putToggle()
 {
-    createObject("ui.toggle", 150, 150);
+    _movingObject = createObject("ui.toggle", 150, 150);
 }
 
 void PdPatchViewController::_putNumber()
 {
-    createObject("ui.float", 150, 150);
+    _movingObject = createObject("ui.float", 150, 150);
 }
 
 // ---
 
 void PdPatchViewController::onMouseDown(ImVec2 pos)
 {
+    // deselect new object
+    _movingObject = 0;
 
     //        printf("onMouseDown()\n");
 
@@ -890,10 +892,17 @@ void PdPatchViewController::onMouseUp(ImVec2 pos)
 
 void PdPatchViewController::onMouseHover(ImVec2 pos)
 {
+
     if (!editMode)
         return;
     _newPatchcord.inputX = pos.x;
     _newPatchcord.inputY = pos.y;
+
+    if (_movingObject) {
+        _movingObject->x = pos.x;
+        _movingObject->y = pos.y;
+        ImGui::SetTooltip("pos %f %f", pos.x,pos.y);
+    }
 };
 
 // ---
