@@ -14,17 +14,17 @@ addons:
     'gcc-4.9', 'g++-4.9',
 'clang-3.9','libc++-dev','libc++abi-dev',
 #  'libglfw3', 'libglfw3-dev'
-'xorg-dev', 'libgtk-3-dev'
+'xorg-dev', 'libgtk-3-dev', 'libgtk-3'
 ]
 
 matrix:
   include:
-    - os: linux
-      compiler: gcc
-      env:
-        - COVERAGE=1
-        - DOXYGEN
-        - EXTRA_FLAGS="-stdlib=libc++"
+#     - os: linux
+#       compiler: gcc
+#       env:
+#         - COVERAGE=1
+#         - DOXYGEN
+#         - EXTRA_FLAGS="-stdlib=libc++"
     - os: linux
       compiler: clang
       env:
