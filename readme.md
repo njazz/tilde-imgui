@@ -11,5 +11,12 @@ Meanwhile check out this Pd library and build:
 https://github.com/uliss/pure-data
 
 Build:
-- Create directory, clone this repository to any folder (i.e. ./tilde-imgui) and https://github.com/njazz/imgui-mvc-wrap to the folder ./imgui
-- cd ./tilde-imgui && mkdir build && cd build && cmake ..
+
+mkdir tilde_imgui && cd tilde_imgui
+mkdir imgui && cd imgui
+git clone --depth=50 --branch=master https://github.com/njazz/imgui-mvc-wrap.git
+cd ..
+mkdir tilde && cd tilde
+git clone --depth=50 --branch=master https://github.com/njazz/tilde-imgui.git
+mkdir build && cd build && cmake ..
+
