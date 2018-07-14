@@ -165,8 +165,8 @@ if (LCOV AND GCOV)
 endif()
 
 #####
-add_subdirectory(tests)
 enable_testing(true)
+add_subdirectory(tests)
 
 ########
 
