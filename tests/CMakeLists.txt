@@ -15,7 +15,7 @@ if(WITH_COVERAGE)
     if(LCOV AND GCOV)
         message(STATUS "lcov found: ${LCOV}")
         message(STATUS "gcov found: ${GCOV}")
-        add_custom_target(coverage
+        add_custom_target(coverage_tilde
             COMMAND ${LCOV}
                 --gcov-tool=${GCOV}
                 --directory "${CMAKE_CURRENT_BINARY_DIR}/.."
@@ -29,7 +29,7 @@ if(WITH_COVERAGE)
             COMMAND ${LCOV}
                 --list coverage.info)
 
-        add_custom_target(coverage_report
+        add_custom_target(coverage_report_tilde
             COMMAND genhtml --output-directory ${CMAKE_BINARY_DIR}/coverage coverage.info
             COMMAND open ${CMAKE_BINARY_DIR}/coverage/index.html)
     endif()
