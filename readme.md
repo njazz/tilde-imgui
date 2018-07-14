@@ -3,6 +3,7 @@
 Development repository, early prototype.
 
 [![Build Status](https://travis-ci.org/njazz/tilde-imgui.svg?branch=master)](https://travis-ci.org/njazz/tilde-imgui)
+[![codecov](https://codecov.io/gh/njazz/tilde-imgui/branch/master/graph/badge.svg)](https://codecov.io/gh/njazz/tilde-imgui)
 
 tilde~ is a new integrated GUI for Puredata.
 
