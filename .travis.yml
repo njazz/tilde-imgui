@@ -29,8 +29,8 @@ matrix:
     - os: linux
       compiler: clang
       env:
-        - COVERAGE=1
-        - DOXYGEN
+#         - COVERAGE=1
+#         - DOXYGEN
         - EXTRA_FLAGS="-stdlib=libc++"
 #         - LIBCXX=On
 
