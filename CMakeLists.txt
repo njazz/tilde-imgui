@@ -158,7 +158,8 @@ if (APPLE)
     target_link_libraries(tilde_imgui ${EXTERNAL_LIBRARIES} ${FOUNDATION} ${COCOA})
 else()
     # linux
-   target_link_libraries(tilde_imgui glfw3 pthread dl GLU GL rt Xrandr Xxf86vm Xi Xinerama X11 gtk-3 glib-3)
+   target_link_libraries(tilde_imgui glfw3 pthread dl GLU GL rt Xrandr Xxf86vm Xi Xinerama X11)
+   TARGET_LINK_LIBRARIES(tilde_imgui ${GTK3_LIBRARIES})
 endif(APPLE)
 
 target_link_libraries(tilde_imgui xpd_static)
