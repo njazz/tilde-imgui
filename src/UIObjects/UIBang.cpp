@@ -38,6 +38,8 @@ void UIBang::_bang()
 
  void UIBang::draw()
 {
+     // temporary fixed size:
+
     width = 25;
     height = 25;
 

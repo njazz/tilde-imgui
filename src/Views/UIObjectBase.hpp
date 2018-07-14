@@ -60,7 +60,6 @@ protected:
 
     // temporary?
     bool _mouseDownFlag = false;
-
     bool _showPropertiesWindow = false;
 public:    
     UIObjectData data = UIObjectData();

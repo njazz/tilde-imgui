@@ -12,9 +12,9 @@ class UIDSP : public UiObjectBase {
 public:
     UIDSP();
 
-    // temporary fixed size:
     virtual void draw() override
     {
+        // temporary fixed size:
         width = 50;
         height = 50;
 
