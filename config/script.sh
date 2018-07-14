@@ -21,6 +21,12 @@ make test
 
 if [ -n "$COVERAGE" ]
 then
+make coverage_tilde
+make coverage_reports_tilde
+fi
+
+if [ -n "$COVERAGE" ]
+then
     echo "Coverage...."
     bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
 fi
