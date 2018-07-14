@@ -164,6 +164,10 @@ endif(APPLE)
 
 target_link_libraries(tilde_imgui xpd_static)
 
+if (LCOV AND GCOV)
+    target_link_libraries(tilde_imgui gcov )
+endif()
+
 #####
 add_subdirectory(tests)
 enable_testing()
