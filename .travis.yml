@@ -20,17 +20,17 @@ addons:
 
 matrix:
   include:
-#     - os: linux
-#       compiler: gcc
-#       env:
-#         - COVERAGE=1
-#         - DOXYGEN
-#         - EXTRA_FLAGS="-stdlib=libc++"
+    - os: linux
+      compiler: gcc
+      env:
+        - COVERAGE=1
+        - DOXYGEN
+        - EXTRA_FLAGS="-stdlib=libc++"
     - os: linux
       compiler: clang
       env:
-#         - COVERAGE=1
-#         - DOXYGEN
+        - COVERAGE=1
+        - DOXYGEN
         - EXTRA_FLAGS="-stdlib=libc++"
 #         - LIBCXX=On
 
