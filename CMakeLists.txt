@@ -44,8 +44,6 @@ set(APP_ICON ${CMAKE_CURRENT_SOURCE_DIR}/icons/tilde~.icns)
 set_source_files_properties(${APP_ICON} PROPERTIES
        MACOSX_PACKAGE_LOCATION "Resources/")
 
-
-
 file (GLOB SRC_IMGUI
     "${PROJECT_SOURCE_DIR}/../imgui/lib/*.cpp"
     "${PROJECT_SOURCE_DIR}/../imgui/main/*.cpp"
@@ -76,8 +74,6 @@ else()
     INCLUDE_DIRECTORIES(${GTK3_INCLUDE_DIRS})
     LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 endif(APPLE)
-
-
 
 FILE(GLOB R_FONTS "${PROJECT_SOURCE_DIR}../imgui/fonts/Arial*.ttf")
 set_property(
@@ -170,7 +166,7 @@ endif()
 
 #####
 add_subdirectory(tests)
-enable_testing()
+enable_testing(true)
 
 ########
 

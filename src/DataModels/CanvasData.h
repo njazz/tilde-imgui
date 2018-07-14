@@ -31,8 +31,6 @@ class CanvasData {
     objectVec _previouslySelectedBoxes;
     patchcordVec _previouslySelectedPatchcords;
 
-    // PropertyList* _properties;
-
     ImVec2 _position;
     ImVec2 _size;
 
