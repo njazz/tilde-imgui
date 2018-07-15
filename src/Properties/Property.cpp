@@ -99,6 +99,24 @@ std::string PropertyT<std::string*>::asPdString()
     return **_data;
 };
 
+template <>
+std::string PropertyT<bool>::asPdString()
+{
+    return std::to_string((int)*_data);
+};
+
+template <>
+std::string PropertyT<std::vector<std::string>>::asPdString()
+{
+    std::string ret;
+//    return std::to_string((int)*_data);
+    for (int i=0;i<(_data->size()-1);i++)
+        ret += (*_data)[i] +" ";
+    if (_data->size())
+        ret += (*_data)[_data->size()-1];
+    return ret;
+};
+
 // ---
 template <>
 json PropertyT<int>::dataToJSON()

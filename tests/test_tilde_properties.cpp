@@ -80,6 +80,60 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         delete p2;
         delete p;
     }
+
+    SECTION("bool")
+    {
+        auto p = new PropertyT<bool>();
+
+        p->setDefaultValue(true);
+        REQUIRE(p->get() == true);
+
+        p->set(false);
+        REQUIRE(p->get() == false);
+        REQUIRE(p->is<bool>());
+        REQUIRE(!p->is<float>());
+
+        REQUIRE(p->asPdString() == "0");
+
+        // JSON
+        auto p2 = new PropertyT<bool>();
+        p->set(true);
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        delete p2;
+        delete p;
+    }
+
+    SECTION("vector-string")
+    {
+        auto p = new PropertyT<std::vector<std::string>>();
+
+        p->setDefaultValue({"fourty","two"});
+        REQUIRE(p->get().size() ==2);
+//        REQUIRE(p->get()[0] == "fourty");
+//        REQUIRE(p->get()[1] == "two");
+
+
+        p->set({"33"});
+        REQUIRE(p->get().size() == 1);// == "33");
+//      REQUIRE(p->get()[0] == "33");
+
+        REQUIRE(p->is<std::vector<std::string>>());
+        REQUIRE(!p->is<float>());
+
+        REQUIRE(p->asPdString() == "33");
+
+        // JSON
+        auto p2 = new PropertyT<std::vector<std::string>>();
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        delete p2;
+        delete p;
+    }
 }
 
 TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
