@@ -64,7 +64,7 @@ target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_canvas_data.h")
 
 tilde_add_test(object_data tilde_object_data)
-target_sources(tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
+target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
 
 
 

@@ -48,6 +48,7 @@ std::vector<std::string> PropertyList::groupNames()
     return ret;
 }
 
+// -----
 std::string PropertyList::asPdFileString()
 {
     std::string ret;
@@ -64,6 +65,60 @@ std::string PropertyList::asPdFileString()
 
     return ret;
 }
+
+// TODO:
+/*
+QString PropertyList::extractFromPdFileString(QString input)
+{
+    QStringList propertyList = input.split(" @");
+
+    if (!propertyList.size())
+        return "";
+
+    QString ret = propertyList.at(0);
+    if (ret.size())
+        if (ret.at(ret.size() - 1) == " ")
+            ret = ret.left(ret.size() - 1);
+
+    if (propertyList.size() == 1)
+        return ret;
+
+    propertyList.removeAt(0);
+
+    for (QStringList::iterator it = propertyList.begin(); it != propertyList.end(); ++it) {
+        QString s = *it;
+        s = Property::unescapeString(s);
+
+        QStringList list = s.split(" ");
+
+        //TODO
+        for (int i = list.size() - 1; i > 0; i--) {
+            if (list.at(i) == "") {
+                list.removeAt(i);
+            }
+        }
+
+        QString pname = list.at(0);
+
+        qDebug() << list;
+
+        if (_data[pname.toStdString()]) {
+            list.removeAt(0);
+
+            if (list.size() == 0) {
+                set(pname.toStdString(), "");
+            } else if (list.size() == 1)
+                set(pname.toStdString(), list.at(0));
+            else
+                set(pname.toStdString(), list);
+        } else
+            ret.append(" @" + s);
+    }
+
+    return ret;
+}
+}
+*/
 
 // ----------
 

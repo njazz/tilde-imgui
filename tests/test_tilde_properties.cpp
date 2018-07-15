@@ -176,4 +176,22 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         pl2.fromJSON(pl.toJSON());
         REQUIRE(pl2.toJSONString() == pl.toJSONString());
     }
+
+    SECTION("Pd file string")
+    {
+        TestSpecificPropertyList pl;
+
+        TestSpecificPropertyList pl2;
+        pl2.set("Property One", 0);
+
+        printf("Pd string p1: %s\n", pl.asPdFileString().c_str());
+        printf("Pd string p2: %s\n", pl2.asPdFileString().c_str());
+
+        REQUIRE(pl2.asPdFileString() != pl.asPdFileString());
+
+        // TODO:
+//        pl2.extractFromPdFileString(pl.asPdFileString());
+//        REQUIRE(pl2.asPdFileString() == pl.asPdFileString());
+
+    }
 }
