@@ -25,7 +25,7 @@ public:
 
     virtual void draw();
 
-    bool selected;
+    bool selected = false;
 
 };
 

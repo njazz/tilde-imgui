@@ -422,7 +422,6 @@ bool PdPatchViewController::selectObjects()
 
 inline void PdPatchViewController::_autocomplete()
 {
-
     ImGui::SetCursorPos(ImVec2(this->autocomplete.sender->x, this->autocomplete.sender->y + 10));
 
     //ImGui::BeginPopup()

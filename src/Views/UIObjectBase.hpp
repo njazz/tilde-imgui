@@ -64,11 +64,6 @@ protected:
 public:    
     UIObjectData data = UIObjectData();
 
-//    PropertyList properties;
-
-//    int inletCount = 0;
-//    int outletCount = 0;
-
     xpd::ObjectId pdObjectID = 0;
     xpd::PdObject* pdObject = 0;
 

@@ -131,7 +131,7 @@ void CanvasData::selectPatchcord(UIPatchcord* pc)
 
 void CanvasData::deselectObjects()
 {
-    printf("deselect\n");
+//    printf("deselect\n");
 
     _previouslySelectedBoxes = selectedObjects;
 
@@ -154,23 +154,40 @@ void CanvasData::deselectPatchcords()
 
         p->selected = false;
     }
+
+    selectedPatchcords.clear();
 }
 
 void CanvasData::selectAllObjects()
 {
-    for (auto o: objects)
+    for (auto o : objects)
         if (!o->data.selected)
             selectObject(o);
+}
+
+void CanvasData::selectAllPatchcords()
+{
+    for (auto o : patchcords)
+        if (!o->selected)
+            selectPatchcord(o);
 }
 
 // ----------
 
 void CanvasData::deleteSelectedObjects()
 {
-    for (auto o:selectedObjects)
-    {
+    for (auto o : selectedObjects) {
         deleteObject(o);
     }
+    deselectObjects();;
+}
+
+void CanvasData::deleteSelectedPatchcords()
+{
+    for (auto o : selectedPatchcords) {
+        deletePatchcord(o);
+    }
+    deselectPatchcords();
 }
 
 void CanvasData::deleteObject(UiObjectBase* obj)
@@ -190,9 +207,7 @@ void CanvasData::deletePatchcord(UIPatchcord* pc)
 
 void CanvasData::cut()
 {
-    clipboard->clear();
-    clipboard->append(objectsAsPdFileStrings(&selectedObjects));
-    clipboard->append(patchcordsAsPdFileStrings(&selectedPatchcords));
+    copy();
 
     deleteSelectedObjects();
     deselectObjects();

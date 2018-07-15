@@ -37,8 +37,6 @@ public:
     int outletClicked = -1;
     int inletClicked = -1;
 
-//    PropertyList properties;
-
     int inletCount = 0;
     int outletCount = 0;
 

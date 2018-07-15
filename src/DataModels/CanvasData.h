@@ -19,8 +19,6 @@ class ServerCanvas;
 class UiObjectBase;
 class UIPatchcord;
 
-//class ImVec2;
-
 typedef std::vector<UiObjectBase*> objectVec;
 typedef std::vector<UIPatchcord*> patchcordVec;
 
@@ -42,14 +40,14 @@ public:
 
     Clipboard* clipboard = 0;
 
-    objectVec objects;
-    patchcordVec patchcords;
+    objectVec objects = {};
+    patchcordVec patchcords = {};
 
-    objectVec selectedObjects;
-    patchcordVec selectedPatchcords;
+    objectVec selectedObjects = {};
+    patchcordVec selectedPatchcords = {};
 
-    std::string fileName;
-    std::string filePath;
+    std::string fileName = "";
+    std::string filePath = "";
     bool firstSave = true;
 
     bool showGrid = true;
@@ -61,8 +59,13 @@ public:
     ~CanvasData();
 
     //
-    bool hasObjects() { return ((objects.size() > 0) || (patchcords.size() > 0)); }
-    bool hasSelectedObjects() { return ((selectedObjects.size() > 0) || (selectedPatchcords.size() > 0)); }
+    inline bool hasObjectsOrPatchcords() { return hasObjects() || hasPatchcords(); }
+    inline bool hasObjects() { return ((objects.size() > 0)); }
+    inline bool hasPatchcords() { return ((patchcords.size() > 0)); }
+
+    inline bool hasSelectedObjectsOrPatchcords() { return hasSelectedObjects() || hasSelectedPatchcords(); }
+    inline bool hasSelectedObjects() { return ((selectedObjects.size() > 0)); }
+    inline bool hasSelectedPatchcords() { return ((selectedPatchcords.size() > 0)); }
 
     // ----------
 
@@ -70,10 +73,10 @@ public:
 
     // ------------------------------
 
-    void addUniqueObject(objectVec* objects, UiObjectBase* box);
-    void addUniquePatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
-    int findObject(objectVec* objects, UiObjectBase* box);
-    int findPatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
+    static void addUniqueObject(objectVec* objects, UiObjectBase* box);
+    static void addUniquePatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
+    static int findObject(objectVec* objects, UiObjectBase* box);
+    static int findPatchcord(patchcordVec* patchcords, UIPatchcord* pcord);
 
     //
     bool selectObjectsInFrame(ImVec2 start, ImVec2 end);
@@ -91,10 +94,13 @@ public:
     void deselectObjects();
     void deselectPatchcords();
     void selectAllObjects();
+    void selectAllPatchcords();
+    void selectEverything(){};
 
     // ----------
 
     void deleteSelectedObjects();
+    void deleteSelectedPatchcords();
     void deleteObject(UiObjectBase* obj);
     void deletePatchcord(UIPatchcord* pc);
 
@@ -108,6 +114,7 @@ public:
 
     int findObjectIndex(UiObjectBase* obj);
     UiObjectBase* getObjectByIndex(int idx);
+
     patchcordVec patchcordsForObject(UiObjectBase* obj);
 
     // ------------------------------
