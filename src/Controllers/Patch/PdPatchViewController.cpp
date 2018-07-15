@@ -149,8 +149,8 @@ void PdPatchViewController::_drawObjectMaker()
             _emptyObject.y = (ImGui::GetIO().MousePos.y);
             _emptyObject.data.emptyBox = true;
             _emptyObject.data.errorBox = true;
-            _emptyObject.pdObject = 0;
-            _emptyObject.pdObjectID = 0;
+            _emptyObject.data.pdObject = 0;
+            _emptyObject.data.pdObjectID = 0;
             _emptyObject.objectText = "";
             _emptyObject.hidden = false;
             _emptyObject.clearEditText();
@@ -268,12 +268,12 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     n->y = (y);
 
     if (text.size())
-        n->pdObjectID = data.canvas->createObject(text, x, y);
+        n->data.pdObjectID = data.canvas->createObject(text, x, y);
 
     //    else
     //        n->emptyBox = true;
 
-    n->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->pdObjectID));
+    n->data.pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->data.pdObjectID));
 
     n->width = 90;
 
@@ -306,18 +306,16 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     n->addAction(UiObjectBase::oOpenCanvas, &openCanvas);
     n->addAction(UiObjectBase::oOpenHelp, &showHelpPatch);
 
-    if (n->pdObject)
-        n->pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
+    if (n->data.pdObject){
+        n->data.pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
 
-    if (n->pdObject)
-        n->data.isAbstraction = n->pdObject->PdObject::isAbstraction();
+        n->data.isAbstraction = n->data.pdObject->PdObject::isAbstraction();
 
-    if (n->pdObject)
-        n->data.isCanvas = n->pdObject->PdObject::isCanvas();
+        n->data.isCanvas = n->data.pdObject->PdObject::isCanvas();
 
-    if (n->pdObject)
-        printf("new obj abs %i cnv %i\n", n->pdObject->PdObject::isAbstraction(), n->pdObject->PdObject::isCanvas());
 
+        printf("new obj abs %i cnv %i\n", n->data.pdObject->PdObject::isAbstraction(), n->data.pdObject->PdObject::isCanvas());
+}
     return n;
 }
 
@@ -329,7 +327,7 @@ void PdPatchViewController::connectObjects(UiObjectBase* outObj, int outIdx, UiO
     c->inputObj = inObj;
     c->inputIdx = inIdx;
 
-    data.canvas->connect(outObj->pdObjectID, outIdx, inObj->pdObjectID, inIdx);
+    data.canvas->connect(outObj->data.pdObjectID, outIdx, inObj->data.pdObjectID, inIdx);
 
     addSubview(c);
     data.addPatchcord(c);
@@ -458,11 +456,11 @@ inline void PdPatchViewController::_objectUpdated()
     //        if (o)
     //            addObject(o->objectText, o->x,o->y);
 
-    if (!o->pdObject) {
-        o->pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
-        o->pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->pdObjectID));
+    if (!o->data.pdObject) {
+        o->data.pdObjectID = data.canvas->createObject(o->objectText.c_str(), o->x, o->y);
+        o->data.pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(o->data.pdObjectID));
 
-        o->data.errorBox = (o->pdObject == 0);
+        o->data.errorBox = (o->data.pdObject == 0);
 
         o->updateFromPdObject();
 
@@ -531,7 +529,7 @@ inline void PdPatchViewController::_openCanvas()
 {
     UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
 
-    auto cnv = b->pdObject->asPdCanvas();
+    auto cnv = b->data.pdObject->asPdCanvas();
 
     setUserObjectForAction(oNewCanvasWindow, (void*)cnv);
 
@@ -546,8 +544,8 @@ void PdPatchViewController::_showHelpPatch()
 {
     UiObjectBase* b = (UiObjectBase*)inletClicked.sender;
 
-    auto d = b->pdObject->helpDir();
-    auto f = b->pdObject->helpFilename();
+    auto d = b->data.pdObject->helpDir();
+    auto f = b->data.pdObject->helpFilename();
 
     printf("help file: %s/%s", d.c_str(), f.c_str());
 
@@ -842,8 +840,8 @@ void PdPatchViewController::onMouseDoubleClick(ImVec2 pos)
             _emptyObject.y = (ImGui::GetIO().MousePos.y);
             _emptyObject.data.emptyBox = true;
             _emptyObject.data.errorBox = true;
-            _emptyObject.pdObject = 0;
-            _emptyObject.pdObjectID = 0;
+            _emptyObject.data.pdObject = 0;
+            _emptyObject.data.pdObjectID = 0;
             _emptyObject.objectText = "";
             _emptyObject.hidden = false;
             _emptyObject.clearEditText();

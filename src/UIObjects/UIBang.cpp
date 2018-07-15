@@ -27,8 +27,8 @@ void UIBang::drawObjectContents()
 
 void UIBang::onMouseDown(ImVec2 pos)
 {
-    if (pdObject)
-        pdObject->sendBang();
+    if (data.pdObject)
+        data.pdObject->sendBang();
 }
 
 void UIBang::_bang()

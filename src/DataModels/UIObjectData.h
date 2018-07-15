@@ -7,6 +7,8 @@
 #include <string>
 #include "PropertyList.h"
 
+#include "pd_object.h"
+
 typedef enum {
     os_FixedSize,
     os_FixedHeight,
@@ -26,6 +28,9 @@ public:
     explicit UIObjectData(){};
     //~UIObjectData();
 
+    xpd::ObjectId pdObjectID = 0;
+    xpd::PdObject* pdObject = 0;
+
     std::string fullHelpName = "";
 
     bool errorBox = false;
@@ -40,11 +45,11 @@ public:
     int inletCount = 0;
     int outletCount = 0;
 
-    std::string toString();
+
     PropertyList* properties() {return &_properties;};
 
     void setData(std::string inputData); ///< set both properties and Pd object string
-    std::string data();
+    std::string& data();
 
     void setObjectSizeConstraints(int minW, int minH); ///< sets all size constraints
 

@@ -33,8 +33,8 @@ void UIMatrix::drawObjectContents()
 
 void UIMatrix::onMouseDown(ImVec2 pos)
 {
-    if (pdObject)
-        pdObject->sendFloat((pos.x - x) / 25);
+    if (data.pdObject)
+        data.pdObject->sendFloat((pos.x - x) / 25);
 }
 
 //void UIMatrix::_bang()

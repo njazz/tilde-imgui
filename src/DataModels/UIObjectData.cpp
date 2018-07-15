@@ -1,9 +1,22 @@
 // (c) 2017 Alex Nadzharov
 // License: GPL3
 
+#include "UIObjectData.h"
+
+void UIObjectData::setData(std::string inputData) ///> set both properties and Pd object string
+{
+    _dataString = _properties.extractFromPdFileString(inputData);
+}
+
+std::string& UIObjectData::data()
+{
+    return _dataString;
+}
+
+//std::string& UIObjectData::toString() { return _dataString; }
 
 /*
-#include "UIObjectData.h"
+
 
 #include "Port.h"
 #include "PropertyList.h"
@@ -29,20 +42,8 @@ UIObjectData::~UIObjectData()
     delete _properties;
 }
 
-void UIObjectData::setData(QString inputData) ///> set both properties and Pd object string
-{
 
-    //_dataString = inputData; //
 
-    _dataString = _properties->extractFromPdFileString(inputData);
-
-    _fullHelpName = _dataString.split(" ").at(0) + "-help.pd";
-}
-
-QString UIObjectData::data()
-{
-    return _dataString;
-}
 
 void UIObjectData::setObjectSize(t_objectSize sizeMode, int minW, int minH) ///> sets all size constraints
 {
@@ -51,7 +52,7 @@ void UIObjectData::setObjectSize(t_objectSize sizeMode, int minW, int minH) ///>
     _minimumBoxHeight = minH;
 }
 
-QString UIObjectData::toQString() { return _dataString; }
+
 PropertyList* UIObjectData::properties() { return _properties; }
 
 QString UIObjectData::fullHelpName() { return _fullHelpName; }

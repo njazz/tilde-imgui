@@ -45,16 +45,16 @@ void UISlider::drawObjectContents()
 void UISlider::onMouseDown(ImVec2 pos)
 {
     _value = 1- ((pos.y-y) / 100.);
-    if (pdObject)
-        pdObject->sendFloat(_value);
+    if (data.pdObject)
+        data.pdObject->sendFloat(_value);
 }
 
  void UISlider::onMouseDrag(ImVec2 pos)
 {
     float prevValue = _value;
     _value -= pos.y / 100.;
-    if (pdObject)
+    if (data.pdObject)
         if (prevValue != _value)
-        pdObject->sendFloat(_value);
+        data.pdObject->sendFloat(_value);
 }
 

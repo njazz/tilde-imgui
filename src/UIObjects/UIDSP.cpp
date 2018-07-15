@@ -32,9 +32,9 @@ void UIDSP::drawObjectContents()
 
 void UIDSP::onMouseDown(ImVec2 pos)
 {
-    if (pdObject)
+    if (data.pdObject)
 
-        pdObject->sendStringAsList((_value)?"dsp 0":"dsp 1");
+        data.pdObject->sendStringAsList((_value)?"dsp 0":"dsp 1");
 }
 
 //void UIDSP::_bang()

@@ -4,6 +4,8 @@
 #include "PdStringConverter.h"
 #include <vector>
 #include <string>
+#include <iostream>
+#include <sstream>
 #include <regex>
 
 
@@ -50,20 +52,38 @@ std::string PdStringConverter::escapeString(std::string input)
 }
 
 
-std::vector<std::string> splitStringByToken(std::string& str, std::string token)
+std::vector<std::string> splitStringByToken(std::string str, std::string delimiter)
 {
-    std::vector<std::string> ret;
+//    std::vector<std::string> ret;
 
-    std::regex rgx("\\s+");
-    std::sregex_token_iterator iter(str.begin(),
-        str.end(),
-        rgx,
-        -1);
-    std::sregex_token_iterator end;
-    for (; iter != end; ++iter)
-        ret.push_back(*iter); //std::cout << *iter << '\n';
+//    std::regex rgx("\\s+");
+//    std::sregex_token_iterator iter(str.begin(),
+//        str.end(),
+//        rgx,
+//        -1);
+//    std::sregex_token_iterator end;
+//    for (; iter != end; ++iter)
+//        ret.push_back(*iter); //std::cout << *iter << '\n';
 
-    return ret;
+//    return ret;
+
+//    std::stringstream ss(str);
+//    std::string item;
+//    std::vector<std::string> tokens;
+//    while (ss.getline(item, token)) {
+//        tokens.push_back(item);
+//    }
+//    return tokens;
+
+
+    std::vector<std::string> tokens;
+    size_t pos = 0;
+    while (( pos = str.find(delimiter)) != std::string::npos) {
+        tokens.push_back( str.substr(0, pos) );
+        str.erase(0, pos + delimiter.length());
+    }
+    tokens.push_back(str);
+    return tokens;
 }
 
 std::string joinStringWithToken(std::vector<std::string> vec, std::string token)

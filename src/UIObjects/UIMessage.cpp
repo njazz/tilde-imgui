@@ -86,8 +86,8 @@ void UIMessage::finishedEditingText()
 {
     std::string str = "set "+std::string(_txtBuffer);
 
-    if (pdObject)
-        pdObject->sendStringAsList(str);
+    if (data.pdObject)
+        data.pdObject->sendStringAsList(str);
 
     _edit = false;
 

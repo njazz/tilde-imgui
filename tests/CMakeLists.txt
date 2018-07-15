@@ -52,6 +52,7 @@ add_library(test_catch_main_lib_tilde STATIC tests_catch_main.cpp)
 tilde_add_test(properties tilde_properties)
 target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
 target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyList.cpp")
+target_sources(test_tilde_properties PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/PdStringConverter.cpp")
 
 tilde_add_test(undo tilde_undo)
 target_sources(test_tilde_undo PUBLIC "${PROJECT_SOURCE_DIR}/src/Undo/UICommand.cpp")
@@ -65,6 +66,9 @@ target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/
 
 tilde_add_test(object_data tilde_object_data)
 target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
+target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
+target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyList.cpp")
+target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/PdStringConverter.cpp")
 
 
 

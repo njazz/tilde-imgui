@@ -68,16 +68,16 @@ void UiObjectBase::_createProperties()
 
 int UiObjectBase::inletType(int idx)
 {
-    if (!pdObject)
+    if (!data.pdObject)
         return 0;
-    return (pdObject->inlets()[idx].type() != xpd::XLET_MESSAGE);
+    return (data.pdObject->inlets()[idx].type() != xpd::XLET_MESSAGE);
 }
 
 int UiObjectBase::outletType(int idx)
 {
-    if (!pdObject)
+    if (!data.pdObject)
         return 0;
-    return (pdObject->outlets()[idx].type() != xpd::XLET_MESSAGE);
+    return (data.pdObject->outlets()[idx].type() != xpd::XLET_MESSAGE);
 }
 
 ImVec2 UiObjectBase::inletPos(int idx)
@@ -284,21 +284,21 @@ void UiObjectBase::draw()
 //
 void UiObjectBase::updateFromPdObject()
 {
-    data.errorBox = (pdObject == 0);
+    data.errorBox = (data.pdObject == 0);
 
-    if (pdObject) {
-        data.inletCount = pdObject->inletCount();
-        data.outletCount = pdObject->outletCount();
+    if (data.pdObject) {
+        data.inletCount = data.pdObject->inletCount();
+        data.outletCount = data.pdObject->outletCount();
         //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
     }
 }
 
 void UiObjectBase::pdObjUpdatePosition()
 {
-    if (!pdObject)
+    if (!data.pdObject)
         return;
-    pdObject->setX(x);
-    pdObject->setY(y);
+    data.pdObject->setX(x);
+    data.pdObject->setY(y);
 }
 
 std::string UiObjectBase::asPdFileString()

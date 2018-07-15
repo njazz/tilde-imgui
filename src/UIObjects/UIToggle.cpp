@@ -31,6 +31,6 @@ void UIToggle::drawObjectContents()
 void UIToggle::onMouseDown(ImVec2 pos)
 {
     _value = !_value;
-    if (pdObject)
-        pdObject->sendFloat(_value);
+    if (data.pdObject)
+        data.pdObject->sendFloat(_value);
 }

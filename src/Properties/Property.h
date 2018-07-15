@@ -41,6 +41,8 @@ public:
     void setAction(std::function<void(void)> action) { _action = action; }
 
     virtual bool isDefault() { return true; }
+
+    virtual void fromPdString(std::string str){}
     virtual std::string asPdString() { return "(unsupported)"; }
 
     //

@@ -12,7 +12,7 @@ public:
     static std::string escapeString(std::string input); ///< parse string to file
 };
 
-std::vector<std::string> splitStringByToken(std::string& str, std::string token);
+std::vector<std::string> splitStringByToken(std::string str, std::string delimiter);
 std::string joinStringWithToken(std::vector<std::string> vec, std::string token);
 
 #endif // FILEPARSERCONVERTER_H

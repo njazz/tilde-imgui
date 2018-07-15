@@ -64,8 +64,8 @@ protected:
 public:    
     UIObjectData data = UIObjectData();
 
-    xpd::ObjectId pdObjectID = 0;
-    xpd::PdObject* pdObject = 0;
+//    xpd::ObjectId pdObjectID = 0;
+//    xpd::PdObject* pdObject = 0;
 
     ObjectBaseObserver observer;
 

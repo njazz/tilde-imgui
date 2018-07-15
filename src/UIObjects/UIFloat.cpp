@@ -70,8 +70,8 @@ void UIFloat::_drawBackground()
  void UIFloat::onMouseDrag(ImVec2 pos)
  {
      _value -= pos.y / 10;
-     if (pdObject)
-         pdObject->sendFloat(_value);
+     if (data.pdObject)
+         data.pdObject->sendFloat(_value);
 
      _mouseDown = true;
  }

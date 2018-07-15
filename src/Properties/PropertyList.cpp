@@ -5,6 +5,11 @@
 
 #include "json.hpp"
 
+#include "PdStringConverter.h"
+
+#include <algorithm>
+#include <iostream>
+
 PropertyBase* PropertyList::operator[](std::string key)
 {
     return _data[key];
@@ -67,58 +72,58 @@ std::string PropertyList::asPdFileString()
 }
 
 // TODO:
-/*
-QString PropertyList::extractFromPdFileString(QString input)
+
+std::string PropertyList::extractFromPdFileString(std::string input)
 {
-    QStringList propertyList = input.split(" @");
+    std::vector<std::string> propertyList = splitStringByToken(input, " @"); //input.split(" @");
 
     if (!propertyList.size())
         return "";
 
-    QString ret = propertyList.at(0);
+    std::string ret = propertyList.at(0);
     if (ret.size())
-        if (ret.at(ret.size() - 1) == " ")
-            ret = ret.left(ret.size() - 1);
+        if (ret.at(ret.size() - 1) == ' ')
+            ret = ret.substr(0, ret.size() - 1); //left(ret.size() - 1);
 
     if (propertyList.size() == 1)
         return ret;
 
-    propertyList.removeAt(0);
+    propertyList.erase(propertyList.begin());
 
-    for (QStringList::iterator it = propertyList.begin(); it != propertyList.end(); ++it) {
-        QString s = *it;
-        s = Property::unescapeString(s);
+    for (auto s : propertyList) {
+        s = PdStringConverter::unescapeString(s); //Property::unescapeString(s);
 
-        QStringList list = s.split(" ");
+        auto list = splitStringByToken(s, " "); //s.split(" ");
 
         //TODO
         for (int i = list.size() - 1; i > 0; i--) {
-            if (list.at(i) == "") {
-                list.removeAt(i);
+            if (list.at(i).length() == 0) {
+                //list.removeAt(i);
+                list.erase(list.begin() + i);
             }
         }
 
-        QString pname = list.at(0);
+        std::string pname = list.at(0);
 
-        qDebug() << list;
+        //std::cout << list;
+//        for (auto s:list)
+//            std::cout << "l " << s <<"\n";
 
-        if (_data[pname.toStdString()]) {
-            list.removeAt(0);
+        if (_data[pname]) {
+            //list.erase(list.begin()); //removeAt(0);
 
             if (list.size() == 0) {
-                set(pname.toStdString(), "");
-            } else if (list.size() == 1)
-                set(pname.toStdString(), list.at(0));
+                set(pname, "");
+            } else if (list.size() == 2)
+                set(pname, list.at(1));
             else
-                set(pname.toStdString(), list);
+                set(pname, list);
         } else
             ret.append(" @" + s);
     }
 
     return ret;
 }
-}
-*/
 
 // ----------
 
@@ -134,11 +139,11 @@ json PropertyList::toJSON()
     j["data"] = dataObject;
 
     // todo:
-//    json groupsObject = json::object();
+    //    json groupsObject = json::object();
 
-//    for (auto k : _groups)
-//        groupsObject[k.first] = _groups[k.first]->toJSON();
-//    j["groups"] = groupsObject;
+    //    for (auto k : _groups)
+    //        groupsObject[k.first] = _groups[k.first]->toJSON();
+    //    j["groups"] = groupsObject;
 
     return j;
 };
@@ -147,8 +152,7 @@ void PropertyList::fromJSON(json j)
     try {
         json dataObject = j["data"];
 
-        for (auto k:_data)
-        {
+        for (auto k : _data) {
             if (_data.find(k.first) != _data.end())
                 _data[k.first]->fromJSON(dataObject[k.first]);
 
