@@ -20,6 +20,7 @@ if(WITH_COVERAGE)
                 --gcov-tool=${GCOV}
                 --directory ${PROJECT_BINARY_DIR} #"${CMAKE_BINARY_DIR}"
                 --capture
+                --remove "${CMAKE_SOURCE_DIR}/../imgui/imgui/*"
                 --output-file coverage_tilde.info
             COMMAND ${LCOV}
                 --extract coverage_tilde.info
