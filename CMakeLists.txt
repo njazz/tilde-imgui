@@ -167,6 +167,7 @@ endif()
 #####
 enable_testing(true)
 add_subdirectory(tests)
+add_subdirectory(${PROJECT_SOURCE_DIR}/../imgui/tests ${CMAKE_BINARY_DIR}/imgui_tests/)
 
 ########
 
