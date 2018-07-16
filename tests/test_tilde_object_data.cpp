@@ -8,15 +8,18 @@
 
 TEST_CASE("object_data: basic", "[tilde~ PureData IDE]")
 {
-    SECTION("1")
+    SECTION("basic")
     {
         UIObjectData od;
 
         od.properties()->create("Existing","Test","0.1",0.33f);
 
-        od.setData("obj @Existing 1");
+        std::string str = "obj @Existing 1";
+        od.setData(str);
 
         REQUIRE(od.properties()->get("Existing")->typed<float>()->get()==1);
+        REQUIRE(!strncmp(od.data().c_str(), str.c_str(), 3));
+        REQUIRE(od.data().length() != str.length());
 
     }
 }

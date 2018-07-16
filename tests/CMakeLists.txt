@@ -66,6 +66,7 @@ target_sources(test_tilde_undo PUBLIC "${PROJECT_SOURCE_DIR}/src/Undo/UndoStack.
 
 tilde_add_test(canvas_data tilde_canvas_data)
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/CanvasData.cpp")
+target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/Clipboard.cpp")
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_imgui_mvc.h")
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_canvas_data.h")

@@ -48,6 +48,7 @@ class PdPatchViewController : public IUViewController {
     bool _selectionFrame = false;
     bool _draggingObjects = false;
     bool _clickedObject = false;
+
     bool _multipleObjectsSelected = false;
 
     virtual void drawMenu() override;
@@ -89,9 +90,6 @@ public:
     virtual void draw() override;
     virtual void _drawContents() override;
 
-    UiObjectBase* createObject(std::string text, int x, int y);
-    void connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx);
-    void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
 
     // ===============
     // object actions
@@ -106,7 +104,6 @@ public:
     IU_ACTION(openCanvas)
     IU_ACTION(showHelpPatch);
 
-public:
     // --------------------
 
     IU_ACTION(menuSaveAction)
@@ -156,11 +153,11 @@ public:
 
     // ----------
 
-    bool objectAtPos(ImVec2 pos);
+    UiObjectBase* createObject(std::string text, int x, int y);
 
-    void selectSingleObject(ImVec2 pos);
-    bool selectObjects();
-    void deselectAll();
+    void connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx);
+    void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
+
 
     void dragSelectedObjects(ImVec2 delta);
 

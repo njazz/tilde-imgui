@@ -131,7 +131,7 @@ void CanvasData::selectPatchcord(UIPatchcord* pc)
 
 void CanvasData::deselectObjects()
 {
-//    printf("deselect\n");
+    //    printf("deselect\n");
 
     _previouslySelectedBoxes = selectedObjects;
 
@@ -158,6 +158,12 @@ void CanvasData::deselectPatchcords()
     selectedPatchcords.clear();
 }
 
+void CanvasData::deselectAll()
+{
+    deselectObjects();
+    deselectPatchcords();
+};
+
 void CanvasData::selectAllObjects()
 {
     for (auto o : objects)
@@ -179,7 +185,8 @@ void CanvasData::deleteSelectedObjects()
     for (auto o : selectedObjects) {
         deleteObject(o);
     }
-    deselectObjects();;
+    deselectObjects();
+    ;
 }
 
 void CanvasData::deleteSelectedPatchcords()
@@ -216,7 +223,7 @@ void CanvasData::cut()
 void CanvasData::copy()
 {
     clipboard->clear();
-    clipboard->append(objectsAsPdFileStrings(&selectedObjects));
+    clipboard->append(canvasContentsAsPdFileStrings(&selectedObjects));
     clipboard->append(patchcordsAsPdFileStrings(&selectedPatchcords));
 }
 
@@ -267,12 +274,12 @@ patchcordVec CanvasData::patchcordsForObject(UiObjectBase* obj)
 
 // ------------------------------
 
-std::vector<std::string> CanvasData::objectsAsPdFileStrings(objectVec* boxes)
+std::vector<std::string> CanvasData::canvasContentsAsPdFileStrings(objectVec* boxes)
 {
     std::vector<std::string> ret;
     objectVec::iterator it;
 
-    for (it = boxes->begin(); it != boxes->end(); ++it) {
+    for (auto it = boxes->begin(); it < boxes->end(); ++it) {
 
         std::string out1 = ((UIObject*)*it)->asPdFileString();
         out1 += ";\r\n";
@@ -355,10 +362,10 @@ std::vector<int> CanvasData::patchcordAsNumbers(UIPatchcord* pcord)
     return ret;
 }
 
-std::vector<std::string> CanvasData::objectsAsPdFileStrings()
+std::vector<std::string> CanvasData::canvasContentsAsPdFileStrings()
 {
 
-    std::vector<std::string> ret = objectsAsPdFileStrings(&objects);
+    std::vector<std::string> ret = canvasContentsAsPdFileStrings(&objects);
     for (auto s : patchcordsAsPdFileStrings(&patchcords))
         ret.push_back(s);
 
@@ -396,9 +403,44 @@ std::vector<std::string> CanvasData::asPdFileStrings()
 {
     std::vector<std::string> ret;
     ret.push_back(canvasAsPdFileString());
-    for (auto s : objectsAsPdFileStrings())
+    for (auto s : canvasContentsAsPdFileStrings())
         ret.push_back(s);
 
     return ret;
 }
 //}
+
+//
+bool CanvasData::objectAtPos(ImVec2 pos)
+{
+    bool ret = false;
+    for (auto o : objects) {
+        UIObject* obj = (UIObject*)o;
+
+        bool hit;
+        hit = (obj->x <= pos.x);
+        hit &= (obj->y <= pos.y);
+        hit &= (obj->x + obj->width >= pos.x);
+        hit &= (obj->y + obj->height >= pos.y);
+
+        ret |= hit;
+    }
+    return ret;
+}
+
+void CanvasData::selectSingleObject(ImVec2 pos)
+{
+    bool ret = false;
+    for (auto o : objects) {
+        UIObject* obj = (UIObject*)o;
+
+        obj->data.selected = (obj->x <= pos.x);
+        obj->data.selected &= (obj->y <= pos.y);
+        obj->data.selected &= (obj->x + obj->width >= pos.x);
+        obj->data.selected &= (obj->y + obj->height >= pos.y);
+
+        ret |= obj->data.selected;
+        //_multipleObjectsSelected = false;
+    }
+    //        return ret;
+}

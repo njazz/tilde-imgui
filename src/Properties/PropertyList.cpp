@@ -26,6 +26,8 @@ PropertyBase* PropertyList::get(std::string key)
 
 std::vector<std::string> PropertyList::namesInGroup(UIPropertyData* d)
 {
+    if (!d) return {};
+
     std::vector<std::string> ret;
 
     for (auto it : *d) {
@@ -37,7 +39,9 @@ std::vector<std::string> PropertyList::namesInGroup(UIPropertyData* d)
 
 UIPropertyData* PropertyList::fromGroup(std::string grpName)
 {
-    UIPropertyData* ret;
+    UIPropertyData* ret = 0;
+    if ((_groups.find(grpName)== _groups.end()))
+        return 0;
     ret = this->_groups[grpName];
     return ret;
 }

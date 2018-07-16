@@ -3,6 +3,8 @@
 
 #include "CanvasData.h"
 
+#include "Clipboard.h"
+
 #include "mocks/mock_imgui_mvc.h"
 #include "mocks/mock_canvas_data.h"
 #include "mocks/mock_views.h"
@@ -77,5 +79,32 @@ TEST_CASE("canvas_data: basic", "[tilde~ PureData IDE]")
         cd.deleteSelectedPatchcords();
         REQUIRE(cd.hasObjectsOrPatchcords() == 0);
         REQUIRE(cd.hasSelectedObjectsOrPatchcords() == 0);
+    }
+
+    SECTION("")
+    {
+        CanvasData cd;
+    }
+}
+
+
+TEST_CASE("clipboard", "[tilde~ PureData IDE]")
+{
+    SECTION("basic")
+    {
+        Clipboard c;
+
+        REQUIRE(c.size() == 0);
+        c.append({"obj1","obj2"});
+        REQUIRE(c.size() == 1);
+        REQUIRE(!strncmp(c.get(0).c_str(),"obj1",4));
+        REQUIRE(!strncmp(c.get(1).c_str(),"obj2",4));
+        REQUIRE(c.data().size()==2);
+        c.setStringAt(1, "changed");
+        REQUIRE(!strncmp(c.get(1).c_str(),"changed",4));
+        c.clear();
+        REQUIRE(c.size() == 0);
+
+
     }
 }

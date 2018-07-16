@@ -82,6 +82,14 @@ public:
     bool selectObjectsInFrame(ImVec2 start, ImVec2 end);
     void moveSelectedObjects(ImVec2 pos, bool snapToGrid);
 
+    bool objectAtPos(ImVec2 pos);
+    //
+//
+    void selectSingleObject(ImVec2 pos);
+//    bool selectObjects();
+
+//    void dragSelectedObjects(ImVec2 delta);
+
     // ------------------------------
 
     void addObject(UiObjectBase* box) { addUniqueObject(&objects, box); }
@@ -93,6 +101,7 @@ public:
     void selectPatchcord(UIPatchcord* pc);
     void deselectObjects();
     void deselectPatchcords();
+    void deselectAll();
     void selectAllObjects();
     void selectAllPatchcords();
     void selectEverything(){};
@@ -119,13 +128,14 @@ public:
 
     // ------------------------------
 
-    std::vector<std::string> objectsAsPdFileStrings(objectVec* objects);
+    std::vector<std::string> canvasContentsAsPdFileStrings(objectVec* objects);
     std::string patchcordAsPdFileString(UIPatchcord* pcord);
     std::vector<std::string> patchcordsAsPdFileStrings(patchcordVec* patchcords);
     std::vector<int> patchcordAsNumbers(UIPatchcord* pcord);
 
-    std::vector<std::string> objectsAsPdFileStrings();
     std::string canvasAsPdFileString();
+    std::vector<std::string> canvasContentsAsPdFileStrings();
+
     std::vector<std::string> asPdFileStrings();
 
     // -------

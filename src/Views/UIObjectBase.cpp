@@ -287,11 +287,14 @@ void UiObjectBase::updateFromPdObject()
 {
     data.errorBox = (data.pdObject == 0);
 
-    if (data.pdObject) {
-        data.inletCount = data.pdObject->inletCount();
-        data.outletCount = data.pdObject->outletCount();
-        //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
-    }
+    if (!data.pdObject) return;
+
+    data.pdObject->registerObserver(xpd::ObserverPtr(&observer));
+
+    data.syncFromServerObject();
+
+
+
 }
 
 void UiObjectBase::pdObjUpdatePosition()

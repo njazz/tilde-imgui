@@ -57,9 +57,9 @@ PropertyBase* createFromJSON(json j)
 
     return 0;
 
-//    auto ret = new PropertyT<decltype(j.value())>();
-//    ret->fromJSON(j);
-//    return ret;
+    //    auto ret = new PropertyT<decltype(j.value())>();
+    //    ret->fromJSON(j);
+    //    return ret;
 }
 
 // ---
@@ -94,7 +94,7 @@ std::string PropertyT<int>::asPdString()
     return std::to_string(*_data);
 };
 
-template<>
+template <>
 void PropertyT<int>::fromPdString(std::string str)
 {
     *_data = std::stoi(str);
@@ -121,7 +121,7 @@ std::string PropertyT<std::string>::asPdString()
 template <>
 void PropertyT<std::string*>::fromPdString(std::string str)
 {
-   **_data = str;
+    **_data = str;
 }
 
 template <>
@@ -145,21 +145,21 @@ std::string PropertyT<bool>::asPdString()
 };
 
 template <>
-std::string PropertyT<std::vector<std::string>>::asPdString()
+std::string PropertyT<std::vector<std::string> >::asPdString()
 {
     std::string ret;
-//    return std::to_string((int)*_data);
-    for (int i=0;i<(_data->size()-1);i++)
-        ret += (*_data)[i] +" ";
+    //    return std::to_string((int)*_data);
+    for (int i = 0; i < (_data->size() - 1); i++)
+        ret += (*_data)[i] + " ";
     if (_data->size())
-        ret += (*_data)[_data->size()-1];
+        ret += (*_data)[_data->size() - 1];
     return ret;
 };
 
 template <>
-void PropertyT<std::vector<std::string>>::fromPdString(std::string str)
+void PropertyT<std::vector<std::string> >::fromPdString(std::string str)
 {
-   *_data = splitStringByToken(str," ");
+    *_data = splitStringByToken(str, " ");
 }
 
 // ---
@@ -264,17 +264,28 @@ json PropertyT<std::vector<float*> >::dataToJSON()
 template <>
 void PropertyT<std::vector<float*> >::fromPdString(std::string str)
 {
+
     auto v = splitStringByToken(str, " ");
 
-    // TODO!
-    assert(0);
+    int s = (_data->size()<v.size()) ? _data->size() : v.size();
+
+    // TODO
+//    for (int i=0;i<s;i++) {
+//        float * f = _data[i];
+//         *_data[i] = std::stof(v[i]);
+//    }
 }
 
 template <>
 std::string PropertyT<std::vector<float*> >::asPdString()
 {
-    // todo
-    return "";
+    std::string ret;
+    for (auto it = _data->begin(); it != _data->end(); ++it) {
+        ret += std::to_string(**it);
+        if (it != (_data->end() - 1))
+            ret += " ";
+    }
+    return ret;
 }
 
 template <>
@@ -313,7 +324,6 @@ void PropertyT<std::string*>::dataFromJSON(json j)
         **_data = j;
 };
 
-
 template <>
 json PropertyT<std::vector<std::string> >::dataToJSON()
 {
@@ -325,13 +335,12 @@ json PropertyT<std::vector<std::string> >::dataToJSON()
 template <>
 void PropertyT<std::vector<std::string> >::dataFromJSON(json j)
 {
-    if (j.is_array())
-    {
+    // TODO!
+    if (j.is_array()) {
         (_data)->clear();
-        for (auto s: j)
+        for (auto s : j)
             (_data)->push_back(s);
     }
-
 };
 
 // TODO:

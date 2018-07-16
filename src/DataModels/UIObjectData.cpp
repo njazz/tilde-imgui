@@ -17,19 +17,26 @@ void UIObjectData::syncFromServerObject()
 {
     errorBox = (pdObject == 0);
 
-    if (pdObject) {
+    if (!pdObject) return;
+    {
         inletCount = pdObject->inletCount();
         outletCount = pdObject->outletCount();
-        //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+
+        isAbstraction = pdObject->PdObject::isAbstraction();
+        isCanvas = pdObject->PdObject::isCanvas();
+
+        printf("new obj abs %i cnv %i\n", pdObject->PdObject::isAbstraction(), pdObject->PdObject::isCanvas());
     }
 }
 
 void UIObjectData::syncToServerObject()
 {
-//    if (!pdObject)
-//        return;
-//    pdObject->setX(x);
-//    pdObject->setY(y);
+    // TODO?
+
+    //    if (!pdObject)
+    //        return;
+    //    pdObject->setX(x);
+    //    pdObject->setY(y);
 }
 
 //std::string& UIObjectData::toString() { return _dataString; }

@@ -197,6 +197,47 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         delete i_;
         delete i2;
     }
+
+    SECTION("vector-float*")
+    {
+        float x = 0;
+        float y =0;
+
+        float x2 = 0;
+        float y2 =0;
+
+        auto vec = {&x,&y};
+        auto p = new PropertyT<std::vector<float*>>();
+
+        p->setDefaultValue(vec);
+        p->set(vec);
+
+
+        x = 33;
+        y = 42;
+
+        REQUIRE(p->get().size() == 2);
+
+
+        REQUIRE(p->is<std::vector<float*>>());
+        REQUIRE(!p->is<float>());
+
+        // todo
+        REQUIRE(p->asPdString() == "33.000000 42.000000");
+
+        // JSON
+        // TODO
+//        auto p2 = new PropertyT<std::vector<float*>>();
+//        p2->set({&x2,&y2});
+
+//        p2->fromJSON(p->toJSON());
+//        REQUIRE(*p->get()[0] == *p2->get()[0]);
+
+
+
+//        delete p2;
+        delete p;
+    }
 }
 
 TEST_CASE("propertylist", "[tilde~ PureData IDE]")
@@ -246,6 +287,12 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
 
         pl2.fromJSON(pl.toJSON());
         REQUIRE(pl2.toJSONString() == pl.toJSONString());
+
+        pl2.set("Property-One", 0);
+
+        pl2.fromJSONString(pl.toJSONString());
+        REQUIRE(pl2.toJSONString() == pl.toJSONString());
+
     }
 
     SECTION("Pd file string")
@@ -265,6 +312,19 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         pl2.extractFromPdFileString(pl.asPdFileString());
         REQUIRE(pl2.asPdFileString() == pl.asPdFileString());
 
+    }
+
+    SECTION ("Groups")
+    {
+        TestSpecificPropertyList pl;
+
+        REQUIRE(pl.groupNames().size() == 2);
+
+        REQUIRE(pl.fromGroup("Group A")->size() == 2);
+
+        REQUIRE(pl.fromGroup("Nothing") == 0);
+
+        REQUIRE(pl.namesInGroup(pl.fromGroup("Group A")).size() == 2);
     }
 
     SECTION ("Utilities")

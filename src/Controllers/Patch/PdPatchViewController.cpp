@@ -110,23 +110,24 @@ void PdPatchViewController::_drawSelectionFrame()
 
     if (ImGui::IsMouseClicked(0) && editMode) {
 
-        _clickedObject = objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
+        _clickedObject = data.objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
 
         if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects) {
-            selectSingleObject(ImGui::GetMousePos());
+            data.selectSingleObject(ImGui::GetMousePos());
+            _multipleObjectsSelected = false;
             _draggingObjects = true;
         }
         _draggingObjects = _clickedObject;
 
-        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
+        if (!data.objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
             printf("pos %f\n", ImGui::GetMousePos().y);
 
-            deselectAll();
+            data.deselectAll();
             _multipleObjectsSelected = false;
             _draggingObjects = false;
         }
 
-        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
+        if (!data.objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
 
             _selectionStart = _selectionEnd = ImGui::GetMousePos();
             _selectionFrame = true;
@@ -134,7 +135,7 @@ void PdPatchViewController::_drawSelectionFrame()
     }
 
     if (_selectionFrame && !ImGui::IsMouseReleased(0)) {
-        bool b = selectObjects();
+        bool b = data.selectObjectsInFrame(_selectionStart, _selectionEnd);
         _multipleObjectsSelected = b;
     }
 }
@@ -143,7 +144,7 @@ void PdPatchViewController::_drawObjectMaker()
 {
     // new empty object
     if (ImGui::IsMouseDoubleClicked(0) && editMode) {
-        if (!objectAtPos(ImGui::GetIO().MousePos)) {
+        if (!data.objectAtPos(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = (ImGui::GetIO().MousePos.x);
             _emptyObject.y = (ImGui::GetIO().MousePos.y);
@@ -263,6 +264,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     UiObjectBase* n = UIObjectFactory::createUiObject(text); //new NodeObject;
     if (!n)
         return 0;
+
     n->objectText = text;
     n->x = (x);
     n->y = (y);
@@ -270,11 +272,7 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     if (text.size())
         n->data.pdObjectID = data.canvas->createObject(text, x, y);
 
-    //    else
-    //        n->emptyBox = true;
-
     n->data.pdObject = (xpd::PdObject*)const_cast<xpd::Object*>(data.canvas->objects().findObject(n->data.pdObjectID));
-
     n->width = 90;
 
     //    if (!n->pdObject)
@@ -287,11 +285,10 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     //
     n->updateFromPdObject();
 
-    std::string info = text + " ins: " + std::to_string(n->data.inletCount) + " outs:" + std::to_string(n->data.outletCount);
-    data.pdProcess->post(info + "\n");
+    //std::string info = text + " ins: " + std::to_string(n->data.inletCount) + " outs:" + std::to_string(n->data.outletCount);
+    //data.pdProcess->post(info + "\n");
 
     addSubview(n);
-
     n->editModePtr = &editMode;
 
     //    data.objects.push_back(n);
@@ -306,16 +303,13 @@ UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y
     n->addAction(UiObjectBase::oOpenCanvas, &openCanvas);
     n->addAction(UiObjectBase::oOpenHelp, &showHelpPatch);
 
-    if (n->data.pdObject){
-        n->data.pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
+//    if (n->data.pdObject) {
+//        n->data.pdObject->registerObserver(xpd::ObserverPtr(&n->observer));
+//        n->data.isAbstraction = n->data.pdObject->PdObject::isAbstraction();
+//        n->data.isCanvas = n->data.pdObject->PdObject::isCanvas();
 
-        n->data.isAbstraction = n->data.pdObject->PdObject::isAbstraction();
-
-        n->data.isCanvas = n->data.pdObject->PdObject::isCanvas();
-
-
-        printf("new obj abs %i cnv %i\n", n->data.pdObject->PdObject::isAbstraction(), n->data.pdObject->PdObject::isCanvas());
-}
+//        printf("new obj abs %i cnv %i\n", n->data.pdObject->PdObject::isAbstraction(), n->data.pdObject->PdObject::isCanvas());
+//    }
     return n;
 }
 
@@ -368,53 +362,36 @@ void PdPatchViewController::dragSelectedObjects(ImVec2 delta)
     }
 }
 
-void PdPatchViewController::deselectAll()
-{
-    data.deselectObjects();
-    data.deselectPatchcords();
+//void PdPatchViewController::deselectAll()
+//{
+//    data.deselectObjects();
+//    data.deselectPatchcords();
 
-    _multipleObjectsSelected = false;
-    _draggingObjects = false;
-}
+//    _multipleObjectsSelected = false;
+//    _draggingObjects = false;
+//}
 
-void PdPatchViewController::selectSingleObject(ImVec2 pos)
-{
-    bool ret = false;
-    for (auto o : data.objects) {
-        UIObject* obj = (UIObject*)o;
+//bool PdPatchViewController::data.objectAtPos(ImVec2 pos)
+//{
+//    bool ret = false;
+//    for (auto o : data.objects) {
+//        UIObject* obj = (UIObject*)o;
 
-        obj->data.selected = (obj->x <= pos.x);
-        obj->data.selected &= (obj->y <= pos.y);
-        obj->data.selected &= (obj->x + obj->width >= pos.x);
-        obj->data.selected &= (obj->y + obj->height >= pos.y);
+//        bool hit;
+//        hit = (obj->x <= pos.x);
+//        hit &= (obj->y <= pos.y);
+//        hit &= (obj->x + obj->width >= pos.x);
+//        hit &= (obj->y + obj->height >= pos.y);
 
-        ret |= obj->data.selected;
-        _multipleObjectsSelected = false;
-    }
-    //        return ret;
-}
+//        ret |= hit;
+//    }
+//    return ret;
+//}
 
-bool PdPatchViewController::objectAtPos(ImVec2 pos)
-{
-    bool ret = false;
-    for (auto o : data.objects) {
-        UIObject* obj = (UIObject*)o;
-
-        bool hit;
-        hit = (obj->x <= pos.x);
-        hit &= (obj->y <= pos.y);
-        hit &= (obj->x + obj->width >= pos.x);
-        hit &= (obj->y + obj->height >= pos.y);
-
-        ret |= hit;
-    }
-    return ret;
-}
-
-bool PdPatchViewController::selectObjects()
-{
-    return data.selectObjectsInFrame(_selectionStart, _selectionEnd);
-}
+//bool PdPatchViewController::selectObjects()
+//{
+//    return data.selectObjectsInFrame(_selectionStart, _selectionEnd);
+//}
 
 // ==========
 
@@ -745,10 +722,12 @@ void PdPatchViewController::_arrangeBottomAction()
 };
 
 void PdPatchViewController::_arrangeDHAction()
-{}
+{
+}
 
 void PdPatchViewController::_arrangeDVAction()
-{}
+{
+}
 
 // ---
 
@@ -793,7 +772,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
 
     // deselect patchcord
     if (ImGui::IsMouseClicked(0)) {
-        if (!objectAtPos(ImGui::GetIO().MousePos)) {
+        if (!data.objectAtPos(ImGui::GetIO().MousePos)) {
             _newPatchcord.outputObj = 0;
         }
     }
@@ -801,23 +780,24 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
     //if (ImGui::IsMouseClicked(0) && editMode)
     if (editMode) {
 
-        _clickedObject = objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
+        _clickedObject = data.objectAtPos(ImGui::GetMousePos()); //&& !_selectionFrame;
 
         if (_clickedObject && !_multipleObjectsSelected && !_draggingObjects) {
-            selectSingleObject(ImGui::GetMousePos());
+            data.selectSingleObject(ImGui::GetMousePos());
+            _multipleObjectsSelected = false;
             _draggingObjects = true;
         }
         _draggingObjects = _clickedObject;
 
-        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
+        if (!data.objectAtPos(ImGui::GetMousePos()) && !_draggingObjects && (ImGui::GetMousePos().y > 20)) {
             //                printf("pos %f\n", ImGui::GetMousePos().y);
 
-            deselectAll();
+            data.deselectAll();
             _multipleObjectsSelected = false;
             _draggingObjects = false;
         }
 
-        if (!objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
+        if (!data.objectAtPos(ImGui::GetMousePos()) && !_draggingObjects) {
 
             _selectionStart = _selectionEnd = ImGui::GetMousePos();
             _selectionFrame = true;
@@ -825,7 +805,7 @@ void PdPatchViewController::onMouseDown(ImVec2 pos)
     }
 
     if (_selectionFrame && !ImGui::IsMouseReleased(0)) {
-        bool b = selectObjects();
+        bool b = data.selectObjectsInFrame(_selectionStart, _selectionEnd);
         _multipleObjectsSelected = b;
     }
 };
@@ -834,7 +814,7 @@ void PdPatchViewController::onMouseDoubleClick(ImVec2 pos)
 {
     //        if (ImGui::IsMouseDoubleClicked(0) && editMode) {
     if (editMode) {
-        if (!objectAtPos(ImGui::GetIO().MousePos)) {
+        if (!data.objectAtPos(ImGui::GetIO().MousePos)) {
             //addObject("", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
             _emptyObject.x = (ImGui::GetIO().MousePos.x);
             _emptyObject.y = (ImGui::GetIO().MousePos.y);
@@ -865,7 +845,7 @@ void PdPatchViewController::onMouseDrag(ImVec2 pos)
 
         //if (_selectionFrame && !ImGui::IsMouseReleased(0))
         //            {
-        bool b = selectObjects();
+        bool b = data.selectObjectsInFrame(_selectionStart, _selectionEnd);
         _multipleObjectsSelected = b;
         //            }
     }
@@ -888,7 +868,7 @@ void PdPatchViewController::onMouseHover(ImVec2 pos)
     if (_movingObject) {
         _movingObject->x = pos.x;
         _movingObject->y = pos.y;
-        ImGui::SetTooltip("pos %f %f", pos.x,pos.y);
+        ImGui::SetTooltip("pos %f %f", pos.x, pos.y);
     }
 };
 
