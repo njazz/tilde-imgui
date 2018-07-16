@@ -268,6 +268,7 @@ void UiObjectBase::draw()
         }
     }
 
+    //
     drawObjectContents();
 
     draw_list->ChannelsMerge();

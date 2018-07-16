@@ -18,7 +18,7 @@ std::string UiObjectBase::asPdFileString() { return ""; }
 
 UIPropertiesWindow::UIPropertiesWindow(PropertyList *p, bool *d){}
 
-void UIPatchcord::draw(){}
+void UIPatchcord::_drawContents(){}
 // ---
 
 class TestObject : public UiObjectBase

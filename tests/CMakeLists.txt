@@ -27,6 +27,9 @@ if(WITH_COVERAGE)
             COMMAND ${LCOV}
                 --extract coverage_tilde.info
                     "${CMAKE_SOURCE_DIR}/src/*" 
+                --remove "${CMAKE_SOURCE_DIR}/../imgui/imgui/*"
+                --remove "${CMAKE_SOURCE_DIR}/src/Properties/json/*"
+                --remove "${CMAKE_SOURCE_DIR}/tests/Catch/*"
                 --output-file coverage_tilde.info
             COMMAND ${LCOV}
                 --list coverage_tilde.info)

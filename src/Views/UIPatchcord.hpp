@@ -23,9 +23,13 @@ public:
     UiObjectBase* inputObj;
     int inputIdx;
 
-    virtual void draw();
+    virtual void draw() override{_drawContents();}
+    virtual void _drawContents() override;
 
     bool selected = false;
+
+    // todo:
+    bool isHovered(ImVec2 pos){return false;};
 
 };
 

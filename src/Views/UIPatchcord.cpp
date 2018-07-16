@@ -10,7 +10,7 @@
 
 #include "UIObject.hpp"
 
-void UIPatchcord::draw()
+void UIPatchcord::_drawContents()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
     ImVec2 offset = ImVec2(0, 0);

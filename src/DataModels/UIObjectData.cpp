@@ -13,6 +13,25 @@ std::string& UIObjectData::data()
     return _dataString;
 }
 
+void UIObjectData::syncFromServerObject()
+{
+    errorBox = (pdObject == 0);
+
+    if (pdObject) {
+        inletCount = pdObject->inletCount();
+        outletCount = pdObject->outletCount();
+        //        std::string info = objectText + " ins: " + std::to_string(inletCount) + " outs:" + std::to_string(outletCount);
+    }
+}
+
+void UIObjectData::syncToServerObject()
+{
+//    if (!pdObject)
+//        return;
+//    pdObject->setX(x);
+//    pdObject->setY(y);
+}
+
 //std::string& UIObjectData::toString() { return _dataString; }
 
 /*

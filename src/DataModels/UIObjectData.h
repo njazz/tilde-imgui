@@ -57,6 +57,9 @@ public:
     int minimumBoxHeight = 10;
 
     ObjectSizeMode objectSizeMode();
+
+    void syncFromServerObject();
+    void syncToServerObject();
 };
 
 

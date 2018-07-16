@@ -61,17 +61,14 @@ protected:
     // temporary?
     bool _mouseDownFlag = false;
     bool _showPropertiesWindow = false;
-public:    
-    UIObjectData data = UIObjectData();
+public:
+    UiObjectBase();
 
-//    xpd::ObjectId pdObjectID = 0;
-//    xpd::PdObject* pdObject = 0;
+    UIObjectData data = UIObjectData();
 
     ObjectBaseObserver observer;
 
-//
-    UiObjectBase();
-
+    //
     virtual void draw() override;
     virtual void drawObjectContents(){};
 
