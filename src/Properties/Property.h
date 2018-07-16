@@ -35,6 +35,9 @@ public:
     template <typename T>
     PropertyT<T>* typed();
 
+    template <typename T>
+    bool is();
+
     //
     std::function<void(void)> _action = []() {};
     inline void _updated() { _action(); }
@@ -42,7 +45,7 @@ public:
 
     virtual bool isDefault() { return true; }
 
-    virtual void fromPdString(std::string str){}
+    virtual void fromPdString(std::string str) {}
     virtual std::string asPdString() { return "(unsupported)"; }
 
     //
@@ -85,6 +88,7 @@ public:
     virtual bool isDefault() override { return *_data == _defaultValue; }
 
     //
+    virtual void fromPdString(std::string str) override {}
     virtual std::string asPdString() override { return "(unsupported)"; }
 
     virtual json dataToJSON() override;
@@ -99,13 +103,18 @@ PropertyT<T>* PropertyBase::typed()
     return dynamic_cast<PropertyT<T>*>(this);
 }
 
+template <typename T>
+bool PropertyBase::is()
+{
+    // todo:
+    return (typed<T>());
+}
 //
 
 template <typename T>
 PropertyT<T>::PropertyT(T* ref)
 {
-    if(std::is_pointer<T>::value && !ref)
-    {
+    if (std::is_pointer<T>::value && !ref) {
         printf("WARNING: pointer typed property should not use default constructor()");
         //throw("ERROR: pointer typed property should not use default constructor()");
         //assert(0);
@@ -161,6 +170,36 @@ std::string PropertyT<int>::asPdString();
 template <>
 std::string PropertyT<int*>::asPdString();
 
+template <>
+std::string PropertyT<std::vector<float*> >::asPdString();
+
 // ---
+
+template <>
+void PropertyT<bool>::fromPdString(std::string str);
+
+template <>
+void PropertyT<float>::fromPdString(std::string str);
+
+template <>
+void PropertyT<float*>::fromPdString(std::string str);
+
+template <>
+void PropertyT<int>::fromPdString(std::string str);
+
+template <>
+void PropertyT<int>::fromPdString(std::string str);
+
+template <>
+void PropertyT<std::string>::fromPdString(std::string str);
+
+template <>
+void PropertyT<std::string*>::fromPdString(std::string str);
+
+template <>
+void PropertyT<std::vector<std::string> >::fromPdString(std::string str);
+
+template <>
+void PropertyT<std::vector<float*> >::fromPdString(std::string str);
 
 #endif // CM_PROPERTY_H

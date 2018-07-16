@@ -62,7 +62,8 @@ std::string PropertyList::asPdFileString()
     for (auto it = this->_data.begin(); it != this->_data.end(); ++it) {
         //save only modified values
         if (it->second) //?
-            if (it->second->isDefault()) {
+            //if (!it->second->isDefault())
+            {
                 ret += " @" + it->first + " ";
                 ret += it->second->asPdString() + " ";
             }
@@ -88,7 +89,11 @@ std::string PropertyList::extractFromPdFileString(std::string input)
     if (propertyList.size() == 1)
         return ret;
 
-    propertyList.erase(propertyList.begin());
+    // fix
+    if (propertyList.at(0).size() == 0)
+        propertyList.erase(propertyList.begin());
+
+    //propertyList.erase(propertyList.begin());
 
     for (auto s : propertyList) {
         s = PdStringConverter::unescapeString(s); //Property::unescapeString(s);
@@ -98,26 +103,21 @@ std::string PropertyList::extractFromPdFileString(std::string input)
         //TODO
         for (int i = list.size() - 1; i > 0; i--) {
             if (list.at(i).length() == 0) {
-                //list.removeAt(i);
                 list.erase(list.begin() + i);
             }
         }
 
         std::string pname = list.at(0);
 
-        //std::cout << list;
-//        for (auto s:list)
-//            std::cout << "l " << s <<"\n";
-
         if (_data[pname]) {
-            //list.erase(list.begin()); //removeAt(0);
 
             if (list.size() == 0) {
-                set(pname, "");
+                setFromString(pname, "");
             } else if (list.size() == 2)
-                set(pname, list.at(1));
+                setFromString(pname, list.at(1));
             else
-                set(pname, list);
+                // weird bool property
+                setFromString(pname, "1");
         } else
             ret.append(" @" + s);
     }
@@ -178,6 +178,17 @@ void PropertyList::fromJSONString(std::string s)
         printf("ERROR: bad JSON string (%s)\n", e.what());
     }
 };
+
+
+//template<typename T>
+void PropertyList::setFromString(std::string pName, std::string str)
+{
+//    if (!_data[pName]->template is<T>())
+//        return;
+
+     // TODO: type check
+    _data[pName]->fromPdString(str);
+}
 
 /*
 namespace tilde {

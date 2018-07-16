@@ -201,10 +201,7 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
 
 TEST_CASE("propertylist", "[tilde~ PureData IDE]")
 {
-    SECTION("basic")
-    {
-        PropertyList pl;
-    }
+
 
     class TestSpecificPropertyList : public PropertyList {
     public:
@@ -218,11 +215,26 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         }
     };
 
+    SECTION("basic")
+    {
+        TestSpecificPropertyList pl;
+
+        pl.set("Property-One",11);
+        pl.set("Property-Two",std::string("fourty-two"));
+        pl.set("Property-Three",11.0f);
+
+        REQUIRE(pl.get("Property-One")->typed<int>()->get() == 11);
+        REQUIRE(pl.get("Property-Two")->typed<std::string>()->get()[0]=='f');   //todo
+        REQUIRE(pl.get("Property-Three")->typed<float>()->get() == 11.0f);
+
+    }
+
     SECTION("JSON")
     {
         TestSpecificPropertyList pl;
 
         TestSpecificPropertyList pl2;
+        //pl2.set("Property-Three", 43.0f);
         pl2.set("Property-One", 0);
 
         // TODO: set non-existing property
@@ -250,8 +262,8 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
 
         // TODO:
         // TODO: properties with spaces in names
-//        pl2.extractFromPdFileString(pl.asPdFileString());
-//        REQUIRE(pl2.asPdFileString() == pl.asPdFileString());
+        pl2.extractFromPdFileString(pl.asPdFileString());
+        REQUIRE(pl2.asPdFileString() == pl.asPdFileString());
 
     }
 

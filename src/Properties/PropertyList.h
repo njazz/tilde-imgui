@@ -34,6 +34,8 @@ public:
     template <typename T>
     void set(std::string pName, T value);
 
+    void setFromString(std::string pName, std::string str);
+
     PropertyBase* get(std::string key);
     PropertyBase* operator[](std::string key);
 
@@ -110,5 +112,7 @@ void PropertyList::set(std::string pName, T value)
             p_->template set(value);
     }
 };
+
+
 
 #endif // CM_PROPERTYLIST_H
