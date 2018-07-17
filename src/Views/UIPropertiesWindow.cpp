@@ -21,6 +21,9 @@ UIPropertiesWindow::UIPropertiesWindow(PropertyList* p, bool* d)
 
 void UIPropertiesWindow::_drawContents()
 {
+    if (!_properties) return;
+    if (!_display) return;
+
     if (!*_display)
         return;
     // properties window

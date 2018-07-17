@@ -17,7 +17,7 @@ class UIPropertiesWindow : public IULayer {
     bool* _display = 0;
 
 public:
-    UIPropertiesWindow(PropertyList* p, bool* d);
+    UIPropertiesWindow(PropertyList* p = 0, bool* d=0);
 
     virtual void _drawContents() override;
 };

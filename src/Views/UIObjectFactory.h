@@ -28,19 +28,19 @@ class UIObjectFactory {
     static std::map<std::string, _typeConstructorBase*> _c;
 
 public:
-    static void registerAll()
-    {
-        registerClass<UIObject>("*");
+//    static void registerAll()
+//    {
+//        registerClass<UIObject>("*");
 
-        registerClass<UIBang>("ui.bang");
-        registerClass<UIToggle>("ui.toggle");
-        registerClass<UIMessage>("ui.msg");
-        registerClass<UIFloat>("ui.float");
-        registerClass<UISlider>("ui.slider");
-        registerClass<UIDSP>("ui.dsp");
-        registerClass<UIMatrix>("ui.matrix");
+//        registerClass<UIBang>("ui.bang");
+//        registerClass<UIToggle>("ui.toggle");
+//        registerClass<UIMessage>("ui.msg");
+//        registerClass<UIFloat>("ui.float");
+//        registerClass<UISlider>("ui.slider");
+//        registerClass<UIDSP>("ui.dsp");
+//        registerClass<UIMatrix>("ui.matrix");
 
-    }
+//    }
 
     template <typename T>
     static void registerClass(std::string className)

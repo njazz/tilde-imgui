@@ -13,6 +13,10 @@
 
 #include "FileParser.h"
 
+#include "nfd.h"
+
+#include "UIObjectsLibrary.h"
+
 Preferences AppController::_preferences;
 Preferences* AppController::preferences() { return &_preferences; };
 
@@ -29,7 +33,7 @@ void AppConsoleObserver::update()
 AppController::AppController()
     : AppControllerBase()
 {
-    UIObjectFactory::registerAll();
+    setupUIObjectsLibrary();
 
     _settings = new xpd::ServerSettings("pd");
     _server = new xpd::PdLocalServer(*_settings);

@@ -17,23 +17,17 @@
 
 #include "NewConnection.hpp"
 
-#include "math.h"
-
 #include "PdPatchMenu.hpp"
 #include "UIObjectFactory.h"
 
 #include "UndoStack.hpp"
 
-#include "nfd.h"
-
 #include "CanvasData.h"
-
 #include "FileSaver.h"
 
 #include "IUAction.hpp"
 
 #include "Grid.hpp"
-
 #include "Preferences.h"
 
 class PdPatchViewController : public IUViewController {

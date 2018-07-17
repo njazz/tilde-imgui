@@ -1,15 +1,11 @@
 #ifndef MOCK_VIEW_CONTROLLERS_H
 #define MOCK_VIEW_CONTROLLERS_H
 
-#include "AppController.hpp"
+#include "NewConnection.hpp"
 
-#include "PdPatchViewController.hpp"
-
-// ** TODO: split this
+// TODO rename file to mock_newconnection
 
 // ******* new connection
 void NewConnection::draw() {}
-
-
 
 #endif // MOCK_VIEW_CONTROLLERS_H

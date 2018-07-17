@@ -1,6 +1,8 @@
 #ifndef MOCK_APP_CONTROLLER_H
 #define MOCK_APP_CONTROLLER_H
 
+#include "AppController.hpp"
+
 PdPatchViewController* AppController::createNewPatchWindow() { return 0; };
 
 Preferences AppController::_preferences;

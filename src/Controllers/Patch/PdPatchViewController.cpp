@@ -11,6 +11,10 @@
 #include "ArrangeObjects.h"
 #include "imgui_internal.h"
 
+#include "nfd.h"
+
+#include "math.h"
+
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
     , _preferencesWindow(AppController::preferences(), &displayPreferences)
