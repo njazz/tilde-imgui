@@ -65,6 +65,7 @@ void IUView::updated(int key){};
 void IUView::addAction(int k, IUAction *o){};
 
 void IUMainMenuBase::draw() {}
+void IUMainMenuBase::addMenu(IUMenuBase *m, std::string name){}
 
 void IUMenuBase::draw() {}
 
@@ -73,11 +74,15 @@ void IUPopupMenu::draw() {}
 void IUViewControllerBase::draw(){}
 void IUViewControllerBase::drawMenu(){}
 
+IUWindowController::IUWindowController(IUViewControllerBase *vc, std::string title, int x, int y, int width, int height){}
 void IUWindowController::restoreContext(){}
 
 // ?
 
 //
 nfdresult_t NFD_SaveDialog(const nfdchar_t *filterList, const nfdchar_t *defaultPath, nfdchar_t **outPath){return NFD_OKAY; };
+nfdresult_t NFD_OpenDialog(const nfdchar_t *filterList, const nfdchar_t *defaultPath, nfdchar_t **outPath){return NFD_OKAY;};
 
+//
+void glfwSetWindowShouldClose(GLFWwindow *window, int value){};
 

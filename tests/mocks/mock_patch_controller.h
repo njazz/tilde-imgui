@@ -24,6 +24,8 @@ void PdPatchViewController::onMouseDrag(ImVec2 pos){};
 void PdPatchViewController::onMouseUp(ImVec2 pos){};
 void PdPatchViewController::onMouseHover(ImVec2 pos){};
 
+void PdPatchViewController::setPdProcess(xpd::ProcessPtr p, xpd::CanvasPtr cnv){};
+
 
 #define MOCK_ACTION(x) void PdPatchViewController::_##x(){}
 
