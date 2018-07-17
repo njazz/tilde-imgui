@@ -11,6 +11,8 @@
 #include "PdConsoleViewController.hpp"
 #include "PdPatchViewController.hpp"
 
+#include "FileParser.h"
+
 Preferences AppController::_preferences;
 Preferences* AppController::preferences() { return &_preferences; };
 

@@ -16,6 +16,11 @@ ImGuiIO& GetIO() { return _io; }
 ImGuiIO::ImGuiIO(){}
 // ---
 
+// !! **** IUAction
+IUAction::IUAction(std::function<void ()> fn){
+    _callback = fn;
+}
+
 void IUBase::setWindowController(IUWindowController* w){_windowController = w;};
 IUWindowController* IUBase::windowController() {return _windowController;}
 

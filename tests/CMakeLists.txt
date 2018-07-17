@@ -82,10 +82,22 @@ target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/FileP
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_imgui_mvc.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_view_controllers.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_app_controller.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_patch_controller.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_grid.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_undostack.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_common_menus.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_patch_menus.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_preferences.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_uiobject.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/PdStringConverter.cpp")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_clipboard.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_fileparser.h")
 
 #tilde_add_test(patch_controller tilde_patch_controller)
 #target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/PdPatchViewController.cpp")
 
+#tilde_add_test(app_controller tilde_app_controller)
+#target_sources(test_tilde_app_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/AppController.cpp")
 
 

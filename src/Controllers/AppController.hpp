@@ -20,10 +20,6 @@
 
 #include "PdCommonMenus.hpp"
 
-#include "nfd.h"
-
-#include "FileParser.h"
-
 #include "Clipboard.h"
 
 #include "Preferences.h"
