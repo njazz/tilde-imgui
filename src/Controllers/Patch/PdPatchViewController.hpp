@@ -152,7 +152,6 @@ public:
     void connectObjects(UiObjectBase* outObj, int outIdx, UiObjectBase* inObj, int inIdx);
     void connectObjectsByIndices(int outObjIdx, int outletIdx, int inObjIdx, int inletIdx);
 
-
     void dragSelectedObjects(ImVec2 delta);
 
     void resizeContentsToObjects();

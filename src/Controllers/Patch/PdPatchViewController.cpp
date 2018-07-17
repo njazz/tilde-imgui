@@ -621,8 +621,7 @@ void PdPatchViewController::_zoomOne()
 
 void PdPatchViewController::_attachPatchMenu()
 {
-    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
-    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
+
 
     _patchMenu.menuEdit.setAction(PdPatchEditMenu::aEditMode, &editModeAction);
     _patchMenu.menuEdit.editModeFlag = &editMode;
@@ -635,6 +634,11 @@ void PdPatchViewController::_attachPatchMenu()
 
     _patchMenu.menuEdit.setAction(PdPatchEditMenu::aDelete, &menuDeleteObjectAction);
 
+    // test only
+    if (!_patchMenu.common) return;
+
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSave, &menuSaveAction);
+    _patchMenu.common->menuFile.setAction(PdCommonFileMenu::aFileSaveAs, &menuSaveAsAction);
     //
     _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aSettings, &menuPreferences);
     _patchMenu.common->menuWindow.setAction(PdCommonWindowMenu::aAudioMIDI, &menuAudioSettings);

@@ -50,6 +50,7 @@ void IUBase::setWindowController(IUWindowController* w){_windowController = w;};
 IUWindowController* IUBase::windowController() {return _windowController;}
 
 IULayerBase::IULayerBase(){};
+ImVec2 IULayerBase::pos(){return ImVec2(x,y);}
 
 IULayer::IULayer() {}
 void IULayer::draw() {}
