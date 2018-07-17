@@ -130,7 +130,7 @@ void PdPatchPutMenu::_shortcutContents(){};
 
 // ******* object base
 
-UiObjectBase* PdPatchViewController::createObject(std::__1::basic_string<char, std::__1::char_traits<char>, std::__1::allocator<char> >, int, int) { return 0; };
+UiObjectBase* PdPatchViewController::createObject(std::string text, int x, int y){return 0;}
 
 // ******* object
 void UIObject::draw(){};
