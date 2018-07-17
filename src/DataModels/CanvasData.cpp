@@ -20,10 +20,10 @@ CanvasData::CanvasData()
     //_properties->create("DrawBoxes", "Canvas", "0.1", false);
 }
 
-CanvasData::~CanvasData()
-{
-    //    delete _properties;
-}
+//CanvasData::~CanvasData()
+//{
+//    //    delete _properties;
+//}
 
 void CanvasData::addUniqueObject(objectVec* boxes, UiObjectBase* box)
 {

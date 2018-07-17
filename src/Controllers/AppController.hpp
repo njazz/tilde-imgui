@@ -56,7 +56,7 @@ class AppController : public AppControllerBase {
     Clipboard _clipboard;
 
     static Preferences _preferences;
-    static AudioMIDISettings* _audioMIDISettings;;
+    static AudioMIDISettings* _audioMIDISettings;
 
 public:
     AppController();

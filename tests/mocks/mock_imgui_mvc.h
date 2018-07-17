@@ -3,11 +3,21 @@
 #include "UIObjectBase.hpp"
 #include "UIPatchcord.hpp"
 
-
+#include "imgui.h"
 
 // ---
 
-void IUBase::setWindowController(IUWindowController* w){};
+// duplicate in 'imgui_mock.cpp':
+ImGuiIO _io;
+namespace ImGui {
+ImGuiIO& GetIO() { return _io; }
+}
+
+ImGuiIO::ImGuiIO(){}
+// ---
+
+void IUBase::setWindowController(IUWindowController* w){_windowController = w;};
+IUWindowController* IUBase::windowController() {return _windowController;}
 
 IULayerBase::IULayerBase(){};
 
@@ -19,6 +29,17 @@ void IUView::_handleMouse() {}
 void IUView::draw(){};
 void IUView::removeFromParentView(){};
 
+void IUMainMenuBase::draw() {}
+
 void IUMenuBase::draw() {}
 
 void IUPopupMenu::draw() {}
+
+void IUViewControllerBase::draw(){}
+void IUViewControllerBase::drawMenu(){}
+
+void IUWindowController::restoreContext(){}
+
+// ?
+
+

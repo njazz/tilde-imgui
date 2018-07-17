@@ -6,7 +6,6 @@
 
 #include <string>
 #include <vector>
-
 #include <vector>
 #include <string>
 
@@ -23,25 +22,19 @@ class PdPatchViewControllerStack {
     std::vector<PdPatchViewController*> _stack;
 
 public:
-    void push(PdPatchViewController* c) { _stack.push_back(c); };
-    PdPatchViewController* pop()
-    {
-        PdPatchViewController* ret = last();
-        _stack.pop_back();
-        return ret;
-    };
-    PdPatchViewController* last()
-    {
-        if (_stack.size() == 0)
-            return 0;
-        return _stack.at(_stack.size() - 1);
-    }
-    void clear() { _stack.clear(); }
+    void push(PdPatchViewController* c);
+    PdPatchViewController* pop();
+
+    PdPatchViewController* last();
+
+    void clear();
+
+    size_t size();
 };
 
 ////
 /// \brief Parses pd files on 'client' (GUI) side
-/// \details 'FileParser' and 'FileSaver' should probably be moved to separate library
+/// \details ?? 'FileParser' and 'FileSaver' should probably be moved to separate library
 class FileParser {
 private:
     FileParser(){};
@@ -55,14 +48,14 @@ private:
 
     //
 
-    static void parseString(std::string line); ///> [2] checks first atoms ("#N", "#X" etc) and sends contents as string vectors to canvas
-    static void parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list); ///> [3] parses vec<str> of atoms to canvas - creates objects etc, converts list, passes data to 'sendStringToCanvas'
+    static void parseString(std::string line); ///< [2] checks first atoms ("#N", "#X" etc) and sends contents as string vectors to canvas
+    static void parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list); ///< [3] parses vec<str> of atoms to canvas - creates objects etc, converts list, passes data to 'sendStringToCanvas'
 
-    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.2] process legacy pd files
+    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///< [3.2] process legacy pd files
 
 public:
     static std::string pdParserFileName;
-    static std::string legacyCanvasCoords; ///> used for #X coords
+    static std::string legacyCanvasCoords; ///< used for #X coords
 
     static void setAppController(AppController* appController);
     static void setParserWindowController(PdPatchViewController* wnd);
@@ -74,9 +67,9 @@ public:
     static PdPatchViewController* parserFirstWindowController();
     static PdPatchViewController* parserWindowController();
 
-    static void open(std::string fname); ///> [1] opens file, converts to QStrings, calls 'parseString'
+    static void open(std::string fname); ///> [1] opens file, converts to strings, calls 'parseString'
 
-    static UiObjectBase* sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list); ///> [3.1] subroutine - formats list and send it to canvas as a string
+    static UiObjectBase* sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list); ///< [3.1] subroutine - formats list and send it to canvas as a string
 
 
 };

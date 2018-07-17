@@ -56,7 +56,7 @@ public:
 
     //
     CanvasData();
-    ~CanvasData();
+//    ~CanvasData();
 
     //
     inline bool hasObjectsOrPatchcords() { return hasObjects() || hasPatchcords(); }

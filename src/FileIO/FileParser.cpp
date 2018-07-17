@@ -34,6 +34,26 @@ std::string FileParser::pdParserFileName = "";
 std::string FileParser::legacyCanvasCoords = "";
 
 // ----------------
+void PdPatchViewControllerStack::push(PdPatchViewController* c) { _stack.push_back(c); };
+
+PdPatchViewController* PdPatchViewControllerStack::pop()
+{
+    PdPatchViewController* ret = last();
+    _stack.pop_back();
+    return ret;
+};
+
+PdPatchViewController* PdPatchViewControllerStack::last()
+{
+    if (_stack.size() == 0)
+        return 0;
+    return _stack.at(_stack.size() - 1);
+}
+
+void PdPatchViewControllerStack::clear() { _stack.clear(); }
+
+size_t PdPatchViewControllerStack::size(){return _stack.size();}
+// ----------------
 
 inline void legacyProcessMsg(PdPatchViewController* controller, std::vector<std::string> list)
 {
