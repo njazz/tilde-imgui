@@ -7,6 +7,12 @@
 
 #include "PdStringConverter.h"
 
+#include <tuple>
+#include <initializer_list>
+
+#include <vector>
+#include <string>
+
 TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 {
     SECTION("float")
@@ -108,25 +114,79 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
     SECTION("vector-string")
     {
-        auto p = new PropertyT<std::vector<std::string>>();
+        auto p = new PropertyT<std::vector<std::string> >();
 
-        p->setDefaultValue({"fourty","two"});
-        REQUIRE(p->get().size() ==2);
-//        REQUIRE(p->get()[0] == "fourty");
-//        REQUIRE(p->get()[1] == "two");
+        p->setDefaultValue({ "fourty", "two" });
+        REQUIRE(p->get().size() == 2);
+        //        REQUIRE(p->get()[0] == "fourty");
+        //        REQUIRE(p->get()[1] == "two");
 
+        p->set({ "33" });
+        REQUIRE(p->get().size() == 1); // == "33");
+        //      REQUIRE(p->get()[0] == "33");
 
-        p->set({"33"});
-        REQUIRE(p->get().size() == 1);// == "33");
-//      REQUIRE(p->get()[0] == "33");
-
-        REQUIRE(p->is<std::vector<std::string>>());
+        REQUIRE(p->is<std::vector<std::string> >());
         REQUIRE(!p->is<float>());
 
         REQUIRE(p->asPdString() == "33");
 
         // JSON
-        auto p2 = new PropertyT<std::vector<std::string>>();
+        auto p2 = new PropertyT<std::vector<std::string> >();
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        delete p2;
+        delete p;
+    }
+
+    SECTION("string-enum")
+    {
+        auto p = new PropertyT<StringEnum>();
+
+        StringEnum s1  = StringEnum({ "one", "two" },1) ;
+
+        p->setDefaultValue(s1);
+        REQUIRE(p->get() ==s1);
+
+
+        StringEnum s2 = StringEnum({"a","b","c"},2);
+        p->set(s2);
+        REQUIRE(p->get() == s2);
+
+        REQUIRE(p->is<StringEnum>());
+        REQUIRE(!p->is<float>());
+
+        REQUIRE(p->asPdString() == "2 a b c");
+
+        // JSON
+        auto p2 = new PropertyT<StringEnum>();
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        delete p2;
+        delete p;
+
+    }
+
+    SECTION("color")
+    {
+        auto p = new PropertyT<Color>();
+
+        p->setDefaultValue(Color(.1, .2, .3, .4));
+        REQUIRE(p->get() == Color(.1, .2, .3, .4));
+
+        p->set(Color(1, 1, 1, 1));
+        REQUIRE(p->get() == Color(1, 1, 1, 1));
+
+        REQUIRE(p->is<Color>());
+        REQUIRE(!p->is<float>());
+
+        REQUIRE(p->asPdString() == "1.000000 1.000000 1.000000 1.000000");
+
+        // JSON
+        auto p2 = new PropertyT<Color>();
 
         p2->fromJSON(p->toJSON());
         REQUIRE(p->get() == p2->get());
@@ -201,25 +261,23 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
     SECTION("vector-float*")
     {
         float x = 0;
-        float y =0;
+        float y = 0;
 
         float x2 = 0;
-        float y2 =0;
+        float y2 = 0;
 
-        auto vec = {&x,&y};
-        auto p = new PropertyT<std::vector<float*>>();
+        auto vec = { &x, &y };
+        auto p = new PropertyT<std::vector<float*> >();
 
         p->setDefaultValue(vec);
         p->set(vec);
-
 
         x = 33;
         y = 42;
 
         REQUIRE(p->get().size() == 2);
 
-
-        REQUIRE(p->is<std::vector<float*>>());
+        REQUIRE(p->is<std::vector<float*> >());
         REQUIRE(!p->is<float>());
 
         // todo
@@ -227,22 +285,19 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
 
         // JSON
         // TODO
-//        auto p2 = new PropertyT<std::vector<float*>>();
-//        p2->set({&x2,&y2});
+        //        auto p2 = new PropertyT<std::vector<float*>>();
+        //        p2->set({&x2,&y2});
 
-//        p2->fromJSON(p->toJSON());
-//        REQUIRE(*p->get()[0] == *p2->get()[0]);
+        //        p2->fromJSON(p->toJSON());
+        //        REQUIRE(*p->get()[0] == *p2->get()[0]);
 
-
-
-//        delete p2;
+        //        delete p2;
         delete p;
     }
 }
 
 TEST_CASE("propertylist", "[tilde~ PureData IDE]")
 {
-
 
     class TestSpecificPropertyList : public PropertyList {
     public:
@@ -260,14 +315,13 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
     {
         TestSpecificPropertyList pl;
 
-        pl.set("Property-One",11);
-        pl.set("Property-Two",std::string("fourty-two"));
-        pl.set("Property-Three",11.0f);
+        pl.set("Property-One", 11);
+        pl.set("Property-Two", std::string("fourty-two"));
+        pl.set("Property-Three", 11.0f);
 
         REQUIRE(pl.get("Property-One")->typed<int>()->get() == 11);
-        REQUIRE(pl.get("Property-Two")->typed<std::string>()->get()[0]=='f');   //todo
+        REQUIRE(pl.get("Property-Two")->typed<std::string>()->get()[0] == 'f'); //todo
         REQUIRE(pl.get("Property-Three")->typed<float>()->get() == 11.0f);
-
     }
 
     SECTION("JSON")
@@ -292,7 +346,6 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
 
         pl2.fromJSONString(pl.toJSONString());
         REQUIRE(pl2.toJSONString() == pl.toJSONString());
-
     }
 
     SECTION("Pd file string")
@@ -311,10 +364,9 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         // TODO: properties with spaces in names
         pl2.extractFromPdFileString(pl.asPdFileString());
         REQUIRE(pl2.asPdFileString() == pl.asPdFileString());
-
     }
 
-    SECTION ("Groups")
+    SECTION("Groups")
     {
         TestSpecificPropertyList pl;
 
@@ -327,26 +379,24 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         REQUIRE(pl.namesInGroup(pl.fromGroup("Group A")).size() == 2);
     }
 
-    SECTION ("Utilities")
+    SECTION("Utilities")
     {
         // basic
-        REQUIRE(splitStringByToken("1 2 3"," ").size() == 3);
-        REQUIRE(splitStringByToken("@property value @p2 @p3 value"," @").size()==3);
+        REQUIRE(splitStringByToken("1 2 3", " ").size() == 3);
+        REQUIRE(splitStringByToken("@property value @p2 @p3 value", " @").size() == 3);
 
-        REQUIRE(strncmp(joinStringWithToken({"A","B","C"}," ").c_str(),"A B C",5)==0);
+        REQUIRE(strncmp(joinStringWithToken({ "A", "B", "C" }, " ").c_str(), "A B C", 5) == 0);
 
         std::string str_ = "@property name 1 {} () []";
 
-        auto split = splitStringByToken(str_," ");
-        auto join = joinStringWithToken(split," ");
+        auto split = splitStringByToken(str_, " ");
+        auto join = joinStringWithToken(split, " ");
         //REQUIRE(!strncmp(str_.c_str(),join.c_str(),str_.length()));
-        printf("%s || %s\n",str_.c_str(),join.c_str());
+        printf("%s || %s\n", str_.c_str(), join.c_str());
 
         auto esc = PdStringConverter::escapeString(str_);
         auto u_esc = PdStringConverter::unescapeString(esc);
 
-        REQUIRE(!strncmp(esc.c_str(),u_esc.c_str(),esc.length()));
-
-
+        REQUIRE(!strncmp(esc.c_str(), u_esc.c_str(), esc.length()));
     }
 }

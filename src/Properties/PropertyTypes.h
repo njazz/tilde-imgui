@@ -4,12 +4,31 @@
 #ifndef PROPERTY_TYPES
 #define PROPERTY_TYPES
 
-#include <vector>
 #include <string>
+#include <vector>
+
+#include <initializer_list>
+#include <tuple>
 
 struct StringEnum {
-    std::vector<std::string> strings;
+    std::vector<std::string> strings = {};
     int value = -1;
+
+    bool operator==(StringEnum& s)
+    {
+        return (value == s.value) && (strings == s.strings);
+    }
+
+    bool operator==(const StringEnum& s)
+    {
+        return (value == s.value) && (strings == s.strings);
+    }
+
+    StringEnum(std::vector<std::string> s = {}, int v = -1)
+    {
+        strings = s;
+        value = v;
+    }
 };
 
 class Color {
@@ -29,6 +48,11 @@ public:
     bool operator==(Color& c)
     {
         return (c.v()[0] == _v[0]) && (c.v()[1] == _v[1]) && (c.v()[2] == _v[2]) && (c.v()[3] == _v[3]);
+    }
+
+    bool operator==(const Color& c)
+    {
+        return (c._v[0] == _v[0]) && (c._v[1] == _v[1]) && (c._v[2] == _v[2]) && (c._v[3] == _v[3]);
     }
 };
 

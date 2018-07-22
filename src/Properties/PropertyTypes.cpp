@@ -2,10 +2,69 @@
 // License: GPL3
 
 #include "PropertyTypes.h"
-#include "json.hpp"
 #include "Property.h"
+#include "json.hpp"
 
 #include <string>
+
+#include "PdStringConverter.h"
+
+#include <algorithm>
+
+#include <tuple>
+#include <initializer_list>
+
+template <>
+json PropertyT<StringEnum>::dataToJSON()
+{
+    json j = json::object();
+    j["strings"] = _data->strings;
+    j["index"] = _data->value;
+    return j;
+};
+
+template <>
+void PropertyT<StringEnum>::dataFromJSON(json j)
+{
+    if (!j.is_object()) return;
+    if (!j["strings"].is_array()) return;
+    if (!j["index"].is_number()) return;
+
+    for (int i=0;i<j["strings"].size();i++)
+        _data->strings.push_back(j["strings"].at(i));
+    _data->value = j["index"];
+};
+
+template <>
+void PropertyT<StringEnum>::fromPdString(std::string str)
+{
+    auto v = splitStringByToken(str, " ");
+
+    if (v.size()<2) return;
+    _data->value = std::stoi(v[0]);
+
+    v.erase(v.begin());
+
+    ///\todo catch exception
+    /// \todo escape strings
+    _data->strings = v;
+}
+
+template <>
+std::string PropertyT<StringEnum>::asPdString()
+{
+    std::string ret;
+
+    /// \todo unescape strings
+
+    ret = std::to_string(_data->value) + " ";
+    ret += joinStringWithToken(_data->strings," ");
+    ret = ret.substr(0,ret.size()-1);
+
+    return ret;
+}
+
+// ---
 
 template <>
 json PropertyT<Color>::dataToJSON()
@@ -21,34 +80,33 @@ void PropertyT<Color>::dataFromJSON(json j)
 {
     if (!j.is_array())
         return;
-    if (!j.size() == 4)
+    if (!(j.size() == 4))
         return;
 
     for (int i = 0; i < 4; i++)
         _data->v()[i] = j[i];
 };
 
-//
-
 template <>
 void PropertyT<Color>::fromPdString(std::string str)
 {
-//    auto v = splitStringByToken(str, " ");
-//    int s = (_data->size()<v.size()) ? _data->size() : v.size();
+    auto v = splitStringByToken(str, " ");
+    if (v.size() != 4)
+        return;
 
-    ///> \todo Color - fromPdString
+    ///\todo catch exception
+    for (int i = 0; i < 4; i++)
+        _data->v()[i] = std::stof(v[i]);
 }
 
 template <>
 std::string PropertyT<Color>::asPdString()
 {
     std::string ret;
-//    for (auto it = _data->begin(); it != _data->end(); ++it) {
-//        ret += std::to_string(**it);
-//        if (it != (_data->end() - 1))
-//            ret += " ";
-//    }
 
-    ///> \todo Color - asPdString
+    for (int i = 0; i < 3; i++)
+        ret += std::to_string(_data->v()[i]) + " ";
+    ret += std::to_string(_data->v()[3]);
+
     return ret;
 }
