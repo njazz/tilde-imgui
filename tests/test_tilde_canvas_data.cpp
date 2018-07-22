@@ -96,7 +96,7 @@ TEST_CASE("clipboard", "[tilde~ PureData IDE]")
 
         REQUIRE(c.size() == 0);
         c.append({"obj1","obj2"});
-        REQUIRE(c.size() == 1);
+        REQUIRE(c.size() == 2);
         REQUIRE(!strncmp(c.get(0).c_str(),"obj1",4));
         REQUIRE(!strncmp(c.get(1).c_str(),"obj2",4));
         REQUIRE(c.data().size()==2);
