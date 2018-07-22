@@ -5,7 +5,6 @@ sudo: required
 notifications:
   email: false
 
-# Blacklist
 branches:
   except:
     - gh-pages
@@ -21,7 +20,7 @@ addons:
 #  'libglfw3', 'libglfw3-dev'
 'xorg-dev', 'libgtk-3-dev', 'libgtk-3-0',
 'lcov',
-'doxygen', 'doxygen-doc', 'doxygen-latex', 'doxygen-gui', 'graphviz;
+'doxygen', 'doxygen-doc', 'doxygen-latex', 'doxygen-gui', 'graphviz'
 ]
 
 matrix:
