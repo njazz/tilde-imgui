@@ -69,7 +69,7 @@ after_success:
   - lcov --list coverage.info #debug info
   # Uploading report to CodeCov
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
-  - cd $TRAVIS_BUILD_DIR
+  - cd ${TRAVIS_BUILD_DIR}/config/
   - chmod +x generateDocs.sh
-  - ./config/generateDocs.sh
-  - cd $TRAVIS_BUILD_DIR
+  - ./generateDocs.sh
+  - cd ${TRAVIS_BUILD_DIR}
