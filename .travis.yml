@@ -12,7 +12,7 @@ branches:
 env:
   global:
     - GH_REPO_NAME: tilde
-    - DOXYFILE: $TRAVIS_BUILD_DIR/docs/Doxyfile
+    - DOXYFILE: $TRAVIS_BUILD_DIR/Doxyfile
     - GH_REPO_REF: github.com/njazz/tilde.git
 
 addons:
