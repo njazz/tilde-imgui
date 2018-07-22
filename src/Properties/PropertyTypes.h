@@ -5,6 +5,7 @@
 #define PROPERTY_TYPES
 
 #include <vector>
+#include <string>
 
 struct StringEnum {
     std::vector<std::string> strings;
