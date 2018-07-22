@@ -21,9 +21,11 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue(42.0f);
         REQUIRE(p->get() == 42.0f);
+        REQUIRE(p->isDefault());
 
         p->set(0.33);
         REQUIRE(p->get() == 0.33f);
+        REQUIRE(!p->isDefault());
         REQUIRE(p->is<float>());
         REQUIRE(!p->is<int>());
 
@@ -33,6 +35,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<float>();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set(0);
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -45,9 +51,12 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue(42);
         REQUIRE(p->get() == 42);
+        REQUIRE(p->isDefault());
 
         p->set(33);
         REQUIRE(p->get() == 33);
+        REQUIRE(!p->isDefault());
+
         REQUIRE(p->is<int>());
         REQUIRE(!p->is<float>());
 
@@ -57,6 +66,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<int>();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set(0);
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -69,9 +82,12 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue("fourty two");
         REQUIRE(p->get() == "fourty two");
+        REQUIRE(p->isDefault());
 
         p->set("33");
         REQUIRE(p->get() == "33");
+        REQUIRE(!p->isDefault());
+
         REQUIRE(p->is<std::string>());
         REQUIRE(!p->is<float>());
 
@@ -81,6 +97,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<std::string>();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set("");
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -93,9 +113,12 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue(true);
         REQUIRE(p->get() == true);
+        REQUIRE(p->isDefault());
 
         p->set(false);
         REQUIRE(p->get() == false);
+        REQUIRE(!p->isDefault());
+
         REQUIRE(p->is<bool>());
         REQUIRE(!p->is<float>());
 
@@ -108,6 +131,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         p2->fromJSON(p->toJSON());
         REQUIRE(p->get() == p2->get());
 
+        p2->set(false);
+        p2->fromPdString(p->asPdString());
+        REQUIRE(p->get() == p2->get());
+
         delete p2;
         delete p;
     }
@@ -118,11 +145,15 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue({ "fourty", "two" });
         REQUIRE(p->get().size() == 2);
+        REQUIRE(p->isDefault());
+
         //        REQUIRE(p->get()[0] == "fourty");
         //        REQUIRE(p->get()[1] == "two");
 
         p->set({ "33" });
         REQUIRE(p->get().size() == 1); // == "33");
+        REQUIRE(!p->isDefault());
+
         //      REQUIRE(p->get()[0] == "33");
 
         REQUIRE(p->is<std::vector<std::string> >());
@@ -134,6 +165,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<std::vector<std::string> >();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set({});
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -148,11 +183,13 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         p->setDefaultValue(s1);
         REQUIRE(p->get() ==s1);
+        REQUIRE(p->isDefault());
 
 
         StringEnum s2 = StringEnum({"a","b","c"},2);
         p->set(s2);
         REQUIRE(p->get() == s2);
+        REQUIRE(!p->isDefault());
 
         REQUIRE(p->is<StringEnum>());
         REQUIRE(!p->is<float>());
@@ -163,6 +200,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<StringEnum>();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set(StringEnum());
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -189,6 +230,10 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<Color>();
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(p->get() == p2->get());
+
+        p2->set(Color(0,0,0,0));
+        p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
         delete p2;
@@ -222,6 +267,9 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         p2->fromJSON(p->toJSON());
         REQUIRE(*p->get() == *p2->get());
 
+        p2->fromPdString(p->asPdString());
+        REQUIRE(*p->get() == *p2->get());
+
         delete p2;
         delete p;
         delete f_;
@@ -250,6 +298,9 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         auto p2 = new PropertyT<int*>(&i2);
 
         p2->fromJSON(p->toJSON());
+        REQUIRE(*p->get() == *p2->get());
+
+        p2->fromPdString(p->asPdString());
         REQUIRE(*p->get() == *p2->get());
 
         delete p2;
