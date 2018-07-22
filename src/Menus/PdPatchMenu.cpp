@@ -23,7 +23,6 @@ void PdPatchEditMenu::_drawContents()
 {
     if (editModeFlag)
         if (*editModeFlag) {
-            // todo: action names
             item("Undo", aUndo, IUKey::Action() + IUKey::KeyZ());
             item("Redo", aUndo, IUKey::Action() + IUKey::Shift() + IUKey::KeyZ());
             ImGui::Separator();

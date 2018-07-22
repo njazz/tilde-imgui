@@ -659,7 +659,7 @@ void FileParser::parseString(std::string line)
 
         msg.erase(msg.begin());
 
-        // todo: title
+        /// \todo title
         //        if (_pdParserWindowController)
         //            newWnd->windowController()->setTitle(msg.at(4));
 

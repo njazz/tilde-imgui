@@ -36,7 +36,7 @@ void PropertyT<Color>::fromPdString(std::string str)
 //    auto v = splitStringByToken(str, " ");
 //    int s = (_data->size()<v.size()) ? _data->size() : v.size();
 
-    // TODO: TODO
+    ///> \todo Color - fromPdString
 }
 
 template <>
@@ -49,6 +49,6 @@ std::string PropertyT<Color>::asPdString()
 //            ret += " ";
 //    }
 
-    // TODO: TODO
+    ///> \todo Color - asPdString
     return ret;
 }

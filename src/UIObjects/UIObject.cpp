@@ -172,7 +172,7 @@ void UIObject::drawObjectContents()
 //        }
     } else {
 
-        // todo: FIX THAT
+        ///> \todo FIX THAT
         int s = objectText.size();
         if (s < 0)
             s = 0;

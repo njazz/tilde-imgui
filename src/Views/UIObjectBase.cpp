@@ -43,7 +43,7 @@ UiObjectBase::UiObjectBase()
         updated(oOpenHelp);
     }));
 
-    // todo:
+    ///> \todo addComponent (_prop. window). currently broken
     // addComponent(&_propertiesWindow);
 }
 

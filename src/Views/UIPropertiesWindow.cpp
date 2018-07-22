@@ -68,7 +68,7 @@ void UIPropertiesWindow::_drawContents()
                     else
 
                     {
-                        // todo: cleanup
+                        ///> \todo cleanup
                         auto s = _properties->get(n)->typed<std::string>()->get();
                         std::vector<char> strBuf(s.begin(), s.end()); //(s.begin(),s.end());
                         strBuf.resize(16384);

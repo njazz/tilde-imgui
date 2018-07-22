@@ -28,7 +28,7 @@ public:
 
     bool selected = false;
 
-    // todo:
+    ///> \todo isHovered
     bool isHovered(ImVec2 pos){return false;};
 
 };

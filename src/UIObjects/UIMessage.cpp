@@ -10,7 +10,7 @@ int messageEdited(ImGuiTextEditCallbackData* o)
 //    obj->enteredText = obj->_editText;
 //    obj->updated(UIObject::oAutocomplete);
 
-    // todo: width
+    ///> \todo message box width
 
     return 0;
 }

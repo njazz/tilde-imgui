@@ -106,7 +106,7 @@ PropertyT<T>* PropertyBase::typed()
 template <typename T>
 bool PropertyBase::is()
 {
-    // todo:
+    /// \todo more efficient?
     return (typed<T>());
 }
 //

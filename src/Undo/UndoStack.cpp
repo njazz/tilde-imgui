@@ -7,7 +7,7 @@ void UndoStack::doAction(UICommandPtr c)
     _stack.push_back(c);
     (*c)();
     _undoListIndex = _stack.size() - 1;
-    // todo: limit undo size
+    ///> \todo limit undo size?
 }
 
 void UndoStack::undoLastAction()

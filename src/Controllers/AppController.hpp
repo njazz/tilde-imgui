@@ -70,7 +70,7 @@ public:
     IU_ACTION(menuOpen);
     IU_ACTION(menuExit);
 
-    // todo:
+    /// \todo show console window action
     IU_ACTION(showConsoleWindow);
 
     IU_ACTION(newCanvasWindow);

@@ -203,7 +203,7 @@ void PdPatchViewController::_drawContents()
 {
     ImDrawList* draw_list = ImGui::GetWindowDrawList();
 
-    // todo: IULayer
+    /// \todo use IULayer
     ImGui::SetCursorPos(ImVec2(0, -22));
 
     //_drawGrid();
@@ -341,7 +341,7 @@ void PdPatchViewController::connectObjectsByIndices(int outObjIdx, int outletIdx
         return;
     }
 
-    // todo: correct error object connections handling
+    /// \todo correct error object connections handling
     if (outletIdx >= obj1->data.outletCount)
         return;
     if (inletIdx >= obj2->data.inletCount)

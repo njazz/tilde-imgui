@@ -41,7 +41,7 @@ void PdConsoleViewController::_drawMenu()
 
 void PdConsoleViewController::draw()
 {
-    // todo: use _drawContents()
+    /// \todo use _drawContents()
 
     ImGui::SetNextWindowSize(ImVec2(width, height));
     ImGui::SetNextWindowPos(ImVec2(0, 22));

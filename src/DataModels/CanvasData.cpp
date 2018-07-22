@@ -199,7 +199,7 @@ void CanvasData::deleteSelectedPatchcords()
 
 void CanvasData::deleteObject(UiObjectBase* obj)
 {
-    // todo: remove patchcords for object
+    /// \todo remove patchcords for object
 
     obj->removeFromParentView();
     objects.erase(std::remove(objects.begin(), objects.end(), obj), objects.end());

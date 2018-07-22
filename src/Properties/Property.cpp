@@ -53,7 +53,7 @@ void PropertyBase::dataFromJSON(json j) {}
 
 PropertyBase* createFromJSON(json j)
 {
-    // TODO:
+    /// \todo PropertyBase::createFromJSON
 
     return 0;
 
@@ -343,7 +343,8 @@ void PropertyT<std::vector<std::string> >::dataFromJSON(json j)
     }
 };
 
-// TODO:
+/// \todo char const* properties template specializations
+
 //template <>
 //json PropertyT<char const*>::dataToJSON()
 //{

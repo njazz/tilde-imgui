@@ -62,7 +62,7 @@ AppController::AppController()
 
     FileParser::setAppController(this);
 
-    // todo: new font
+    /// \todo new font
     //    _fixedWidthFont = AppControllerBase::addFont("../Resources/fonts/SourceCodePro-Regular.ttf");
     //    _fixedWidthFont = AppControllerBase::addFont("../Resources/fonts/DejaVuSansMono.ttf");
 }

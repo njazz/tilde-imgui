@@ -76,7 +76,7 @@ std::string PropertyList::asPdFileString()
     return ret;
 }
 
-// TODO:
+///> \todo ExtractFromPdFileString
 
 std::string PropertyList::extractFromPdFileString(std::string input)
 {
@@ -190,7 +190,7 @@ void PropertyList::setFromString(std::string pName, std::string str)
 //    if (!_data[pName]->template is<T>())
 //        return;
 
-     // TODO: type check
+     ///> \todo type check
     _data[pName]->fromPdString(str);
 }
 
