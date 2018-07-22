@@ -5,6 +5,8 @@
 #include "json.hpp"
 #include "Property.h"
 
+#include <string>
+
 template <>
 json PropertyT<Color>::dataToJSON()
 {
