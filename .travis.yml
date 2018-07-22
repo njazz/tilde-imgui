@@ -8,6 +8,12 @@ notifications:
 branches:
   except:
     - gh-pages
+    
+env:
+  global:
+    - GH_REPO_NAME: tilde
+    - DOXYFILE: $TRAVIS_BUILD_DIR/docs/Doxyfile
+    - GH_REPO_REF: github.com/njazz/tilde.git
 
 addons:
   apt:
@@ -63,3 +69,7 @@ after_success:
   - lcov --list coverage.info #debug info
   # Uploading report to CodeCov
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
+  - cd $TRAVIS_BUILD_DIR
+  - chmod +x generateDocs.sh
+  - ./generateDocs.sh
+  - cd $TRAVIS_BUILD_DIR
