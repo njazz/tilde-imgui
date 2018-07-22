@@ -21,8 +21,10 @@ UIPropertiesWindow::UIPropertiesWindow(PropertyList* p, bool* d)
 
 void UIPropertiesWindow::_drawContents()
 {
-    if (!_properties) return;
-    if (!_display) return;
+    if (!_properties)
+        return;
+    if (!_display)
+        return;
 
     if (!*_display)
         return;
@@ -66,19 +68,22 @@ void UIPropertiesWindow::_drawContents()
                     else
 
                     {
-                        // todo:
-//                        auto str =_properties->get(n)->typed<std::string>()->get();
-//                        ImGui::InputText("", str.c_str(), str.length());
-                         ImGui::Text("edit: %s", _properties->get(n)->typed<std::string>()->get().c_str());
+                        // todo: cleanup
+                        auto s = _properties->get(n)->typed<std::string>()->get();
+                        std::vector<char> strBuf(s.begin(), s.end()); //(s.begin(),s.end());
+                        strBuf.resize(16384);
+                        if(ImGui::InputText("", strBuf.data(), strBuf.size(), ImGuiInputTextFlags_EnterReturnsTrue))
+                        {
+                            _properties->get(n)->typed<std::string>()->set(strBuf.data());
+                        }
                     }
                 }
 
                 else if (p->typed<std::vector<std::string> >()) {
                     auto arr = _properties->get(n)->typed<std::vector<std::string> >()->get();
 
-                    for (auto s:arr)
-                    {
-                        ImGui::Text("%s",s.c_str());
+                    for (auto s : arr) {
+                        ImGui::Text("%s", s.c_str());
                     }
                     ImGui::Button("+");
                 }
@@ -87,13 +92,11 @@ void UIPropertiesWindow::_drawContents()
                     bool v = _properties->get(n)->typed<bool>()->get();
                     if (ImGui::Checkbox("", &v))
                         _properties->set(n, v);
-                }
-                else if (p->typed<bool*>()) { //type == ptBool) {
+                } else if (p->typed<bool*>()) { //type == ptBool) {
                     bool* v_p = _properties->get(n)->typed<bool*>()->get();
                     if (ImGui::Checkbox("", v_p))
                         _properties->set(n, v_p);
-                }
-                else if (p->typed<std::vector<float*> >()) { //>type == ptVec2) {
+                } else if (p->typed<std::vector<float*> >()) { //>type == ptVec2) {
                     auto vec = _properties->get(n)->typed<std::vector<float*> >()->get();
                     if (vec.size() < 2)
                         return;
@@ -103,8 +106,7 @@ void UIPropertiesWindow::_drawContents()
                         *vec[1] = v.y;
                         _properties->set(n, vec);
                     }
-                }
-                else if (p->typed<float>()) { //type == ptFloat) {
+                } else if (p->typed<float>()) { //type == ptFloat) {
                     float f = _properties->get(n)->typed<float>()->get();
 
                     //f = _properties->get(n)->as<float>();
@@ -112,8 +114,7 @@ void UIPropertiesWindow::_drawContents()
                     if (ImGui::DragFloat("", &f)) {
                         _properties->set(n, f);
                     }
-                }
-                else if (p->typed<float*>()) { //type == ptFloat) {
+                } else if (p->typed<float*>()) { //type == ptFloat) {
                     float* f_p = _properties->get(n)->typed<float*>()->get();
 
                     //f = _properties->get(n)->as<float>();
@@ -124,8 +125,16 @@ void UIPropertiesWindow::_drawContents()
                     }
                 }
 
+                else if (p->typed<Color>()) {
+                    auto c_ = p->typed<Color>()->get().v();
+                    // ImVec4 c(c_[0],c_[1],c_[2],c_[3]);
+
+                    ImGui::ColorEdit4("Color", (float*)c_);
+
+                }
+
                 else
-                                ImGui::Text("ERR");
+                    ImGui::Text("ERR");
             }
 
             ImGui::PopID();

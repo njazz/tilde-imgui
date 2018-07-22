@@ -23,6 +23,8 @@ Preferences* AppController::preferences() { return &_preferences; };
 AudioMIDISettings* AppController::_audioMIDISettings = 0;
 AudioMIDISettings* AppController::audioMIDISettings() { return _audioMIDISettings; };
 
+ImFont* AppController::_fixedWidthFont = 0;
+
 void AppConsoleObserver::update()
 {
     if (_pdConsoleWindow) {
@@ -58,9 +60,11 @@ AppController::AppController()
     _serverProcess->addSearchPath("/Users/njazz/Documents/tilde~/Libraries/");
     _serverProcess->loadLibrary("tilde~_imgui");
 
-
-
     FileParser::setAppController(this);
+
+    // todo: new font
+    //    _fixedWidthFont = AppControllerBase::addFont("../Resources/fonts/SourceCodePro-Regular.ttf");
+    //    _fixedWidthFont = AppControllerBase::addFont("../Resources/fonts/DejaVuSansMono.ttf");
 }
 
 PdPatchViewController* AppController::createNewPatchWindow()

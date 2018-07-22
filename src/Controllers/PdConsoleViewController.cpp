@@ -51,6 +51,11 @@ void PdConsoleViewController::draw()
 
     _drawMenu();
 
+    if(ImGui::Button("Clear"))
+        _clearConsole();;
+
+    ImGui::SameLine();
+
     ImGui::Text("Log level:");
     ImGui::SameLine();
 
@@ -109,7 +114,9 @@ void PdConsoleViewController::draw()
 
     ImGui::Separator();
 
+    ImGui::BeginChild(ImGui::GetID("console-text"));
     ImGui::Text("%s", _consoleText.c_str());
+    ImGui::EndChild();
 
     ImGui::End();
 
@@ -119,7 +126,7 @@ void PdConsoleViewController::draw()
 
 void PdConsoleViewController::post(std::string line)
 {
-    _consoleText = line + _consoleText;
+    _consoleText = _consoleText + line;
 }
 
 void PdConsoleViewController::setWindowController(IUWindowController* w)

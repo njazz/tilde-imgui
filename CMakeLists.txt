@@ -75,11 +75,23 @@ else()
     LINK_DIRECTORIES(${GTK3_LIBRARY_DIRS})
 endif(APPLE)
 
-FILE(GLOB R_FONTS "${PROJECT_SOURCE_DIR}../imgui/fonts/Arial*.ttf")
+#FILE(GLOB R_FONTS "${PROJECT_SOURCE_DIR}fonts/SourceCodePro*.ttf")
+#set_property(
+#    SOURCE ${R_FONTS}
+#    PROPERTY MACOSX_PACKAGE_LOCATION "Resources/fonts"
+#   )
+
+FILE(GLOB R_FONTS
+#    ${R_FONTS}
+
+    "${PROJECT_SOURCE_DIR}/../imgui/fonts/Arial*.ttf"
+    "${PROJECT_SOURCE_DIR}/fonts/*.ttf"
+    )
 set_property(
     SOURCE ${R_FONTS}
     PROPERTY MACOSX_PACKAGE_LOCATION "Resources/fonts"
    )
+
 
 find_package(OpenGL REQUIRED)
 set(EXTERNAL_INCLUDE_DIRS ${EXTERNAL_INCLUDE_DIRS} ${OPENGL_INCLUDE_DIR})
@@ -90,6 +102,10 @@ if(APPLE)
 find_library(FOUNDATION Foundation REQUIRED)
 find_library(COCOA Cocoa REQUIRED)
 endif(APPLE)
+
+#######
+
+
 
 #######
 file(GLOB SRC_tilde_imgui

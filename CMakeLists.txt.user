@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.4.0, 2018-07-17T15:29:29. -->
+<!-- Written by QtCreator 4.4.0, 2018-07-19T08:56:46. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -2304,7 +2304,7 @@
     <value type="QString" key="CMakeProjectManager.CMakeRunConfiguration.UserWorkingDirectory.default">/Users/njazz/Documents/____ios/2017-07/nseq/tilde-imgui/build/tests</value>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_tilde_app_controller (disabled)</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">test_tilde_app_controller</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName"></value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">CMakeProjectManager.CMakeRunConfiguration.test_tilde_app_controller</value>
     <value type="uint" key="RunConfiguration.QmlDebugServerPort">3768</value>

@@ -13,6 +13,8 @@
 #include "PdPatchViewController.hpp"
 #include "Properties/PropertyList.h"
 
+#include "AppController.hpp"
+
 UiObjectBase::UiObjectBase()
     : _propertiesWindow(data.properties(), &_patchMenu.propertiesWindow)
 {
@@ -48,21 +50,38 @@ UiObjectBase::UiObjectBase()
 void UiObjectBase::_createProperties()
 {
     auto p = data.properties()->create("Position", "Box", "0.1", std::vector<float*>({ &x, &y })); //ImVec2(0, 0));
-    //    p->componentAt(0).bindFloat(&x);
-    //    p->componentAt(1).bindFloat(&y);
+
     p->setAction([this, p]() {
         x = (*p->typed<std::vector<float*> >()->get()[0]);
         y = (*p->typed<std::vector<float*> >()->get()[1]);
     });
 
     p = data.properties()->create("Size", "Box", "0.1", std::vector<float*>({ &width, &height })); //ImVec2(0, 0));
-    //    p->componentAt(0).bindFloat(&width);
-    //    p->componentAt(1).bindFloat(&height);
+
     p->setAction([this, p]() {
         width = (*p->typed<std::vector<float*> >()->get()[0]);
         height = (*p->typed<std::vector<float*> >()->get()[1]);
-        //        width = p->as<ImVec2>().x;
-        //        height = p->as<ImVec2>().y;
+
+    });
+
+    //
+
+    p = data.properties()->create("Border Color", "Box", "0.1", Color());
+    p = data.properties()->create("Font size", "Box", "0.1", 11.0f);
+
+    p = data.properties()->create("Send symbol", "Box", "0.1", std::string(""));
+    //            p->setAction([this](){
+    //                if (!
+    //                data.pdObject) return;
+
+    //                data.pdObject->setReceiveSymbol(p->typed<std::string >()->get());
+    //});
+    p = data.properties()->create("Receive symbol", "Box", "0.1", std::string(""));
+    p->setAction([this, p]() {
+        if (!data.pdObject)
+            return;
+
+        data.pdObject->setReceiveSymbol(p->typed<std::string>()->get());
     });
 }
 
@@ -287,14 +306,12 @@ void UiObjectBase::updateFromPdObject()
 {
     data.errorBox = (data.pdObject == 0);
 
-    if (!data.pdObject) return;
+    if (!data.pdObject)
+        return;
 
     data.pdObject->registerObserver(xpd::ObserverPtr(&observer));
 
     data.syncFromServerObject();
-
-
-
 }
 
 void UiObjectBase::pdObjUpdatePosition()

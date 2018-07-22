@@ -202,4 +202,6 @@ void PropertyT<std::vector<std::string> >::fromPdString(std::string str);
 template <>
 void PropertyT<std::vector<float*> >::fromPdString(std::string str);
 
+
+
 #endif // CM_PROPERTY_H

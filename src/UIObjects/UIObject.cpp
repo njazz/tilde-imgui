@@ -12,6 +12,8 @@
 #include "IUWindowController.hpp"
 #include "PdPatchViewController.hpp"
 
+#include "AppController.hpp"
+
 int nameChanged(ImGuiTextEditCallbackData* o)
 {
     UIObject* obj = (UIObject*)o->UserData;
@@ -148,9 +150,13 @@ void UIObject::drawObjectContents()
 
     ImGui::PushItemWidth(114.0f);
 
+    if (AppController::fixedWidthFont())
+    ImGui::PushFont(AppController::fixedWidthFont());
+
     ImGui::SetCursorScreenPos(ImVec2(this->x + 4, this->y + height / 6));
     if (!_objectReplaceMode) {
         ImGui::Text("%s", (char*)objectText.c_str());
+
 //        if (ImGui::IsMouseHoveringRect(ImVec2(this->x + 6, this->y + 5), ImVec2(this->x + 6 + width, this->y + 25))) {
 //            if (ImGui::IsMouseDoubleClicked(0)) {
 //                //                assert(windowController());
@@ -193,6 +199,9 @@ void UIObject::drawObjectContents()
         //((IUView*)_parent)->mouseEnabled = false;
 
     }
+
+    if (AppController::fixedWidthFont())
+    ImGui::PopFont();
 
     ImGui::EndGroup();
 }

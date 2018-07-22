@@ -54,6 +54,7 @@ class AppController : public AppControllerBase {
     static Preferences _preferences;
     static AudioMIDISettings* _audioMIDISettings;
 
+    static ImFont* _fixedWidthFont;
 public:
     AppController();
 
@@ -80,6 +81,9 @@ public:
 
     static Preferences* preferences();
     static AudioMIDISettings* audioMIDISettings();
+
+    //
+    static ImFont* fixedWidthFont(){return _fixedWidthFont;};
 };
 
 #endif /* AppController_hpp */

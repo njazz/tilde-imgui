@@ -8,6 +8,8 @@
 
 #include "Property.h"
 
+#include "PropertyTypes.h"
+
 #include <map>
 
 class UIObject;

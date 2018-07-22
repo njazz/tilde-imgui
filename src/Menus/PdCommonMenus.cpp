@@ -15,8 +15,17 @@ void PdCommonFileMenu::_shortcutContents()
 void PdCommonFileMenu::_drawContents()
 {
     item("New patch window", aFileNew, IUKey::Action() + IUKey::KeyN());
+    // stub
+    //    item("New patch subwindow", aFileNew, IUKey::Action() + IUKey::Alt() + IUKey::KeyN());
     ImGui::Separator();
     item("Open patch in new window", aFileOpen, IUKey::Action() + IUKey::KeyO());
+    // stub
+    //    item("Open patch in new subwindow", aFileOpen, IUKey::Action() + IUKey::Alt() + IUKey::KeyO());
+    // stub
+    if (ImGui::BeginMenu("Recent Patches"))
+    {
+        ImGui::EndMenu();
+    }
     if (inPatch) {
         item("Save patch", aFileSave, IUKey::Action() + IUKey::KeyS());
         item("Save patch as ...", aFileSaveAs, IUKey::Action() + IUKey::Shift() + IUKey::KeyS());

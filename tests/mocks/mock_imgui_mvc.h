@@ -2,6 +2,7 @@
 #include "IUView.hpp"
 #include "UIObjectBase.hpp"
 #include "UIPatchcord.hpp"
+#include "AppControllerBase.hpp"
 
 #include "imgui.h"
 
@@ -77,6 +78,8 @@ void IUViewControllerBase::drawMenu(){}
 
 IUWindowController::IUWindowController(IUViewControllerBase *vc, std::string title, int x, int y, int width, int height){}
 void IUWindowController::restoreContext(){}
+
+ImFont* AppControllerBase::addFont(std::string f){return 0;}
 
 // ?
 
