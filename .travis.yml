@@ -71,5 +71,6 @@ after_success:
   - bash <(curl -s https://codecov.io/bash) || echo "Codecov did not collect coverage reports"
   - cd ${TRAVIS_BUILD_DIR}/config/
   - chmod +x generateDocs.sh
-  - ./generateDocs.sh
+  - cd ${TRAVIS_BUILD_DIR}
+  - ./config/generateDocs.sh
   - cd ${TRAVIS_BUILD_DIR}
