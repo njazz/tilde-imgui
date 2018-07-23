@@ -7,6 +7,8 @@
 
 #include "UIObjectBase.hpp"
 
+#include "UIObjectFactory.h"
+
 void UIObjectData::syncFromServerObject(){};
 
 //
@@ -62,6 +64,26 @@ void ImGui::EndGroup(){};
 bool ImGui::IsKeyDown(int user_key_index) { return false; }
 
 void ImGui::OpenPopup(const char* str_id){};
+
+//
+#include "mocks/mock_uiobject.h"
+
+#include "UIObject.hpp"
+
+TEST_CASE("factory: basic", "[tilde~ PureData IDE]")
+{
+    SECTION("basic")
+    {
+        class TestClass : public UiObjectBase{};
+
+        UIObjectFactory::registerClass<TestClass>("test-class");
+
+        // stub
+//      REQUIRE(typeid(UIObjectFactory::createUiObject("no-class")) == typeid(UIObject*));
+
+        REQUIRE(UIObjectFactory::createUiObject("test-class"));
+    }
+}
 
 TEST_CASE("object_base: basic", "[tilde~ PureData IDE]")
 {

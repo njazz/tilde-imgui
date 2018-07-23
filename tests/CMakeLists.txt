@@ -77,6 +77,7 @@ target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UI
 target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
 target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyTypes.cpp")
 target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/PdStringConverter.cpp")
+target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectFactory.cpp")
 
 tilde_add_test(object_data tilde_object_data)
 target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
