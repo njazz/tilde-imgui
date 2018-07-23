@@ -104,6 +104,9 @@ tilde_add_test(patch_controller tilde_patch_controller)
 target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/PdPatchViewController.cpp")
 target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectFactory.cpp")
 
+tilde_add_test(console_controller tilde_console_controller)
+target_sources(test_tilde_console_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/PdConsoleViewController.cpp")
+
 tilde_add_test(app_controller tilde_app_controller)
 target_sources(test_tilde_app_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/AppController.cpp")
 target_sources(test_tilde_app_controller PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_console_controller.h")

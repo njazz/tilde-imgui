@@ -13,6 +13,8 @@ public:
 
     PdConsoleMenu(PdCommonMenus* m)
     {
+        if (!m) return;
+
         common = m;
         addMenu(&m->menuFile, "File");
         addMenu(&m->menuWindow, "Window");

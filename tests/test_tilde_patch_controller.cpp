@@ -25,7 +25,7 @@ TEST_CASE("patch controller: basic", "[tilde~ PureData IDE]")
 {
     SECTION("basic")
     {
-        // TODO
+        ///\todo test with menu object
         PdPatchViewController pvc(0);
 
         // false without pd process

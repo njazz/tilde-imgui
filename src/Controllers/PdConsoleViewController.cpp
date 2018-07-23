@@ -23,6 +23,8 @@ PdConsoleViewController::PdConsoleViewController(PdCommonMenus* m)
     : _menu(m), _preferencesWindow(AppController::preferences(), &_displayPreferences)
     ,_audioSettingsWindow(AppController::audioMIDISettings(), &_displayAudioSettings)
 {
+    if (!m) return;
+
     _menu.common->menuWindow.setAction(PdCommonWindowMenu::aClearConsole, &clearConsole);
     _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOn, &dspOn);
     _menu.common->menuMedia.setAction(PdCommonMediaMenu::aDSPOff, &dspOff);
@@ -47,7 +49,9 @@ void PdConsoleViewController::draw()
     ImGui::SetNextWindowPos(ImVec2(0, 22));
 
     bool w = true;
-    ImGui::Begin("pd_console", &w, ImVec2(0, 0), 0.75, ImGuiWindowFlags_NoTitleBar);
+    ImGui::SetNextWindowSize(ImVec2(0,0));
+            ImGui::SetNextWindowBgAlpha(.75);
+    ImGui::Begin("pd_console", &w, ImGuiWindowFlags_NoTitleBar);
 
     _drawMenu();
 
@@ -73,9 +77,11 @@ void PdConsoleViewController::draw()
     ImGui::Text("%i FPS", (int)ImGui::GetIO().Framerate);
     ImGui::SameLine();
 
+    if (pdProcess)
     _dspState = pdProcess->dspState();
 
     if (ImGui::Checkbox("DSP", &_dspState)) {
+        if (pdProcess)
         pdProcess->dspSwitch(_dspState);
     }
 
@@ -145,12 +151,14 @@ void PdConsoleViewController::_clearConsole()
 void PdConsoleViewController::_dspOn()
 {
     _dspState = true;
+    if (pdProcess)
     pdProcess->dspSwitch(_dspState);
 };
 
 void PdConsoleViewController::_dspOff()
 {
     _dspState = false;
+    if (pdProcess)
     pdProcess->dspSwitch(_dspState);
 };
 
