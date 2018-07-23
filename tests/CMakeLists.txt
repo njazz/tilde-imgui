@@ -80,6 +80,7 @@ target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/P
 
 tilde_add_test(file_io tilde_file_io)
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/FileParser.cpp")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/LegacyParser.cpp")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_imgui_mvc.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_view_controllers.h")

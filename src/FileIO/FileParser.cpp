@@ -23,6 +23,8 @@
 
 #include <regex>
 
+#include "LegacyParser.h"
+
 PdPatchViewControllerStack FileParser::_stack;
 PdPatchViewController* FileParser::_pdParserWindowController = 0;
 PdPatchViewController* FileParser::_pdParserFirstWindowController = 0;
@@ -53,8 +55,9 @@ PdPatchViewController* PdPatchViewControllerStack::last()
 void PdPatchViewControllerStack::clear() { _stack.clear(); }
 
 size_t PdPatchViewControllerStack::size(){return _stack.size();}
-// ----------------
 
+// ----------------
+/*
 inline void legacyProcessMsg(PdPatchViewController* controller, std::vector<std::string> list)
 {
     list[0] = "obj";
@@ -339,8 +342,12 @@ inline void legacyProcessUICnv(PdPatchViewController* controller, std::vector<st
     FileParser::sendStringToCanvas(controller, list2);
 }
 
+
+*/
+
 // ----------
 
+/*
 bool FileParser::legacyProcess(PdPatchViewController* controller, std::vector<std::string> list)
 {
 
@@ -420,6 +427,7 @@ bool FileParser::legacyProcess(PdPatchViewController* controller, std::vector<st
 
     return false; // if it is not a special legacy object
 }
+*/
 
 UiObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list)
 {
@@ -463,8 +471,10 @@ UiObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, 
 void FileParser::parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list) //rename
 {
     //legacy parser first
-    if (FileParser::legacyProcess(controller, list))
-        return;
+//    if (FileParser::legacyProcess(controller, list))
+//        return;
+
+    list = LegacyParser::convertLegacyString(list);
 
     //std::cout << "list at 0" << list.at(0);
 

@@ -51,7 +51,7 @@ private:
     static void parseString(std::string line); ///< [2] checks first atoms ("#N", "#X" etc) and sends contents as string vectors to canvas
     static void parseStringListAtoms(PdPatchViewController* controller, std::vector<std::string> list); ///< [3] parses vec<str> of atoms to canvas - creates objects etc, converts list, passes data to 'sendStringToCanvas'
 
-    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///< [3.2] process legacy pd files
+//    static bool legacyProcess(PdPatchViewController* controller, std::vector<std::string> list); ///< [3.2] process legacy pd files
 
 public:
     static std::string pdParserFileName;
