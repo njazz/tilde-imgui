@@ -129,10 +129,12 @@ include_directories(src/DataModels)
 include_directories(src/FileIO)
 include_directories(src/Menus)
 include_directories(src/Properties)
-include_directories(src/Properties/json)
+#include_directories(src/Properties/json)
 include_directories(src/UIObjects)
 include_directories(src/Undo)
 include_directories(src/Views)
+
+include_directories(distrib/json)
 
 INCLUDE_DIRECTORIES(xpd/src)
 
