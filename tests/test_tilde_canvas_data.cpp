@@ -6,8 +6,9 @@
 #include "Clipboard.h"
 
 #include "mocks/mock_imgui_mvc.h"
-//#include "mocks/mock_canvas_data.h"
 #include "mocks/mock_views.h"
+
+#include "mocks/mock_object_base.h"
 
 TEST_CASE("canvas_data: basic", "[tilde~ PureData IDE]")
 {

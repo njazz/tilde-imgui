@@ -72,8 +72,11 @@ target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_canvas_data.h")
 
-#tilde_add_test(object_base tilde_object_base)
-#target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectBase.cpp")
+tilde_add_test(object_base tilde_object_base)
+target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectBase.cpp")
+target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
+target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/PropertyTypes.cpp")
+target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/PdStringConverter.cpp")
 
 tilde_add_test(object_data tilde_object_data)
 target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
@@ -104,6 +107,7 @@ target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_filesaver.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_object_menu.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_arrangeobjects.h")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_object_base.h")
 
 tilde_add_test(patch_controller tilde_patch_controller)
 target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/PdPatchViewController.cpp")

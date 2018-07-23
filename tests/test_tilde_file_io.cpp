@@ -20,6 +20,8 @@
 #include "mocks/mock_uiobject.h"
 #include "mocks/mock_undostack.h"
 
+#include "mocks/mock_object_base.h"
+
 #include "FileSaver.h"
 
 TEST_CASE("view controller stack: basic", "[tilde~ PureData IDE]")
