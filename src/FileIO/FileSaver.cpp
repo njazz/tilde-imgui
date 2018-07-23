@@ -15,6 +15,12 @@ void FileSaver::saveCanvas(CanvasData* canvasData, std::ofstream& file)
     // this calls top 'canvas' and gets all data as vec<str>
     // canvas saves contents recursively
 
+    if (!canvasData)
+    {
+        printf("FileSaver: empty canvas data");
+        return;
+    }
+
     std::vector<std::string> fileData = canvasData->asPdFileStrings();
 
     for (auto str1 : fileData)
@@ -26,6 +32,12 @@ void FileSaver::saveCanvas(CanvasData* canvasData, std::ofstream& file)
 
 void FileSaver::save(std::string fname, CanvasData* canvasData)
 {
+
+    if (!canvasData)
+    {
+        printf("FileSaver: empty canvas data");
+        return;
+    }
 
     std::ofstream f(fname,std::ios_base::binary);
 

@@ -64,15 +64,29 @@ inline void _legacyTester(std::string src, std::string dest)
 
 TEST_CASE("legacy parser", "[tilde~ PureData IDE]")
 {
+    SECTION("error objects")
+    {
+        _legacyTester("obj 1 1 error-object","obj 1 1 error-object");
+        _legacyTester("msg error-object","msg error-object");
+        _legacyTester("text error-object","text error-object");
+        _legacyTester("floatatom error-object","floatatom error-object");
+
+        // iem gui
+
+
+    }
     SECTION("basic")
     {
         _legacyTester("obj 78 84 print", "obj 78 84 print");
         _legacyTester("msg 180 103 msg-box 1 2 3", "obj 180 103 ui.msg msg-box 1 2 3");
         _legacyTester("text 154 206 comment", "obj 154 206 ui.text @Text comment");
+        _legacyTester("floatatom 77 76 5 1 3 1 label rcv send, f 5", "obj 77 76 ui.float @Size 5 20 @Min 1 @Max 3 @LabelPosition 1 Left Right Top Bottom @LegacyLabel label @SendSymbol send, @ReceiveSymbol rcv");
+//        _legacyTester("symbolatom 333 205 5 1 3 1 label rcv send, f 5", "obj 333 205 ui.symbolatom @Size 5 20 @Min 1 @Max 3 @LabelPosition 1 Left Right Top Bottom @LegacyLabel label @SendSymbol send, @ReceiveSymbol rcv");
 
-        ///\todo atoms - send/receive symbols
-        //floatatom 333 114 5 0 0 0 - - -, f 5
-        //symbolatom 333 205 10 0 0 0 - - -, f 10
+        // iem gui
+
+
+        _legacyTester("obj 501 346 cnv 15 100 60 label receive send 20 12 0 14 -233017 -66577","obj 501 346 ui.text @Text label @FontSize 14 @TextColor 64 64 64 255 @BackgroundColor 224 224 224 255 @AutoResizeToText 0 @Size 100 60 @SendSymbol send @ReceiveSymbol receive");
 
         //obj 81 199 bng 15 250 50 0 empty empty empty 17 7 0 10 -262144 -1
         //-1;
@@ -95,6 +109,16 @@ TEST_CASE("legacy parser", "[tilde~ PureData IDE]")
 
 TEST_CASE("file parser", "[tilde~ PureData IDE]")
 {
+    SECTION("error handling")
+    {
+        // 1. empty
+
+        REQUIRE(!FileParser::sendStringToCanvas(0,{}));
+
+        PdPatchViewController vc(0);
+        REQUIRE(!FileParser::sendStringToCanvas(&vc,{}));
+
+    }
     SECTION("basic")
     {
         // TODO
@@ -103,6 +127,14 @@ TEST_CASE("file parser", "[tilde~ PureData IDE]")
 
 TEST_CASE("file saver", "[tilde~ PureData IDE]")
 {
+    SECTION("error handling")
+    {
+        FileSaver::save("",0);
+        REQUIRE(true);
+        ///\todo saveCanvas
+//        FileSaver::saveCanvas("",0);
+    }
+
     SECTION("basic")
     {
         // TODO

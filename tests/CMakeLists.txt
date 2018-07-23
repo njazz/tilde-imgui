@@ -72,6 +72,9 @@ target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")
 target_sources(test_tilde_canvas_data PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_canvas_data.h")
 
+#tilde_add_test(object_base tilde_object_base)
+#target_sources(test_tilde_object_base PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectBase.cpp")
+
 tilde_add_test(object_data tilde_object_data)
 target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/DataModels/UIObjectData.cpp")
 target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/Properties/Property.cpp")
@@ -80,6 +83,7 @@ target_sources(test_tilde_object_data PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/P
 
 tilde_add_test(file_io tilde_file_io)
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/FileParser.cpp")
+target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/FileSaver.cpp")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/src/FileIO/LegacyParser.cpp")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_imgui_mvc.h")
 target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock_views.h")

@@ -58,85 +58,7 @@ size_t PdPatchViewControllerStack::size(){return _stack.size();}
 
 // ----------------
 /*
-inline void legacyProcessMsg(PdPatchViewController* controller, std::vector<std::string> list)
-{
-    list[0] = "obj";
-    list.insert(list.begin() + 3, "ui.msg");
-    FileParser::sendStringToCanvas(controller, list);
 
-    // no special properties
-}
-
-inline void legacyProcessText(PdPatchViewController* controller, std::vector<std::string> list)
-{
-    list[0] = "obj";
-    list.insert(list.begin() + 3, "ui.text");
-    list.insert(list.begin() + 4, "@Text");
-
-    //UIObject* obj =
-    FileParser::sendStringToCanvas(controller, list);
-
-    //        list.removeAt(0);
-    //        list.removeAt(0);
-    //        list.removeAt(0);
-    //        list.removeAt(0);
-    //        std::string text = list.join(" ");
-    //        obj->properties()->set("Text", text);
-}
-
-inline void legacyProcessAtom(PdPatchViewController* controller, std::vector<std::string> list)
-{
-    list[0] = "obj";
-    list.insert(list.begin() + 3, "ui.float");
-    //UIObject* obj =
-    FileParser::sendStringToCanvas(controller, list);
-
-    //temporary - to have readable list at some point
-    //box_width lower upper 1 label send receive
-
-    //check bounds
-    //int lBoxWidth = ((std::string)list.at(4)).toInt();
-    //float lMinimum = ((std::string)list.at(5)).toFloat();
-    //float lMaximum = ((std::string)list.at(6)).toFloat();
-    //int lInit = ((std::string)list.at(7)).toInt();
-
-    std::string lLabel = "";
-    std::string lSend = "";
-    std::string lReceive = "";
-
-    if (list.size() > 10) {
-        lLabel = ((std::string)list.at(8));
-        lSend = ((std::string)list.at(9));
-        lReceive = ((std::string)list.at(10));
-    }
-
-    //todo set / create
-}
-
-inline void legacyProcessSymbolAtom(PdPatchViewController* controller, std::vector<std::string> list)
-{
-
-    std::vector<std::string> list2 = {"obj","0","0","ui.msg","<symbol>"};
-
-    list2[1] = list[1];
-    list2[2] = list[2];
-
-    FileParser::sendStringToCanvas(controller, list2);
-
-    //temporary - to have readable list at some point
-    //box_width lower upper 1 label send receive
-
-    //check bounds
-    //        int lBoxWidth = ((std::string)list.at(4)).toInt();
-    //        float lMinimum = ((std::string)list.at(5)).toFloat();
-    //        float lMaximum = ((std::string)list.at(6)).toFloat();
-    //        int lInit = ((std::string)list.at(7)).toInt();
-    //        std::string lLabel = ((std::string)list.at(8));
-    //        std::string lSend = ((std::string)list.at(9));
-    //        std::string lReceive = ((std::string)list.at(10));
-
-    //todo set / create
-}
 
 inline void legacyProcessArray(PdPatchViewController* controller, std::vector<std::string> list)
 {
@@ -348,89 +270,13 @@ inline void legacyProcessUICnv(PdPatchViewController* controller, std::vector<st
 // ----------
 
 /*
-bool FileParser::legacyProcess(PdPatchViewController* controller, std::vector<std::string> list)
-{
 
-    if (list.at(0) == "msg") {
-
-        legacyProcessMsg(controller, list);
-        return true;
-    }
-
-    if (list.at(0) == "text") {
-
-        legacyProcessText(controller, list);
-        return true;
-    }
-
-    if (list.at(0) == "floatatom") {
-
-        legacyProcessAtom(controller, list);
-        return true;
-    }
-
-    if (list.at(0) == "symbolatom") {
-
-        legacyProcessSymbolAtom(controller, list);
-        return true;
-    }
-
-    if (list.at(0) == "array") {
-
-        legacyProcessArray(controller, list);
-
-        return true;
-    }
-
-    // IEMGUI
-
-    if (list.at(0) == "obj") {
-        if (list.at(3) == "bng") {
-            legacyProcessUIBang(controller, list);
-            return true;
-        }
-
-        if (list.at(3) == "tgl") {
-
-            legacyProcessUIToggle(controller, list);
-            return true;
-        }
-
-        if ((list.at(3) == "hsl") || (list.at(3) == "vsl")) {
-
-            legacyProcessUISlider(controller, list);
-            return true;
-        }
-
-        if (list.at(3) == "number2") {
-
-            legacyProcessUINumber2(controller, list);
-            return true;
-        }
-
-        if (list.at(3) == "hradio") {
-
-            legacyProcessUIHRadio(controller, list);
-            return true;
-        }
-        if (list.at(3) == "vradio") {
-
-            legacyProcessUIVRadio(controller, list);
-            return true;
-        }
-        if (list.at(3) == "cnv") {
-
-            legacyProcessUICnv(controller, list);
-            return true;
-        }
-    }
-
-    return false; // if it is not a special legacy object
-}
 */
 
 UiObjectBase* FileParser::sendStringToCanvas(PdPatchViewController* controller, std::vector<std::string> list)
 {
+    if (!controller) return 0;
+    if (!list.size()) return 0;
     printf("new obj");
 
     if (list.size() > 3) {

@@ -58,6 +58,7 @@ public:
     static std::string legacyCanvasCoords; ///< used for #X coords
 
     static void setAppController(AppController* appController);
+
     static void setParserWindowController(PdPatchViewController* wnd);
     static void setParserWindowControllers(PdPatchViewController* wnd, PdPatchViewController*, PdPatchViewController* first);
 

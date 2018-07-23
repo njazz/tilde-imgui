@@ -69,28 +69,45 @@ FileParserList LegacyParser::_converter<_tokenFloatAtom>(FileParserList src)
     if (src.size() < 1)
         return ret;
 
-    ret = src;
+    ret.push_back("obj");
+    ret.push_back(src[1]);
+    ret.push_back(src[2]);
+    ret.push_back("ui.float");
 
-    ret[0] = "obj";
-    ret.insert(ret.begin() + 3, "ui.float");
+    ret.push_back("@Size");
+    ret.push_back(src[3]);
+    ret.push_back("20");
+
+    ret.push_back("@Min");
+    ret.push_back(src[4]);
+
+    ret.push_back("@Max");
+    ret.push_back(src[5]);
+
+    ret.push_back("@LabelPosition");
+    ret.push_back(src[4]);
+    ret.push_back("Left");
+    ret.push_back("Right");
+    ret.push_back("Top");
+    ret.push_back("Bottom");
 
     ///\todo 'processLabels' separate function?
 
-    if (src.size() > 10) {
+    if (src.size() > 8) {
         std::string lLabel = "";
         std::string lSend = "";
         std::string lReceive = "";
 
-        lLabel = ((std::string)src.at(8));
+        lLabel = ((std::string)src.at(7));
         lSend = ((std::string)src.at(9));
-        lReceive = ((std::string)src.at(10));
+        lReceive = ((std::string)src.at(8));
 
         ret.push_back("@LegacyLabel");
         ret.push_back(lLabel);
         ret.push_back("@SendSymbol");
         ret.push_back(lSend);
         ret.push_back("@ReceiveSymbol");
-        ret.push_back(lSend);
+        ret.push_back(lReceive);
     }
 
     return ret;
@@ -99,7 +116,7 @@ FileParserList LegacyParser::_converter<_tokenFloatAtom>(FileParserList src)
 template <>
 FileParserList LegacyParser::_converter<_tokenSymbolAtom>(FileParserList src)
 {
-    ///\todo this is a stub
+    ///\todo this is a stub. either make ui.symbolatom or embed in other object
 
     FileParserList ret = { "obj", "0", "0", "ui.msg", "<symbol>" };
 
@@ -108,6 +125,42 @@ FileParserList LegacyParser::_converter<_tokenSymbolAtom>(FileParserList src)
 
     ret[1] = src[1];
     ret[2] = src[2];
+
+    ret.push_back("@Size");
+    ret.push_back(src[3]);
+    ret.push_back("20");
+
+    ret.push_back("@Min");
+    ret.push_back(src[4]);
+
+    ret.push_back("@Max");
+    ret.push_back(src[5]);
+
+    ret.push_back("@LabelPosition");
+    ret.push_back(src[4]);
+    ret.push_back("Left");
+    ret.push_back("Right");
+    ret.push_back("Top");
+    ret.push_back("Bottom");
+
+    ///\todo 'processLabels' separate function?
+
+    if (src.size() > 8) {
+        std::string lLabel = "";
+        std::string lSend = "";
+        std::string lReceive = "";
+
+        lLabel = ((std::string)src.at(7));
+        lSend = ((std::string)src.at(9));
+        lReceive = ((std::string)src.at(8));
+
+        ret.push_back("@LegacyLabel");
+        ret.push_back(lLabel);
+        ret.push_back("@SendSymbol");
+        ret.push_back(lSend);
+        ret.push_back("@ReceiveSymbol");
+        ret.push_back(lReceive);
+    }
 
     return ret;
 }
@@ -251,7 +304,6 @@ FileParserList LegacyParser::_converter<_objNameHRadio>(FileParserList src)
         ret.push_back(std::to_string(std::stof(src[4]) * 5)); //lol}
     }
 
-
     return ret;
 }
 
@@ -299,17 +351,12 @@ FileParserList LegacyParser::_converter<_objNameNumber2>(FileParserList src)
 template <>
 FileParserList LegacyParser::_converter<_objNameCnv>(FileParserList src)
 {
-    FileParserList ret = src;
+    FileParserList ret;
 
-    if (src.size()<10) return ret;
-
-    std::string lSend = (src.at(7));
-    std::string lReceive = (src.at(8));
-    std::string lLabel = (src.at(9));
+    if (src.size() < 10)
+        return src;
 
     std::string fontSize = (src.size() > 13) ? (src.at(13)) : "11";
-    if (lLabel == "empty")
-        lLabel = "";
 
 
     long color2;
@@ -317,8 +364,7 @@ FileParserList LegacyParser::_converter<_objNameCnv>(FileParserList src)
     long color1;
     color1 = (src.size() > 15) ? std::stol(src.at(15)) : 0;
 
-
-//    std::cout << "*** colors" << color1 << color2;
+    //    std::cout << "*** colors" << color1 << color2;
 
     union color {
         int32_t c_int;
@@ -332,7 +378,7 @@ FileParserList LegacyParser::_converter<_objNameCnv>(FileParserList src)
     color c2;
     c2.c_int = color2;
 
-//    std::cout << "*** colors" << c1.c_int << c2.c_int;
+    //    std::cout << "*** colors" << c1.c_int << c2.c_int;
 
     c1.c_int = -1 - c1.c_int;
     c1.c_int = ((c1.c_int & 0x3f000) << 6) | ((c1.c_int & 0xfc0) << 4) | ((c1.c_int & 0x3f) << 2);
@@ -340,14 +386,17 @@ FileParserList LegacyParser::_converter<_objNameCnv>(FileParserList src)
     c2.c_int = -1 - c2.c_int;
     c2.c_int = ((c2.c_int & 0x3f000) << 6) | ((c2.c_int & 0xfc0) << 4) | ((c2.c_int & 0x3f) << 2);
 
-//    std::cout << (c1.c_int & 0xFF) << ((c1.c_int >> 8) & 0xFF) << ((c1.c_int >> 16) & 0xFF) << ((c1.c_int >> 24) & 0xFF);
+    //    std::cout << (c1.c_int & 0xFF) << ((c1.c_int >> 8) & 0xFF) << ((c1.c_int >> 16) & 0xFF) << ((c1.c_int >> 24) & 0xFF);
 
     std::string lcolor1 = std::to_string(c1.c_byte.b[2]) + " " + std::to_string(c1.c_byte.b[1]) + " " + std::to_string(c1.c_byte.b[0]) + " 255";
     std::string lcolor2 = std::to_string(c2.c_byte.b[2]) + " " + std::to_string(c2.c_byte.b[1]) + " " + std::to_string(c2.c_byte.b[0]) + " 255";
 
+    //    std::cout << lcolor1 << lcolor2 << " ***";
 
-//    std::cout << lcolor1 << lcolor2 << " ***";
-
+    std::string lLabel = "";
+    lLabel = ((std::string)src.at(7));
+    if (lLabel == "empty")
+        lLabel = "";
 
     ret.push_back("obj");
     ret.push_back(src.at(1));
@@ -362,10 +411,25 @@ FileParserList LegacyParser::_converter<_objNameCnv>(FileParserList src)
     ret.push_back("@BackgroundColor");
     ret.push_back(lcolor2);
     ret.push_back("@AutoResizeToText");
-    ret.push_back(0);
+    ret.push_back("0");
     ret.push_back("@Size");
     ret.push_back(src.at(5));
     ret.push_back(src.at(6));
+
+
+    std::string lSend = "";
+    std::string lReceive = "";
+
+
+    lSend = ((std::string)src.at(9));
+    lReceive = ((std::string)src.at(8));
+
+//    ret.push_back("@LegacyLabel");
+//    ret.push_back(lLabel);
+    ret.push_back("@SendSymbol");
+    ret.push_back(lSend);
+    ret.push_back("@ReceiveSymbol");
+    ret.push_back(lReceive);
 
     return ret;
 }
