@@ -74,8 +74,9 @@ echo 'Generating Doxygen code documentation...'
 doxygen $DOXYFILE 2>&1 | tee doxygen.log
 
 # ***
-cd docs
 pwd
+ls
+cd ../docs
 
 ################################################################################
 ##### Upload the documentation to the gh-pages branch of the repository.   #####
