@@ -35,28 +35,13 @@ public:
     static const int oObjectChanged = 10;
     static const int oAutocomplete = 20;
 
-    void clearEditText()
-    {
-        _editText[0] = '\0';
-    }
+    void clearEditText();
 
     void finishedEditingText();
 
     //    static const int oSelected = 30;
 
-    virtual void onMouseDoubleClickEdited(ImVec2 pos) override
-
-    {
-        //                assert(windowController());
-        windowController()->isEditingText = true;
-
-        windowController()->restoreContext();
-        ImGuiIO& io = ImGui::GetIO();
-        io.ClearInputCharacters();
-        io.MouseDoubleClicked[0] = false;
-
-        _objectReplaceMode = true;
-    };
+    virtual void onMouseDoubleClickEdited(ImVec2 pos) override;
 };
 
 #endif /* NodeObject_hpp */

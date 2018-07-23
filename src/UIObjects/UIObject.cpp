@@ -228,3 +228,22 @@ void UIObject::finishedEditingText()
     // separate
     updated(oObjectChanged);
 };
+
+void UIObject::clearEditText()
+{
+    _editText[0] = '\0';
+}
+
+ void UIObject::onMouseDoubleClickEdited(ImVec2 pos)
+
+{
+    //                assert(windowController());
+    windowController()->isEditingText = true;
+
+    windowController()->restoreContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ClearInputCharacters();
+    io.MouseDoubleClicked[0] = false;
+
+    _objectReplaceMode = true;
+};
