@@ -76,7 +76,7 @@ doxygen $DOXYFILE 2>&1 | tee doxygen.log
 # ***
 pwd
 ls
-cd ../docs
+cd ../../docs
 
 ################################################################################
 ##### Upload the documentation to the gh-pages branch of the repository.   #####
