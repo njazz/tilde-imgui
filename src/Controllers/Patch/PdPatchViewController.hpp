@@ -30,6 +30,9 @@
 #include "Grid.hpp"
 #include "Preferences.h"
 
+#include "PutMenuActions.hpp"
+#include "ArrangeObjects.h"
+
 class PdPatchViewController : public IUViewController {
 
     //    std::vector<ObjectBase*> _objects;
@@ -119,15 +122,7 @@ public:
     IU_ACTION(menuAudioSettings);
 
     // ----------
-
-    IU_ACTION(arrangeDHAction);
-    IU_ACTION(arrangeDVAction);
-
-    IU_ACTION(arrangeLeftAction);
-    IU_ACTION(arrangeCenterAction);
-    IU_ACTION(arrangeRightAction);
-    IU_ACTION(arrangeTopAction);
-    IU_ACTION(arrangeBottomAction);
+    ArrangeMenuActions arrangeMenuActions = ArrangeMenuActions(this);
 
     // -----
 
@@ -136,14 +131,7 @@ public:
     IU_ACTION(zoomOne);
 
     // ----------
-
-    IU_ACTION(putObject);
-    IU_ACTION(putMessage);
-    IU_ACTION(putComment);
-
-    IU_ACTION(putBang);
-    IU_ACTION(putToggle);
-    IU_ACTION(putNumber);
+    PutMenuActions create = PutMenuActions(this);
 
     // ----------
 
@@ -168,6 +156,9 @@ public:
     //
     static const int oNewCanvasWindow = 100;
     static const int oOpenHelpPatch = 200;
+
+    //
+    void setMovingObject(UiObjectBase* obj){_movingObject = obj;};
 };
 
 #endif /* AppController_hpp */

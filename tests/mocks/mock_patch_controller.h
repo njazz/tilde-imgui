@@ -2,6 +2,7 @@
 #define MOCK_PATCH_CONTROLLER_H
 
 #include "PdPatchViewController.hpp"
+#include "PutMenuActions.hpp"
 
 PdPatchViewController::PdPatchViewController(PdCommonMenus* m)
     : _patchMenu(m)
@@ -53,18 +54,14 @@ MOCK_ACTION(editModeAction);
 MOCK_ACTION(menuPreferences);
 MOCK_ACTION(menuAudioSettings);
 
-MOCK_ACTION(arrangeDHAction);
-MOCK_ACTION(arrangeDVAction);
 
-MOCK_ACTION(arrangeLeftAction);
-MOCK_ACTION(arrangeCenterAction);
-MOCK_ACTION(arrangeRightAction);
-MOCK_ACTION(arrangeTopAction);
-MOCK_ACTION(arrangeBottomAction);
 
 MOCK_ACTION(zoomIn);
 MOCK_ACTION(zoomOut);
 MOCK_ACTION(zoomOne);
+
+#undef MOCK_ACTION
+#define MOCK_ACTION(x) void PutMenuActions::_##x(){}
 
 MOCK_ACTION(putObject);
 MOCK_ACTION(putMessage);
@@ -73,5 +70,17 @@ MOCK_ACTION(putComment);
 MOCK_ACTION(putBang);
 MOCK_ACTION(putToggle);
 MOCK_ACTION(putNumber);
+
+//#undef MOCK_ACTION
+//#define MOCK_ACTION(x) void ArrangeMenuActions::_##x(){}
+
+//MOCK_ACTION(arrangeDHAction);
+//MOCK_ACTION(arrangeDVAction);
+
+//MOCK_ACTION(arrangeLeftAction);
+//MOCK_ACTION(arrangeCenterAction);
+//MOCK_ACTION(arrangeRightAction);
+//MOCK_ACTION(arrangeTopAction);
+//MOCK_ACTION(arrangeBottomAction);
 
 #endif // MOCK_PATCH_CONTROLLER_H

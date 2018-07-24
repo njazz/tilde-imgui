@@ -112,6 +112,8 @@ target_sources(test_tilde_file_io PUBLIC "${PROJECT_SOURCE_DIR}/tests/mocks/mock
 
 tilde_add_test(patch_controller tilde_patch_controller)
 target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/PdPatchViewController.cpp")
+target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/PutMenuActions.cpp")
+#target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Controllers/Patch/ArrangeObjects.cpp")
 target_sources(test_tilde_patch_controller PUBLIC "${PROJECT_SOURCE_DIR}/src/Views/UIObjectFactory.cpp")
 
 tilde_add_test(console_controller tilde_console_controller)

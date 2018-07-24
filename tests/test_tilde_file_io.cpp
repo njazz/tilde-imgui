@@ -5,6 +5,8 @@
 #include "LegacyParser.h"
 #include "PdStringConverter.h"
 
+#include "PdPatchViewController.hpp"
+
 #include "mocks/mock_canvas_data.h"
 #include "mocks/mock_imgui_mvc.h"
 #include "mocks/mock_view_controllers.h"
@@ -14,11 +16,13 @@
 #include "mocks/mock_common_menus.h"
 #include "mocks/mock_grid.h"
 #include "mocks/mock_patch_controller.h"
-#include "mocks/mock_patch_controller.h"
+//#include "mocks/mock_patch_controller.h"
 #include "mocks/mock_patch_menus.h"
 #include "mocks/mock_preferences.h"
 #include "mocks/mock_uiobject.h"
 #include "mocks/mock_undostack.h"
+
+#include "mocks/mock_arrangeobjects.h"
 
 #include "mocks/mock_object_base.h"
 

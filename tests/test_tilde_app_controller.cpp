@@ -22,6 +22,7 @@
 #include "mocks/mock_uiobject_base.h"
 #include "mocks/mock_undostack.h"
 #include "mocks/mock_view_controllers.h"
+#include "mocks/mock_arrangeobjects.h"
 
 void setupUIObjectsLibrary() {}
 

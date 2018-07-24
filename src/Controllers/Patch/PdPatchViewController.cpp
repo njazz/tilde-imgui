@@ -646,13 +646,13 @@ void PdPatchViewController::_attachPatchMenu()
 
 void PdPatchViewController::_attachPutMenu()
 {
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject, &putObject);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aMessage, &putMessage);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aComment, &putComment);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aObject, &create.putObject);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aMessage, &create.putMessage);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aComment, &create.putComment);
 
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aBang, &putBang);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aToggle, &putToggle);
-    _patchMenu.menuPut.setAction(PdPatchPutMenu::aNumber, &putNumber);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aBang, &create.putBang);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aToggle, &create.putToggle);
+    _patchMenu.menuPut.setAction(PdPatchPutMenu::aNumber, &create.putNumber);
 }
 
 void PdPatchViewController::_attachArrangeMenu()
@@ -660,11 +660,11 @@ void PdPatchViewController::_attachArrangeMenu()
     _patchMenu.menuArrange.showGrid = &data.showGrid;
     _patchMenu.menuArrange.snapToGrid = &data.snapToGrid;
 
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeLeftAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeCenterAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeRightAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeTopAction);
-    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeBottomAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignLeft, &arrangeMenuActions.arrangeLeftAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignCenter, &arrangeMenuActions.arrangeCenterAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignRight, &arrangeMenuActions.arrangeRightAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignTop, &arrangeMenuActions.arrangeTopAction);
+    _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aAlignBottom, &arrangeMenuActions.arrangeBottomAction);
 
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomIn, &zoomIn);
     _patchMenu.menuArrange.setAction(PdPatchArrangeMenu::aZoomOut, &zoomOut);
@@ -704,70 +704,70 @@ void PdPatchViewController::_menuDeleteObjectAction()
 }
 // ---
 
-void PdPatchViewController::_arrangeLeftAction()
-{
-    ArrangeObjects::alignLeft(&data.objects);
-}
+//void PdPatchViewController::_arrangeLeftAction()
+//{
+//    ArrangeObjects::alignLeft(&data.objects);
+//}
 
-void PdPatchViewController::_arrangeCenterAction()
-{
-    ArrangeObjects::alignCenter(&data.objects);
-};
+//void PdPatchViewController::_arrangeCenterAction()
+//{
+//    ArrangeObjects::alignCenter(&data.objects);
+//};
 
-void PdPatchViewController::_arrangeRightAction()
-{
-    ArrangeObjects::alignRight(&data.objects);
-};
+//void PdPatchViewController::_arrangeRightAction()
+//{
+//    ArrangeObjects::alignRight(&data.objects);
+//};
 
-void PdPatchViewController::_arrangeTopAction()
-{
-    ArrangeObjects::alignTop(&data.objects);
-};
+//void PdPatchViewController::_arrangeTopAction()
+//{
+//    ArrangeObjects::alignTop(&data.objects);
+//};
 
-void PdPatchViewController::_arrangeBottomAction()
-{
-    ArrangeObjects::alignBottom(&data.objects);
-};
+//void PdPatchViewController::_arrangeBottomAction()
+//{
+//    ArrangeObjects::alignBottom(&data.objects);
+//};
 
-void PdPatchViewController::_arrangeDHAction()
-{
-}
+//void PdPatchViewController::_arrangeDHAction()
+//{
+//}
 
-void PdPatchViewController::_arrangeDVAction()
-{
-}
+//void PdPatchViewController::_arrangeDVAction()
+//{
+//}
 
 // ---
 
-void PdPatchViewController::_putObject()
-{
-    _movingObject = createObject("", 150, 150);
-}
+//void PdPatchViewController::_putObject()
+//{
+//    _movingObject = createObject("", 150, 150);
+//}
 
-void PdPatchViewController::_putMessage()
-{
-    _movingObject = createObject("ui.msg", 150, 150);
-}
+//void PdPatchViewController::_putMessage()
+//{
+//    _movingObject = createObject("ui.msg", 150, 150);
+//}
 
-void PdPatchViewController::_putComment()
-{
-    // todo
-}
+//void PdPatchViewController::_putComment()
+//{
+//    // todo
+//}
 
-void PdPatchViewController::_putBang()
-{
-    _movingObject = createObject("ui.bang", 150, 150);
-}
+//void PdPatchViewController::_putBang()
+//{
+//    _movingObject = createObject("ui.bang", 150, 150);
+//}
 
-void PdPatchViewController::_putToggle()
-{
-    _movingObject = createObject("ui.toggle", 150, 150);
-}
+//void PdPatchViewController::_putToggle()
+//{
+//    _movingObject = createObject("ui.toggle", 150, 150);
+//}
 
-void PdPatchViewController::_putNumber()
-{
-    _movingObject = createObject("ui.float", 150, 150);
-}
+//void PdPatchViewController::_putNumber()
+//{
+//    _movingObject = createObject("ui.float", 150, 150);
+//}
 
 // ---
 
@@ -876,7 +876,7 @@ void PdPatchViewController::onMouseHover(ImVec2 pos)
     if (_movingObject) {
         _movingObject->x = pos.x;
         _movingObject->y = pos.y;
-        ImGui::SetTooltip("pos %f %f", pos.x, pos.y);
+//        ImGui::SetTooltip("pos %f %f", pos.x, pos.y);
     }
 };
 

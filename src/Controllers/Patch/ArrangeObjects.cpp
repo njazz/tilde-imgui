@@ -6,6 +6,8 @@
 
 #include "math.h"
 
+#include "PdPatchViewController.hpp"
+
 ArrangeObjects::ArrangeObjects()
 {
 }
@@ -143,3 +145,45 @@ void ArrangeObjects::distributeVertical(objectVec* v)
 // new
 void ArrangeObjects::alignToGrid(objectVec* v, int gridSize){}
 void ArrangeObjects::tidyUp(objectVec* v){}
+
+// ---
+
+void ArrangeMenuActions::_arrangeLeftAction()
+{
+    if (!_controller) return;
+    ArrangeObjects::alignLeft(&_controller->data.objects);
+}
+
+void ArrangeMenuActions::_arrangeCenterAction()
+{
+    if (!_controller) return;
+    ArrangeObjects::alignCenter(&_controller->data.objects);
+};
+
+void ArrangeMenuActions::_arrangeRightAction()
+{
+    if (!_controller) return;
+    ArrangeObjects::alignRight(&_controller->data.objects);
+};
+
+void ArrangeMenuActions::_arrangeTopAction()
+{
+    if (!_controller) return;
+    ArrangeObjects::alignTop(&_controller->data.objects);
+};
+
+void ArrangeMenuActions::_arrangeBottomAction()
+{
+    if (!_controller) return;
+    ArrangeObjects::alignBottom(&_controller->data.objects);
+};
+
+void ArrangeMenuActions::_arrangeDHAction()
+{
+    if (!_controller) return;
+}
+
+void ArrangeMenuActions::_arrangeDVAction()
+{
+    if (!_controller) return;
+}

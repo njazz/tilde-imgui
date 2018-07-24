@@ -3,12 +3,14 @@
 
 #include <vector>
 
+#include "IUAction.hpp"
+
 using namespace std;
 
 class UiObjectBase;
 typedef std::vector<UiObjectBase*> objectVec;
 
-// static class for arranging objects
+///> static class for arranging objects
 class ArrangeObjects {
 private:
     ArrangeObjects();
@@ -29,6 +31,23 @@ public:
     static void alignToGrid(objectVec* v, int gridSize);
     static void tidyUp(objectVec* v);
 
+};
+
+class PdPatchViewController;
+
+class ArrangeMenuActions{
+    PdPatchViewController* _controller = 0;
+public:
+    ArrangeMenuActions(PdPatchViewController* vc):_controller(vc){};
+
+    IU_ACTION(arrangeDHAction);
+    IU_ACTION(arrangeDVAction);
+
+    IU_ACTION(arrangeLeftAction);
+    IU_ACTION(arrangeCenterAction);
+    IU_ACTION(arrangeRightAction);
+    IU_ACTION(arrangeTopAction);
+    IU_ACTION(arrangeBottomAction);
 };
 
 #endif // ARRANGEOBJECTS_H
