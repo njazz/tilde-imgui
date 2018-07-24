@@ -67,7 +67,11 @@ PropertyBase* createFromJSON(json j)
 template <>
 void PropertyT<float>::fromPdString(std::string str)
 {
+    try{
     *_data = std::stof(str);
+    }
+    catch(std::exception& e)
+    {};
 }
 
 template <>
@@ -347,6 +351,7 @@ json PropertyT<std::string*>::dataToJSON()
 template <>
 void PropertyT<std::string*>::dataFromJSON(json j)
 {
+    if (!*_data) return;
     if (j.is_string())
         **_data = j;
 };

@@ -15,6 +15,25 @@
 
 TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 {
+    SECTION("JSON/PdString - error input")
+    {
+        ///\todo all types
+
+        auto p = new PropertyT<float>();
+
+        json j = json::array();
+
+        p->fromJSON(j);
+        p->fromJSONString("@#$%^");
+        p->fromJSONString("{}");
+
+        p->fromPdString("@#$%^");
+
+        REQUIRE(true);
+    }
+
+    ///\todo test all T* properties fromJSON/fromPdString with nullptr value
+    ///
     SECTION("float")
     {
         auto p = new PropertyT<float>();
@@ -341,6 +360,42 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         delete i2;
     }
 
+    SECTION("string*")
+    {
+        std::string s1 = "fourty two";
+std::string s2 = "s2";
+
+        auto p = new PropertyT<std::string*>();
+
+        p->setDefaultValue(&s1);
+        REQUIRE(*p->get() == "fourty two");
+        REQUIRE(p->isDefault());
+
+        //p->set("33");
+        s1 = "33";
+        REQUIRE(*p->get() == "33");
+
+        REQUIRE(p->is<std::string*>());
+        REQUIRE(!p->is<float>());
+
+        REQUIRE(p->asPdString() == "33");
+
+        // JSON
+        auto p2 = new PropertyT<std::string*>();
+        p2->set(&s2);
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(*p->get() == *p2->get());
+
+
+
+        p2->fromPdString(p->asPdString());
+        REQUIRE(*p->get() == *p2->get());
+
+        delete p2;
+        delete p;
+    }
+
     SECTION("vector-float*")
     {
         float x = 0;
@@ -440,6 +495,8 @@ TEST_CASE("propertylist", "[tilde~ PureData IDE]")
         REQUIRE(pl.get("Property-Two")->typed<std::string>()->get()[0] == 'f'); //todo
         REQUIRE(pl.get("Property-Three")->typed<float>()->get() == 11.0f);
     }
+
+
 
     SECTION("JSON")
     {
