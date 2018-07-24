@@ -7,11 +7,11 @@
 
 #include "PdStringConverter.h"
 
-#include <tuple>
 #include <initializer_list>
+#include <tuple>
 
-#include <vector>
 #include <string>
+#include <vector>
 
 TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 {
@@ -179,14 +179,13 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
     {
         auto p = new PropertyT<StringEnum>();
 
-        StringEnum s1  = StringEnum({ "one", "two" },1) ;
+        StringEnum s1 = StringEnum({ "one", "two" }, 1);
 
         p->setDefaultValue(s1);
-        REQUIRE(p->get() ==s1);
+        REQUIRE(p->get() == s1);
         REQUIRE(p->isDefault());
 
-
-        StringEnum s2 = StringEnum({"a","b","c"},2);
+        StringEnum s2 = StringEnum({ "a", "b", "c" }, 2);
         p->set(s2);
         REQUIRE(p->get() == s2);
         REQUIRE(!p->isDefault());
@@ -208,7 +207,6 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
 
         delete p2;
         delete p;
-
     }
 
     SECTION("color")
@@ -232,7 +230,7 @@ TEST_CASE("properties: basic", "[tilde~ PureData IDE]")
         p2->fromJSON(p->toJSON());
         REQUIRE(p->get() == p2->get());
 
-        p2->set(Color(0,0,0,0));
+        p2->set(Color(0, 0, 0, 0));
         p2->fromPdString(p->asPdString());
         REQUIRE(p->get() == p2->get());
 
@@ -309,6 +307,40 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         delete i2;
     }
 
+    SECTION("bool*")
+    {
+        bool* i_ = new bool;
+        *i_ = true;
+        auto p = new PropertyT<bool*>(&i_);
+
+        REQUIRE(*p->get() == true);
+
+        *i_ = false;
+
+        REQUIRE(*p->get() == false);
+        REQUIRE(p->is<bool*>());
+        REQUIRE(!p->is<float>());
+
+        *i_ = true;
+        REQUIRE(p->asPdString() == "1");
+
+        // JSON
+        bool* i2 = new bool;
+        *i2 = false;
+        auto p2 = new PropertyT<bool*>(&i2);
+
+        p2->fromJSON(p->toJSON());
+        REQUIRE(*p->get() == *p2->get());
+
+        p2->fromPdString(p->asPdString());
+        REQUIRE(*p->get() == *p2->get());
+
+        delete p2;
+        delete p;
+        delete i_;
+        delete i2;
+    }
+
     SECTION("vector-float*")
     {
         float x = 0;
@@ -334,17 +366,51 @@ TEST_CASE("properties: pointers", "[tilde~ PureData IDE]")
         // todo
         REQUIRE(p->asPdString() == "33.000000 42.000000");
 
-        // JSON
-        // TODO
-        //        auto p2 = new PropertyT<std::vector<float*>>();
-        //        p2->set({&x2,&y2});
+        auto p2 = new PropertyT<std::vector<float*> >();
+        p2->set({ &x2, &y2 });
 
-        //        p2->fromJSON(p->toJSON());
-        //        REQUIRE(*p->get()[0] == *p2->get()[0]);
+        p2->fromJSON(p->toJSON());
+        REQUIRE(*p->get()[0] == *p2->get()[0]);
 
-        //        delete p2;
+        delete p2;
         delete p;
     }
+
+    // stub
+//    SECTION("vector-string*")
+//    {
+//        std::string x = "a";
+//        std::string y = "b";
+
+//        std::string x2 = "c";
+//        std::string y2 = "d";
+
+//        auto vec = { &x, &y };
+//        auto p = new PropertyT<std::vector<std::string*> >();
+
+//        p->setDefaultValue(vec);
+//        p->set(vec);
+
+//        x = "33";
+//        y = "42";
+
+//        REQUIRE(p->get().size() == 2);
+
+//        REQUIRE(p->is<std::vector<float*> >());
+//        REQUIRE(!p->is<float>());
+
+//        // todo
+//        REQUIRE(p->asPdString() == "33 42");
+
+//        auto p2 = new PropertyT<std::vector<std::string*> >();
+//        p2->set({ &x2, &y2 });
+
+//        p2->fromJSON(p->toJSON());
+//        REQUIRE(*p->get()[0] == *p2->get()[0]);
+
+//        delete p2;
+//        delete p;
+//    }
 }
 
 TEST_CASE("propertylist", "[tilde~ PureData IDE]")

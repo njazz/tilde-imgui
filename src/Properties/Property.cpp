@@ -144,6 +144,19 @@ std::string PropertyT<bool>::asPdString()
     return std::to_string((int)*_data);
 };
 
+//
+template <>
+void PropertyT<bool*>::fromPdString(std::string str)
+{
+    **_data = std::stoi(str);
+}
+
+template <>
+std::string PropertyT<bool*>::asPdString()
+{
+    return std::to_string((int)**_data);
+};
+
 template <>
 std::string PropertyT<std::vector<std::string> >::asPdString()
 {
@@ -246,6 +259,8 @@ json PropertyT<bool*>::dataToJSON()
     return j;
 };
 
+
+
 template <>
 void PropertyT<bool*>::dataFromJSON(json j)
 {
@@ -257,7 +272,12 @@ template <>
 json PropertyT<std::vector<float*> >::dataToJSON()
 {
     json j;
-    // todo
+    ///\ todo more efficient?
+
+    for (int i=0;i<_data->size();i++)
+    {
+        j[i] = *((*_data)[i]);
+    }
     return j;
 };
 
@@ -290,8 +310,15 @@ std::string PropertyT<std::vector<float*> >::asPdString()
 
 template <>
 void PropertyT<std::vector<float*> >::dataFromJSON(json j){
-    //    if (j.is_array())
-    // todo
+    if (!j.is_array()) return;
+
+    ///\todo more efficient?
+
+    if (j.size() != _data->size()) return;
+
+    for (int i=0;i<_data->size();i++){
+        *(*_data)[i] = j[i];
+    }
 };
 
 template <>

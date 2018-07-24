@@ -14,6 +14,8 @@
 void UIObject::draw(){};
 void UIObject::drawObjectContents(){};
 void UIObject::finishedEditingText(){}
+void UIObject::clearEditText(){};
+void UIObject::onMouseDoubleClickEdited(ImVec2 pos){};
 
 //void UIObject::onMouseDoubleClickEdited(ImVec2 pos){};
 
