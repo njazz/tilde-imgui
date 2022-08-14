@@ -1,5 +1,7 @@
 ## tilde~ / imgui
 
+archived, to be replaced with third JUCE-based version
+
 Development repository, early prototype.
 
 [![Build Status](https://travis-ci.org/njazz/tilde-imgui.svg?branch=master)](https://travis-ci.org/njazz/tilde-imgui)
